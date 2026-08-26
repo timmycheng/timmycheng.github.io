@@ -1,51 +1,31 @@
-name: deploy
+name: Deploy to GitHub Pages
+
 on:
   push:
-    branches:
-      - master
-    paths-ignore:
-      - ".github/**"
+    branches: [master]
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  deploy:
-    name: deploy
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: CheckOut
-        uses: actions/checkout@v3
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-      
-      - name: Set-up Node Env
-        uses: actions/setup-node@v3
-        with:
-          node-version: v16
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install, build, and upload
+        uses: withastro/action@v3
 
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Build
-        run: npm run build
-
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: pages
-      - name: Notification
-        env:
-          ACTIONS_FEISHU_TAG: 'v1.3.1' # 替换此变量, 最新见 https://github.com/xiachufang/actions-feishu/releases
-          INPUT_WEBHOOK: "${{ secrets.FEISHU_WEBHOOK_URL }}"
-          INPUT_MESSAGE_TYPE: "post"
-          INPUT_TITLE: "Hexo Deploy Done!"
-          INPUT_CONTENT: "Commits: \n${{ join(github.event.commits.*.message,'\n')}}\nSee the Change: ${{ github.repository }}"
-        run: |
-          wget -q https://github.com/xiachufang/actions-feishu/releases/download/${{ env.ACTIONS_FEISHU_TAG }}/linux-amd64-actions-feishu.tar.gz
-          tar zxf linux-amd64-actions-feishu.tar.gz feishu
-          ./feishu
-          
-      
-      
-
-  
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

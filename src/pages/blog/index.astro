@@ -19,9 +19,6 @@ const posts = (await getCollection('blog')).sort(
 	<body>
 		<Header />
 		<main class="container">
-			<div class="section-head">
-				<h1 data-i18n="nav.writing">Posts</h1>
-			</div>
 			<ul class="post-list">
 				{
 					posts.map((post, i) => (
@@ -42,7 +39,7 @@ const posts = (await getCollection('blog')).sort(
 		<Footer />
 		<style>
 			main.container {
-				padding: 0;
+				padding: 2.5rem 0 4rem;
 			}
 			.post-list {
 				list-style: none;

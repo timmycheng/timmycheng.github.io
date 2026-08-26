@@ -214,22 +214,6 @@ main.container {
 	color: var(--ink-faint);
 }
 
-/* 板块标题：大标题 + 细底线 */
-.section-head {
-	display: flex;
-	align-items: baseline;
-	gap: 1rem;
-	border-bottom: 1px solid var(--line-strong);
-	padding-bottom: 0.8rem;
-	margin: 1.25rem 0 2.4rem;
-}
-.section-head h1,
-.section-head h2 {
-	margin: 0;
-	font-size: 2em;
-	letter-spacing: -0.02em;
-}
-
 /* 方角标签 chip */
 .pill {
 	display: inline-block;

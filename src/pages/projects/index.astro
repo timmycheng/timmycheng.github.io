@@ -20,9 +20,6 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 	<body>
 		<Header />
 		<main class="container">
-			<div class="section-head">
-				<h1 data-i18n="nav.projects">Projects</h1>
-			</div>
 			<ul class="project-list">
 				{
 					projects.map((p) => (
@@ -68,7 +65,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 		<Footer />
 		<style>
 			main.container {
-				padding: 0;
+				padding: 2.5rem 0 4rem;
 			}
 			.project-list {
 				list-style: none;

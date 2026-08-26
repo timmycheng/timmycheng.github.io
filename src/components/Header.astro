@@ -3,7 +3,8 @@ import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header>
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
 	<nav>
 		<a href="/" class="logo" aria-label={SITE_TITLE}>
 			<span class="logo-mark">T</span>
@@ -12,8 +13,8 @@ import HeaderLink from './HeaderLink.astro';
 			</span>
 		</a>
 		<div class="internal-links">
-			<HeaderLink href="/about" data-i18n="nav.about">About</HeaderLink>
-			<HeaderLink href="/works" data-i18n="nav.works">Works</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+			<HeaderLink href="/works">Works</HeaderLink>
 		</div>
 		<div class="controls">
 			<a class="ctl rss-btn" href="/rss.xml" aria-label="RSS feed">
@@ -64,15 +65,39 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 </header>
+<script>
+	const header = document.querySelector('.site-header');
+	if (header) {
+		let lastY = window.scrollY;
+		const update = () => {
+			const y = window.scrollY;
+			header.classList.toggle('is-scrolled', y > 8);
+			if (y > lastY && y > 240) header.classList.add('is-hidden');
+			else header.classList.remove('is-hidden');
+			lastY = y;
+		};
+		update();
+		window.addEventListener('scroll', update, { passive: true });
+	}
+</script>
 <style>
-	header {
+	header.site- header.site-header {
 		position: sticky;
 		top: 0;
 		z-index: 10;
 		padding: 0 1.5rem;
 		background: var(--header-bg);
 		backdrop-filter: blur(8px);
-		border-bottom: 1px solid var(--line-strong);
+		border-bottom: 1px solid transparent;
+		transition:
+			border-color var(--duration) var(--ease-out),
+			transform 0.36s var(--ease-out);
+	}
+	header.site-header.is-scrolled {
+		border-bottom-color: var(--line-strong);
+	}
+	header.site-header.is-hidden {
+		transform: translateY(-100%);
 	}
 	nav {
 		display: flex;

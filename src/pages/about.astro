@@ -10,89 +10,204 @@ import { SITE_TITLE } from '../consts';
 	<head>
 		<BaseHead
 			title={`About · ${SITE_TITLE}`}
-			description="About Timmy Cheng — security operations engineer, focused on detection and response."
+			description="About Timmy Cheng — cybersecurity engineer, focused on security operations."
 		/>
+		<script is:inline>
+			// About 页局部语言：仅本页生效，避免渲染闪烁
+			(function () {
+				var d = document.documentElement;
+				if (localStorage.getItem('tc-locale-about') === 'zh') {
+					d.setAttribute('data-locale', 'zh');
+					d.lang = 'zh-CN';
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<Header />
-		<main class="container">
+		<main id="main-content" class="container">
 			<div class="about-grid">
 				<section class="intro">
+					<button
+						type="button"
+						class="locale-btn mono"
+						data-action="about-locale"
+						aria-label="Toggle language"
+					>
+						中 / EN
+					</button>
 					<h2>Timmy Cheng</h2>
-					<p class="mono-label">Security Operations Engineer</p>
-					<p class="bio" data-i18n="about.bio">
-						Security operations engineer focused on SOC operations, detection and response. I
-						believe security is operated continuously, not won in a single engagement. I write code
-						and words, and take the occasional photo — this site is my little corner.
+					<p class="mono-label">Cybersecurity Engineer · Security Ops</p>
+					<p class="bio" data-i18n="about.bio">Focused on cybersecurity operations.</p>
+					<p class="bio-note mono" data-i18n="about.resume.ask">
+						If you're interested, ask for my resume.
 					</p>
-					<ul class="contacts mono">
+					<ul class="socials" aria-label="Social links">
 						<li>
-							<span class="k">EMAIL</span>
-							<span class="todo" data-i18n="about.todo">TBD</span>
+							<a
+								class="social-btn"
+								href="https://github.com/timmycheng"
+								target="_blank"
+								rel="noopener"
+								aria-label="GitHub"
+							>
+								<svg viewBox="0 0 16 16" aria-hidden="true">
+									<path
+										fill="currentColor"
+										d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+									></path>
+								</svg>
+							</a>
 						</li>
 						<li>
-							<span class="k">GITHUB</span>
-							<a href="https://github.com/timmycheng">github.com/timmycheng</a>
+							<button
+								type="button"
+								class="social-btn"
+								data-wechat-id="timmycheng"
+								aria-label="WeChat"
+								title="WeChat: timmycheng"
+							>
+								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+									<path
+										d="M9.5 4C5.36 4 2 6.69 2 10c0 1.89 1.08 3.56 2.78 4.66l-.69 2.09 2.4-1.2c.62.2 1.28.32 1.96.36-.16-.52-.25-1.08-.25-1.66C8.2 10.9 10.76 8 14.5 8h.08C13.66 5.66 11.8 4 9.5 4zM7 7.75c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75z"
+									></path>
+									<path
+										d="M14.5 9c-3.04 0-5.5 2.01-5.5 4.5s2.46 4.5 5.5 4.5c.63 0 1.24-.11 1.8-.3l2.2 1.1-.63-1.92c1.53-.99 2.63-2.5 2.63-4.38C20.5 11.01 18.04 9 14.5 9zm-1.5 4.75c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75zm3 0c-.41 0-.75-.34-.75-.75s.34-.75.75-.75.75.34.75.75-.34.75-.75.75z"
+									></path>
+								</svg>
+							</button>
 						</li>
-						<li><span class="k">SITE</span> <a href="/">timmycheng.cn</a></li>
+						<li>
+							<a class="social-btn" href="mailto:timmycheng@foxmail.com" aria-label="Email">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path
+										d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+									></path>
+									<polyline points="22,6 12,13 2,6"></polyline>
+								</svg>
+							</a>
+						</li>
 					</ul>
 				</section>
 
 				<section class="body">
-					<h3 class="mono-label" data-i18n="about.exp">Experience / 经历</h3>
+					<h3 class="section-title" data-i18n="about.exp">Experience / 经历</h3>
 					<dl class="timeline">
 						<div class="entry">
 							<dt>
-								<strong data-i18n="about.exp.1.title"
-									>Company A — Security Operations Engineer</strong
-								>
-								<span class="mono date">2024 — NOW</span>
+								<strong data-i18n="about.exp.1.role">Cybersecurity Management</strong>
+								<span class="mono date">2023 — NOW</span>
 							</dt>
 							<dd data-i18n="about.exp.1.desc">
-								<!-- TODO: 替换为真实经历 -->
-								Placeholder: daily SOC operations, alert triage, and detection rule maintenance.
+								Security operations and management of bank systems and applications.
 							</dd>
 						</div>
 						<div class="entry">
 							<dt>
-								<strong data-i18n="about.exp.2.title">Company B — Security Engineer</strong>
-								<span class="mono date">2021 — 2024</span>
+								<strong data-i18n="about.exp.2.role"
+									>Security Product Manager / Consulting Engineer</strong
+								>
+								<span class="mono date">2020 — 2023</span>
 							</dt>
 							<dd data-i18n="about.exp.2.desc">
-								<!-- TODO: 替换为真实经历 -->
-								Placeholder: log platform engineering and incident response.
+								SOC platform product, security consulting, national operating standard.
+							</dd>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.exp.3.role">Cybersecurity Engineer</strong>
+								<span class="mono date">2015 — 2020</span>
+							</dt>
+							<dd data-i18n="about.exp.3.desc">
+								Security device operations, vulnerability management, platform building, training.
 							</dd>
 						</div>
 					</dl>
 
-					<h3 class="mono-label" data-i18n="about.skills">Skills / 技能</h3>
+					<h3 class="section-title" data-i18n="about.certs">Certifications / 认证</h3>
 					<div class="skills">
-						<span class="pill" data-i18n="about.skill.1">SOC operations</span>
-						<span class="pill" data-i18n="about.skill.2">SIEM / detection rules</span>
-						<span class="pill" data-i18n="about.skill.3">Alert triage</span>
-						<span class="pill" data-i18n="about.skill.4">Incident response</span>
-						<span class="pill" data-i18n="about.skill.5">Threat intelligence</span>
-						<span class="pill" data-i18n="about.skill.6">MITRE ATT&amp;CK</span>
-						<span class="pill" data-i18n="about.skill.7">SOAR automation</span>
-						<span class="pill" data-i18n="about.skill.8">Python</span>
-						<span class="pill" data-i18n="about.skill.9">Log analysis</span>
-						<span class="pill todo" data-i18n="about.skills.more">+ more</span>
+						<span class="pill" data-i18n="about.cert.1">CISSP · 2018</span>
+						<span class="pill" data-i18n="about.cert.2">CISP · 2019</span>
+						<span class="pill" data-i18n="about.cert.3">CISP-CSE · 2021</span>
+						<span class="pill" data-i18n="about.cert.4">CCSC Cloud Security · 2022</span>
+						<span class="pill" data-i18n="about.cert.5">Database System Engineer · 2013</span>
 					</div>
 
-					<h3 class="mono-label" data-i18n="about.edu">Education / 教育</h3>
+					<h3 class="section-title" data-i18n="about.awards">Awards / 荣誉</h3>
+					<div class="awards mono">
+						<p data-i18n="about.award.1">
+							Multiple gold / silver / bronze prizes in provincial & municipal cyber security skills
+							competitions (2015—2020)
+						</p>
+						<p data-i18n="about.award.2">
+							Municipal cybersecurity incident response expert team member (2019); cybersecurity &
+							data security expert (2024—now)
+						</p>
+					</div>
+
+					<h3 class="section-title" data-i18n="about.edu">Education / 教育</h3>
 					<dl class="timeline">
 						<div class="entry">
 							<dt>
-								<strong data-i18n="about.edu.1.title">Some University — Some Major</strong>
-								<span class="mono date">2017 — 2021</span>
+								<strong data-i18n="about.edu.1.degree">M.S. Computer Information Systems</strong>
+								<span data-i18n="about.edu.1.extra"> (in progress)</span>
+								<span class="mono date">2024 — NOW</span>
 							</dt>
-							<dd data-i18n="about.edu.1.desc">Placeholder description.</dd>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.edu.2.degree">B.S. Computer Science</strong>
+								<span class="mono date">2007 — 2011</span>
+							</dt>
 						</div>
 					</dl>
 				</section>
 			</div>
 		</main>
 		<Footer />
+		<script>
+			const localeBtn = document.querySelector<HTMLButtonElement>('[data-action="about-locale"]');
+			if (localeBtn) {
+				localeBtn.addEventListener('click', () => {
+					const next = document.documentElement.getAttribute('data-locale') === 'zh' ? 'en' : 'zh';
+					try {
+						localStorage.setItem('tc-locale-about', next);
+					} catch (e) {}
+					document.dispatchEvent(new CustomEvent('tc-locale-set', { detail: next }));
+				});
+			}
+
+			const wechatBtn = document.querySelector<HTMLButtonElement>('[data-wechat-id]');
+			if (wechatBtn) {
+				const labels = { en: 'Copied', 'zh-CN': '已复制' };
+				const locale = () =>
+					document.documentElement.getAttribute('data-locale') === 'zh' ? 'zh-CN' : 'en';
+				const originalTitle = wechatBtn.getAttribute('title') || '';
+				wechatBtn.addEventListener('click', async () => {
+					const id = wechatBtn.dataset.wechatId;
+					if (!id) return;
+					try {
+						await navigator.clipboard.writeText(id);
+					} catch (e) {
+						return;
+					}
+					wechatBtn.setAttribute('data-copied', '');
+					wechatBtn.title = labels[locale()] + ': ' + id;
+					setTimeout(() => {
+						wechatBtn.removeAttribute('data-copied');
+						wechatBtn.title = originalTitle;
+					}, 2000);
+				});
+			}
+		</script>
 		<style>
 			main.container {
 				padding: 2.5rem 0 4rem;
@@ -109,26 +224,52 @@ import { SITE_TITLE } from '../consts';
 			.intro h2 {
 				margin-bottom: 0.2rem;
 			}
+			.locale-btn {
+				display: inline-flex;
+				align-items: center;
+				margin-bottom: 1rem;
+				padding: 0.3rem 0.65rem;
+				border: 1px solid var(--line-strong);
+				border-radius: var(--radius-full);
+				background: var(--paper-raise);
+				font-size: 11px;
+				letter-spacing: 0.12em;
+				color: var(--ink-soft);
+				cursor: pointer;
+				transition:
+					color 0.15s ease,
+					border-color 0.15s ease;
+			}
+			.locale-btn:hover {
+				color: var(--accent);
+				border-color: var(--accent);
+			}
 			.bio {
 				color: var(--ink-soft);
 				font-size: 0.95em;
+				margin-bottom: 0.4rem;
 			}
-			.contacts {
-				list-style: none;
-				margin: 1.5rem 0 0;
-				padding: 0;
-				display: grid;
-				gap: 0.6rem;
-				font-size: 13px;
-			}
-			.contacts .k {
-				display: inline-block;
-				width: 4.2rem;
+			.bio-note {
+				margin: 0 0 1.5rem;
+				font-size: 12px;
+				letter-spacing: 0.06em;
 				color: var(--ink-faint);
-				letter-spacing: 0.1em;
 			}
-			.contacts a {
-				color: var(--ink-soft);
+			.socials {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				gap: 0.55rem;
+			}
+			.social-btn {
+				border: none;
+				background: var(--paper-raise);
+				cursor: pointer;
+				font: inherit;
+			}
+			.social-btn:hover {
+				border-color: var(--accent);
 			}
 			.body h3 {
 				margin-top: 2.2rem;
@@ -151,6 +292,7 @@ import { SITE_TITLE } from '../consts';
 			}
 			.entry .date {
 				flex-shrink: 0;
+				margin-left: auto;
 				font-size: 12px;
 				color: var(--ink-faint);
 				letter-spacing: 0.08em;
@@ -165,6 +307,12 @@ import { SITE_TITLE } from '../consts';
 				flex-wrap: wrap;
 				gap: 0.5rem;
 				margin-top: 0.8rem;
+			}
+			.awards p {
+				margin: 0 0 0.5rem;
+				font-size: 12px;
+				letter-spacing: 0.06em;
+				color: var(--ink-faint);
 			}
 			@media (max-width: 720px) {
 				.about-grid {

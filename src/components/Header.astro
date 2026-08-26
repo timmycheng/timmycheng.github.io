@@ -7,7 +7,9 @@ import HeaderLink from './HeaderLink.astro';
 	<nav>
 		<a href="/" class="logo" aria-label={SITE_TITLE}>
 			<span class="logo-mark">T</span>
-			<span class="logo-text">TimmY<span class="logo-dot">.</span>ChenG</span>
+			<span class="logo-text"
+				>shxt<span class="logo-dot">.</span>in<span class="logo-dot">.</span>mind</span
+			>
 		</a>
 		<div class="internal-links">
 			<HeaderLink href="/about" data-i18n="nav.about">About</HeaderLink>
@@ -15,6 +17,13 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/projects" data-i18n="nav.projects">Projects</HeaderLink>
 		</div>
 		<div class="controls">
+			<a class="ctl rss-btn" href="/rss.xml" aria-label="RSS feed">
+				<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+					<path d="M4 4c8.837 0 16 7.163 16 16h-4c0-6.627-5.373-12-12-12V4z"></path>
+					<circle cx="6" cy="18" r="2"></circle>
+					<path d="M4 11c5 0 9 4 9 9h-3c0-3.314-2.686-6-6-6v-3z"></path>
+				</svg>
+			</a>
 			<button type="button" class="ctl theme-btn" data-action="theme" aria-label="Toggle theme">
 				<svg
 					class="icon-moon"
@@ -116,21 +125,32 @@ import HeaderLink from './HeaderLink.astro';
 		gap: 0.5rem;
 		flex-shrink: 0;
 	}
+	.ctl {
+		border: 1px solid var(--line-strong);
+		border-radius: 7px;
+		background: transparent;
+		color: var(--ink-soft);
+		transition:
+			color 0.15s ease,
+			border-color 0.15s ease,
+			background 0.15s ease;
+	}
+	.ctl:hover {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+	.rss-btn {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+	}
 	.theme-btn {
 		display: grid;
 		place-items: center;
 		width: 34px;
 		height: 34px;
 		padding: 0;
-		border: 1px solid var(--line-strong);
-		background: transparent;
-		color: var(--ink-soft);
-		border-radius: 7px;
-		cursor: pointer;
-		transition:
-			color 0.15s ease,
-			border-color 0.15s ease,
-			background 0.15s ease;
 	}
 	.theme-btn:hover {
 		color: var(--accent);

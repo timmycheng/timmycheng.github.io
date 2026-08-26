@@ -22,7 +22,7 @@ const tiles = [
 	{
 		no: '02',
 		key: 'writing',
-		label: 'Writing',
+		label: 'Posts',
 		alt: '文章',
 		desc: 'Tech notes and essays',
 		href: '/blog',
@@ -142,8 +142,8 @@ const tiles = [
 			}
 			.watermark {
 				position: absolute;
-				right: -3rem;
-				bottom: -4rem;
+				right: -1rem;
+				bottom: -1rem;
 				font-size: 22rem;
 				line-height: 1;
 				font-weight: 700;
@@ -338,7 +338,7 @@ const tiles = [
 			.latest li {
 				border-bottom: 1px solid var(--line);
 			}
-			.latest a {
+			.latest ul a {
 				display: grid;
 				grid-template-columns: 8.5rem 1fr auto;
 				align-items: baseline;
@@ -347,7 +347,7 @@ const tiles = [
 				text-decoration: none;
 				transition: background 0.15s ease;
 			}
-			.latest a:hover {
+			.latest ul a:hover {
 				background: var(--paper-raise);
 			}
 			.latest .date {
@@ -358,7 +358,7 @@ const tiles = [
 			.latest .title {
 				font-weight: 700;
 			}
-			.latest a:hover .title {
+			.latest ul a:hover .title {
 				color: var(--accent);
 			}
 			.latest .arrow {
@@ -379,7 +379,7 @@ const tiles = [
 				.tiles {
 					grid-template-columns: 1fr;
 				}
-				.latest a {
+				.latest ul a {
 					grid-template-columns: 1fr auto;
 				}
 				.latest .date {

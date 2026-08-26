@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const items = (await getCollection('gallery')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`画廊 · ${SITE_TITLE}`} description="摄影与视觉碎片。" />
+	</head>
+	<body>
+		<Header />
+		<main class="container">
+			<div class="section-head">
+				<span class="no">04</span>
+				<h1>画廊</h1>
+				<span class="en mono-label">Gallery — {items.length} frames</span>
+			</div>
+			<ul class="grid">
+				{
+					items.map((item) => (
+						<li>
+							<figure>
+								<Image width={640} src={item.data.image} alt={item.data.title} widths={[320, 640, 960]} sizes="(max-width: 720px) 100vw, 33vw" />
+								<figcaption>
+									<span class="title">{item.data.title}</span>
+									<span class="desc">{item.data.description}</span>
+								</figcaption>
+							</figure>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+		<style>
+			.grid {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.2rem;
+			}
+			figure {
+				margin: 0;
+			}
+			.grid img {
+				width: 100%;
+				height: auto;
+				border-radius: 6px;
+				border: 1px solid var(--line);
+				transition: transform 0.2s ease;
+			}
+			.grid li:hover img {
+				transform: scale(1.015);
+			}
+			figcaption {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 0.5rem;
+				padding: 0.5rem 0.2rem 0;
+			}
+			figcaption .title {
+				font-weight: 700;
+				font-size: 0.9rem;
+			}
+			figcaption .desc {
+				font-family: var(--font-mono);
+				font-size: 11px;
+				color: var(--ink-faint);
+				letter-spacing: 0.05em;
+			}
+			@media (max-width: 720px) {
+				.grid {
+					grid-template-columns: repeat(2, 1fr);
+					gap: 0.8rem;
+				}
+			}
+		</style>
+	</body>
+</html>

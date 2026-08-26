@@ -1,124 +1,250 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+  设计系统 · Design Tokens
+  ─────────────────────────────────────────
+  画布   PANTONE 11-4201 TCX Cloud Dancer (2026 年度色)
+         色值 #F0EFEB — 从官方色卡 slab 图实测提取
+  墨     暖黑
+  信号橙 工业 safety orange · 唯一 accent
+  气质   瑞士网格 × 技术文档：无衬线紧排、mono 编号、点阵底纹
+  ─────────────────────────────────────────
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%),
-		0 16px 32px rgba(var(--gray), 33%);
+	--paper: #f0efeb;
+	--paper-raise: #f7f6f3;
+	--paper-deep: #e4e2db;
+	--ink: #1d1a16;
+	--ink-soft: #5a5245;
+	--ink-faint: #97897a;
+	--line: rgba(29, 26, 22, 0.15);
+	--line-strong: rgba(29, 26, 22, 0.35);
+	--accent: #c23a0f;
+	--accent-deep: #992c0b;
+	--dot: rgba(29, 26, 22, 0.09);
+
+	--font-sans:
+		-apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+		sans-serif;
+	--font-mono:
+		ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Consolas, 'Courier New',
+		monospace;
 }
+
+html {
+	color-scheme: light;
+	scroll-behavior: smooth;
+}
+
 body {
-	font-family: var(--font-atkinson);
+	font-family: var(--font-sans);
 	margin: 0;
 	padding: 0;
-	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	color: var(--ink);
+	font-size: 17px;
+	line-height: 1.75;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	background-color: var(--paper);
+	/* 点阵画布：设计工具网格质感 */
+	background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+	background-size: 22px 22px;
 }
-main {
-	width: 720px;
-	max-width: calc(100% - 2em);
-	margin: auto;
-	padding: 3em 1em;
+
+::selection {
+	background: var(--accent);
+	color: var(--paper);
 }
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	font-family: var(--font-sans);
+	margin: 0 0 0.6rem 0;
+	color: var(--ink);
 	line-height: 1.2;
+	font-weight: 800;
+	letter-spacing: -0.02em;
 }
 h1 {
-	font-size: 3.052em;
+	font-size: 2.3em;
 }
 h2 {
-	font-size: 2.441em;
+	font-size: 1.65em;
 }
 h3 {
-	font-size: 1.953em;
-}
-h4 {
-	font-size: 1.563em;
-}
-h5 {
 	font-size: 1.25em;
 }
+
 strong,
 b {
 	font-weight: 700;
 }
+
 a {
-	color: var(--accent);
+	color: inherit;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	text-underline-offset: 3px;
+	text-decoration-thickness: 1.5px;
+	transition:
+		color 0.15s ease,
+		text-decoration-color 0.15s ease;
 }
 a:hover {
 	color: var(--accent);
+	text-decoration-color: currentColor;
 }
+
 p {
-	margin-bottom: 1em;
+	margin: 0 0 1.2em;
+	text-wrap: pretty;
 }
-.prose p {
-	margin-bottom: 2em;
-}
-textarea {
-	width: 100%;
-	font-size: 16px;
-}
-input {
-	font-size: 16px;
-}
-table {
-	width: 100%;
-}
+
 img {
 	max-width: 100%;
 	height: auto;
-	border-radius: 8px;
 }
+
 code {
-	padding: 2px 5px;
-	background-color: rgb(var(--gray-light));
-	border-radius: 2px;
+	font-family: var(--font-mono);
+	font-size: 0.85em;
+	padding: 2px 6px;
+	background-color: var(--paper-deep);
+	border: 1px solid var(--line);
+	border-radius: 3px;
 }
 pre {
-	padding: 1.5em;
-	border-radius: 8px;
+	font-family: var(--font-mono);
+	padding: 1.2em 1.5em;
+	border-radius: 4px;
+	border: 1px solid var(--line);
+	background: var(--paper-raise);
+	color: var(--ink);
+	line-height: 1.6;
+	overflow-x: auto;
+	font-size: 0.85em;
 }
 pre > code {
 	all: unset;
 }
+
 blockquote {
-	border-left: 4px solid var(--accent);
-	padding: 0 0 0 20px;
-	margin: 0;
-	font-size: 1.333em;
+	border-left: 3px solid var(--accent);
+	padding: 0.1em 0 0.1em 1.2em;
+	margin: 1.5em 0;
+	color: var(--ink-soft);
 }
 hr {
 	border: none;
-	border-top: 1px solid rgb(var(--gray-light));
+	border-top: 1px solid var(--line-strong);
 }
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.92em;
+}
+th,
+td {
+	border: 1px solid var(--line);
+	padding: 0.5em 0.8em;
+	text-align: left;
+}
+th {
+	font-family: var(--font-mono);
+	font-size: 0.78em;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ink-soft);
+	background: var(--paper-deep);
+}
+
+/* ── 布局 ─────────────────────────────── */
+
+main.container {
+	width: 1000px;
+	max-width: calc(100% - 3rem);
+	margin-inline: auto;
+	padding-block: 3rem 5rem;
+}
+
+/* ── 工具类 ───────────────────────────── */
+
+.mono {
+	font-family: var(--font-mono);
+}
+
+.mono-label {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+	color: var(--ink-faint);
+}
+
+/* 板块标题：编号 + 标题 + 英文标签 + 底线 */
+.section-head {
+	display: flex;
+	align-items: baseline;
+	gap: 1rem;
+	border-bottom: 2px solid var(--ink);
+	padding-bottom: 0.7rem;
+	margin: 4rem 0 2.2rem;
+}
+.section-head .no {
+	font-family: var(--font-mono);
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--accent);
+}
+.section-head h1,
+.section-head h2 {
+	margin: 0;
+	font-size: 1.7em;
+	letter-spacing: -0.01em;
+}
+.section-head .en {
+	margin-left: auto;
+}
+
+/* 方角标签 chip */
+.pill {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	padding: 5px 8px;
+	border: 1px solid var(--line-strong);
+	color: var(--ink-soft);
+	background: var(--paper-raise);
+}
+
+/* 诚实占位标记 */
+.todo {
+	display: inline-block;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	padding: 4px 8px;
+	border: 1px dashed var(--line-strong);
+	color: var(--ink-faint);
+}
+
 @media (max-width: 720px) {
 	body {
-		font-size: 18px;
+		font-size: 16px;
 	}
-	main {
-		padding: 1em;
+	main.container {
+		max-width: calc(100% - 2rem);
+		padding-block: 2rem 4rem;
+	}
+	.section-head {
+		margin-top: 3rem;
+		flex-wrap: wrap;
 	}
 }
 
@@ -130,12 +256,7 @@ hr {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
-	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

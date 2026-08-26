@@ -1,0 +1,153 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const projects = (await getCollection('projects')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`项目 · ${SITE_TITLE}`} description="正在做和已经做完的东西。" />
+	</head>
+	<body>
+		<Header />
+		<main class="container">
+			<div class="section-head">
+				<span class="no">03</span>
+				<h1>项目</h1>
+				<span class="en mono-label">Projects — {projects.length}</span>
+			</div>
+			<ul class="project-list">
+				{
+					projects.map((p) => (
+						<li class={{ pinned: p.data.pinned }}>
+							<div class="row">
+								<h2>{p.data.title}</h2>
+								<div class="meta mono">
+									<span class:list={['status', p.data.status]}>{statusLabel[p.data.status]}</span>
+									<span class="date">
+										<FormattedDate date={p.data.pubDate} />
+									</span>
+								</div>
+							</div>
+							<p class="desc">{p.data.description}</p>
+							<div class="foot">
+								<div class="tags">
+									{p.data.tags.map((t) => <span class="pill">{t}</span>)}
+								</div>
+								<div class="links mono">
+									{p.data.repo && (
+										<a href={p.data.repo} target="_blank">
+											[repo]
+										</a>
+									)}
+									{p.data.link && (
+										<a href={p.data.link} target="_blank">
+											[link]
+										</a>
+									)}
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+		<style>
+			.project-list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				gap: 1.2rem;
+			}
+			.project-list li {
+				border: 1px solid var(--line-strong);
+				border-radius: 8px;
+				background: var(--paper-raise);
+				padding: 1.4rem 1.6rem;
+				transition:
+					border-color 0.15s ease,
+					transform 0.15s ease;
+			}
+			.project-list li:hover {
+				border-color: var(--ink);
+			}
+			.project-list li.pinned {
+				border-left: 4px solid var(--accent);
+			}
+			.row {
+				display: flex;
+				align-items: baseline;
+				justify-content: space-between;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+			.row h2 {
+				font-size: 1.25rem;
+				margin: 0;
+			}
+			.meta {
+				display: flex;
+				gap: 1rem;
+				align-items: baseline;
+				font-size: 11px;
+				letter-spacing: 0.12em;
+			}
+			.status {
+				font-weight: 700;
+				padding: 3px 7px;
+				border-radius: 3px;
+				color: var(--paper);
+				background: var(--ink-faint);
+			}
+			.status.active {
+				background: var(--accent);
+			}
+			.status.wip {
+				background: var(--ink);
+			}
+			.meta .date {
+				color: var(--ink-faint);
+			}
+			.desc {
+				margin: 0.7rem 0 1rem;
+				color: var(--ink-soft);
+				font-size: 0.95em;
+			}
+			.foot {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+			.tags {
+				display: flex;
+				gap: 0.4rem;
+				flex-wrap: wrap;
+			}
+			.links {
+				display: flex;
+				gap: 0.8rem;
+				font-size: 13px;
+			}
+			.links a {
+				color: var(--ink-soft);
+				text-decoration: none;
+			}
+			.links a:hover {
+				color: var(--accent);
+			}
+		</style>
+	</body>
+</html>

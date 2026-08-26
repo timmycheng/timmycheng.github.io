@@ -1,0 +1,167 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title="简历 · Timmy Cheng" description="Timmy Cheng 的简历——经历、技能、教育背景。" />
+	</head>
+	<body>
+		<Header />
+		<main class="container">
+			<div class="section-head">
+				<span class="no">01</span>
+				<h1>简历</h1>
+				<span class="en mono-label">Resume</span>
+			</div>
+
+			<div class="resume-grid">
+				<section class="intro">
+					<h2>Timmy Cheng</h2>
+					<p class="mono-label">Software Engineer</p>
+					<p class="bio">
+						<!-- TODO: 替换为真实自我介绍 -->
+						一句占位的自我介绍：写代码，也写字，偶尔拍照。
+					</p>
+					<ul class="contacts mono">
+						<li><span class="k">EMAIL</span> <span class="todo">待填</span></li>
+						<li><span class="k">GITHUB</span> <a href="https://github.com/timmycheng">github.com/timmycheng</a></li>
+						<li><span class="k">SITE</span> <a href="/">timmycheng.cn</a></li>
+					</ul>
+				</section>
+
+				<section class="body">
+					<h3 class="mono-label">经历 / Experience</h3>
+					<dl class="timeline">
+						<div class="entry">
+							<dt>
+								<strong>公司 A — 高级工程师</strong>
+								<span class="mono date">2024 — NOW</span>
+							</dt>
+							<dd>
+								<!-- TODO: 替换为真实经历 -->
+								占位描述：负责某系统的设计与实现。
+							</dd>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong>公司 B — 工程师</strong>
+								<span class="mono date">2021 — 2024</span>
+							</dt>
+							<dd>占位描述：做了些什么，带来了什么结果。</dd>
+						</div>
+					</dl>
+
+					<h3 class="mono-label">技能 / Skills</h3>
+					<div class="skills">
+						<span class="pill">TypeScript</span>
+						<span class="pill">Go</span>
+						<span class="pill">Python</span>
+						<span class="pill">React</span>
+						<span class="pill">Astro</span>
+						<span class="pill">Docker</span>
+						<span class="pill todo">+ 待补</span>
+					</div>
+
+					<h3 class="mono-label">教育 / Education</h3>
+					<dl class="timeline">
+						<div class="entry">
+							<dt>
+								<strong>某大学 — 某专业</strong>
+								<span class="mono date">2017 — 2021</span>
+							</dt>
+							<dd>占位描述。</dd>
+						</div>
+					</dl>
+				</section>
+			</div>
+		</main>
+		<Footer />
+		<style>
+			.resume-grid {
+				display: grid;
+				grid-template-columns: 280px 1fr;
+				gap: 3rem;
+			}
+			.intro {
+				border-right: 1px solid var(--line);
+				padding-right: 2.5rem;
+			}
+			.intro h2 {
+				margin-bottom: 0.2rem;
+			}
+			.bio {
+				color: var(--ink-soft);
+				font-size: 0.95em;
+			}
+			.contacts {
+				list-style: none;
+				margin: 1.5rem 0 0;
+				padding: 0;
+				display: grid;
+				gap: 0.6rem;
+				font-size: 13px;
+			}
+			.contacts .k {
+								display: inline-block;
+				width: 4.2rem;
+				color: var(--ink-faint);
+				letter-spacing: 0.1em;
+			}
+			.contacts a {
+				color: var(--ink-soft);
+			}
+			.body h3 {
+				margin-top: 2.2rem;
+			}
+			.body > h3:first-child {
+				margin-top: 0;
+			}
+			.timeline {
+				margin: 0;
+			}
+			.entry {
+				padding: 0.9rem 0;
+				border-bottom: 1px dashed var(--line);
+			}
+			.entry dt {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 1rem;
+			}
+			.entry .date {
+				flex-shrink: 0;
+				font-size: 12px;
+				color: var(--ink-faint);
+				letter-spacing: 0.08em;
+			}
+			.entry dd {
+				margin: 0.35rem 0 0;
+				color: var(--ink-soft);
+				font-size: 0.95em;
+			}
+			.skills {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: 0.8rem;
+			}
+			@media (max-width: 720px) {
+				.resume-grid {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+				.intro {
+					border-right: none;
+					border-bottom: 1px solid var(--line);
+					padding-right: 0;
+					padding-bottom: 1.5rem;
+				}
+			}
+		</style>
+	</body>
+</html>

@@ -18,5 +18,5 @@ Hoping it's done in ~~2023~~2024.
 
 ### TODO
 
-1. Start Wring!!!
+1. Start Writng!!!
 2. Decoration of theme

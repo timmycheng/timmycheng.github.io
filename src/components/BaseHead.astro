@@ -24,11 +24,11 @@ const { title, description, image } = Astro.props;
 		var locale = null;
 		try {
 			theme = localStorage.getItem('tc-theme');
-			locale = localStorage.getItem('tc-locale');
+			locale = localStorage.getItem('tc-locale2');
 		} catch (e) {}
 		if (!theme)
 			theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-		if (locale !== 'en') locale = 'zh';
+		if (locale !== 'zh') locale = 'en';
 		d.setAttribute('data-theme', theme);
 		d.setAttribute('data-locale', locale);
 		d.lang = locale === 'en' ? 'en' : 'zh-CN';
@@ -38,17 +38,14 @@ const { title, description, image } = Astro.props;
 				'nav.about': '关于',
 				'nav.writing': '文章',
 				'nav.projects': '项目',
-				'nav.gallery': '画廊',
 				'nav.about.alt': 'ABOUT',
 				'nav.writing.alt': 'WRITING',
 				'nav.projects.alt': 'PROJECTS',
-				'nav.gallery.alt': 'GALLERY',
 				'hero.lede':
 					'安全运营工程师。做检测、写自动化、写文字——这个网站收集我做出的东西和写下的想法。',
 				't.about.desc': '我是谁，在做什么',
 				't.writing.desc': '技术笔记与随想',
 				't.projects.desc': '做过和正在做的东西',
-				't.gallery.desc': '摄影与视觉碎片',
 				'latest.title': '最近文章',
 				'latest.all': '全部 →',
 				'about.bio':
@@ -77,25 +74,20 @@ const { title, description, image } = Astro.props;
 				'writing.unit': '篇',
 				'projects.count': '项目',
 				'projects.detail': '详情',
-				'gallery.count': '画廊',
-				'gallery.unit': '张',
 				'comments.title': '评论 / Comments',
 			},
 			en: {
 				'nav.about': 'About',
 				'nav.writing': 'Writing',
 				'nav.projects': 'Projects',
-				'nav.gallery': 'Gallery',
 				'nav.about.alt': '关于',
 				'nav.writing.alt': '文章',
 				'nav.projects.alt': '项目',
-				'nav.gallery.alt': '画廊',
 				'hero.lede':
 					'Security operations engineer. I build detections and automations, write words — this site collects what I make and what I think.',
 				't.about.desc': 'Who I am and what I do',
 				't.writing.desc': 'Tech notes and essays',
 				't.projects.desc': 'Things I have built',
-				't.gallery.desc': 'Photos and visual fragments',
 				'latest.title': 'Recent',
 				'latest.all': 'All →',
 				'about.bio':
@@ -125,8 +117,6 @@ const { title, description, image } = Astro.props;
 				'writing.unit': 'posts',
 				'projects.count': 'Projects',
 				'projects.detail': 'Details',
-				'gallery.count': 'Gallery',
-				'gallery.unit': 'frames',
 				'comments.title': 'Comments',
 			},
 		};
@@ -141,15 +131,6 @@ const { title, description, image } = Astro.props;
 
 		document.addEventListener('DOMContentLoaded', function () {
 			applyLocale();
-			function updateLabels() {
-				document.querySelectorAll('[data-theme-label]').forEach(function (el) {
-					el.textContent = d.getAttribute('data-theme') === 'dark' ? 'LIGHT' : 'DARK';
-				});
-				document.querySelectorAll('[data-locale-label]').forEach(function (el) {
-					el.textContent = d.getAttribute('data-locale') === 'zh' ? 'EN' : '中';
-				});
-			}
-			updateLabels();
 			document.querySelectorAll('[data-action="theme"]').forEach(function (btn) {
 				btn.addEventListener('click', function () {
 					var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -157,7 +138,6 @@ const { title, description, image } = Astro.props;
 					try {
 						localStorage.setItem('tc-theme', next);
 					} catch (e) {}
-					updateLabels();
 					document.dispatchEvent(new CustomEvent('tc-theme-change', { detail: next }));
 				});
 			});
@@ -167,10 +147,9 @@ const { title, description, image } = Astro.props;
 					d.setAttribute('data-locale', next);
 					d.lang = next === 'en' ? 'en' : 'zh-CN';
 					try {
-						localStorage.setItem('tc-locale', next);
+						localStorage.setItem('tc-locale2', next);
 					} catch (e) {}
 					applyLocale();
-					updateLabels();
 					document.dispatchEvent(new CustomEvent('tc-locale-change', { detail: next }));
 				});
 			});

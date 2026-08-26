@@ -14,14 +14,14 @@ const posts = (await getCollection('blog')).sort(
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={`文章 · ${SITE_TITLE}`} description="技术笔记与随想。" />
+		<BaseHead title={`Writing · ${SITE_TITLE}`} description="Tech notes and essays." />
 	</head>
 	<body>
 		<Header />
 		<main class="container">
 			<div class="section-head">
 				<span class="no">02</span>
-				<h1 data-i18n="nav.writing">文章</h1>
+				<h1 data-i18n="nav.writing">Writing</h1>
 				<span class="en mono-label">
 					<span data-i18n="writing.count">Writing</span> — {posts.length}
 					<span data-i18n="writing.unit">posts</span>

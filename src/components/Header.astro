@@ -10,18 +10,48 @@ import HeaderLink from './HeaderLink.astro';
 			<span class="logo-text">TimmY<span class="logo-dot">.</span>ChenG</span>
 		</a>
 		<div class="internal-links">
-			<HeaderLink href="/about" data-i18n="nav.about">关于</HeaderLink>
-			<HeaderLink href="/blog" data-i18n="nav.writing">文章</HeaderLink>
-			<HeaderLink href="/projects" data-i18n="nav.projects">项目</HeaderLink>
-			<HeaderLink href="/gallery" data-i18n="nav.gallery">画廊</HeaderLink>
+			<HeaderLink href="/about" data-i18n="nav.about">About</HeaderLink>
+			<HeaderLink href="/blog" data-i18n="nav.writing">Writing</HeaderLink>
+			<HeaderLink href="/projects" data-i18n="nav.projects">Projects</HeaderLink>
 		</div>
 		<div class="controls">
-			<button type="button" class="ctl" data-action="theme" aria-label="切换明暗主题">
-				<span data-theme-label>DARK</span>
-			</button>
-			<span class="ctl-sep">/</span>
-			<button type="button" class="ctl" data-action="locale" aria-label="切换语言">
-				<span data-locale-label>EN</span>
+			<button type="button" class="ctl theme-btn" data-action="theme" aria-label="Toggle theme">
+				<svg
+					class="icon-moon"
+					viewBox="0 0 24 24"
+					width="16"
+					height="16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+				</svg>
+				<svg
+					class="icon-sun"
+					viewBox="0 0 24 24"
+					width="16"
+					height="16"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					aria-hidden="true"
+				>
+					<circle cx="12" cy="12" r="5"></circle>
+					<line x1="12" y1="1" x2="12" y2="3"></line>
+					<line x1="12" y1="21" x2="12" y2="23"></line>
+					<line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+					<line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+					<line x1="1" y1="12" x2="3" y2="12"></line>
+					<line x1="21" y1="12" x2="23" y2="12"></line>
+					<line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+					<line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+				</svg>
 			</button>
 		</div>
 	</nav>
@@ -86,28 +116,44 @@ import HeaderLink from './HeaderLink.astro';
 		gap: 0.5rem;
 		flex-shrink: 0;
 	}
-	.ctl {
+	.theme-btn {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		padding: 0;
 		border: 1px solid var(--line-strong);
 		background: transparent;
 		color: var(--ink-soft);
-		font-family: var(--font-mono);
-		font-size: 11px;
-		letter-spacing: 0.14em;
-		padding: 5px 10px;
-		border-radius: 5px;
+		border-radius: 7px;
 		cursor: pointer;
 		transition:
 			color 0.15s ease,
 			border-color 0.15s ease,
 			background 0.15s ease;
 	}
-	.ctl:hover {
+	.theme-btn:hover {
 		color: var(--accent);
 		border-color: var(--accent);
 	}
-	.ctl-sep {
-		color: var(--ink-faint);
-		font-size: 11px;
+	.theme-btn svg {
+		grid-area: 1 / 1;
+		transition:
+			opacity 0.2s ease,
+			transform 0.25s ease;
+	}
+	/* 亮色时显示月亮（点击进暗色），暗色时显示太阳 */
+	.theme-btn .icon-sun {
+		opacity: 0;
+		transform: rotate(-60deg) scale(0.6);
+	}
+	:global(html[data-theme='dark']) .theme-btn .icon-moon {
+		opacity: 0;
+		transform: rotate(60deg) scale(0.6);
+	}
+	:global(html[data-theme='dark']) .theme-btn .icon-sun {
+		opacity: 1;
+		transform: rotate(0deg) scale(1);
 	}
 	@media (max-width: 720px) {
 		header {
@@ -118,9 +164,6 @@ import HeaderLink from './HeaderLink.astro';
 		}
 		.internal-links {
 			gap: 0;
-		}
-		.ctl {
-			padding: 5px 7px;
 		}
 	}
 </style>

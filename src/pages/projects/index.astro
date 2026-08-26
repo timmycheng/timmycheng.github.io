@@ -15,14 +15,14 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title={`项目 · ${SITE_TITLE}`} description="正在做和已经做完的东西。" />
+		<BaseHead title={`Projects · ${SITE_TITLE}`} description="Things I have built." />
 	</head>
 	<body>
 		<Header />
 		<main class="container">
 			<div class="section-head">
 				<span class="no">03</span>
-				<h1 data-i18n="nav.projects">项目</h1>
+				<h1 data-i18n="nav.projects">Projects</h1>
 				<span class="en mono-label">
 					<span data-i18n="projects.count">Projects</span> — {projects.length}
 				</span>
@@ -60,7 +60,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 										</a>
 									)}
 									<span class="more">
-										<span data-i18n="projects.detail">详情</span> <span class="arrow">→</span>
+										<span data-i18n="projects.detail">Details</span> <span class="arrow">→</span>
 									</span>
 								</div>
 							</div>

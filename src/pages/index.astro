@@ -11,23 +11,29 @@ const posts = (await getCollection('blog'))
 	.slice(0, 3);
 
 const tiles = [
-	{ no: '01', key: 'about', zh: '关于', alt: 'ABOUT', desc: '我是谁，在做什么', href: '/about' },
-	{ no: '02', key: 'writing', zh: '文章', alt: 'WRITING', desc: '技术笔记与随想', href: '/blog' },
+	{
+		no: '01',
+		key: 'about',
+		label: 'About',
+		alt: '关于',
+		desc: 'Who I am and what I do',
+		href: '/about',
+	},
+	{
+		no: '02',
+		key: 'writing',
+		label: 'Writing',
+		alt: '文章',
+		desc: 'Tech notes and essays',
+		href: '/blog',
+	},
 	{
 		no: '03',
 		key: 'projects',
-		zh: '项目',
-		alt: 'PROJECTS',
-		desc: '做过和正在做的东西',
+		label: 'Projects',
+		alt: '项目',
+		desc: 'Things I have built',
 		href: '/projects',
-	},
-	{
-		no: '04',
-		key: 'gallery',
-		zh: '画廊',
-		alt: 'GALLERY',
-		desc: '摄影与视觉碎片',
-		href: '/gallery',
 	},
 ];
 ---
@@ -45,7 +51,8 @@ const tiles = [
 					<p class="mono-label">timmycheng.cn — EST.2026</p>
 					<h1 class="name">TIMMY<br />CHENG<span class="accent">.</span></h1>
 					<p class="lede" data-i18n="hero.lede">
-						安全运营工程师。做检测、写自动化、写文字——这个网站收集我做出的东西和写下的想法。
+						Security operations engineer. I build detections and automations, write words — this
+						site collects what I make and what I think.
 					</p>
 				</div>
 				<dl class="spec mono">
@@ -62,7 +69,7 @@ const tiles = [
 						<a class="tile" href={t.href}>
 							<span class="no mono">{t.no}</span>
 							<span class="zh" data-i18n={`nav.${t.key}`}>
-								{t.zh}
+								{t.label}
 							</span>
 							<span class="en mono" data-i18n={`nav.${t.key}.alt`}>
 								{t.alt}
@@ -78,8 +85,8 @@ const tiles = [
 
 			<section class="latest">
 				<div class="latest-head">
-					<h2 data-i18n="latest.title">最近文章</h2>
-					<a href="/blog" class="mono more" data-i18n="latest.all">全部 →</a>
+					<h2 data-i18n="latest.title">Recent</h2>
+					<a href="/blog" class="mono more" data-i18n="latest.all">All →</a>
 				</div>
 				<ul>
 					{

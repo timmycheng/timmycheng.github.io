@@ -221,7 +221,7 @@ main.container {
 	gap: 1rem;
 	border-bottom: 2px solid var(--ink);
 	padding-bottom: 0.7rem;
-	margin: 4rem 0 2.2rem;
+	margin: 1.25rem 0 2.2rem;
 }
 .section-head .no {
 	font-family: var(--font-mono);
@@ -272,7 +272,7 @@ main.container {
 		padding-block: 2rem 4rem;
 	}
 	.section-head {
-		margin-top: 3rem;
+		margin-top: 1rem;
 		flex-wrap: wrap;
 	}
 }

@@ -1,0 +1,36 @@
+---
+// giscus 评论组件 — 数据存于 GitHub Discussions
+// 前置：仓库已开 Discussions；需安装 giscus app: https://github.com/apps/giscus
+---
+
+<section class="comments">
+	<div class="comments-head">
+		<h2 class="mono-label">评论 / Comments</h2>
+	</div>
+	<script
+		is:inline
+		src="https://giscus.app/client.js"
+		data-repo="timmycheng/timmycheng.github.io"
+		data-repo-id="MDEwOlJlcG9zaXRvcnk0MDM5MDYzNTM="
+		data-category="Announcements"
+		data-category-id="DIC_kwDOGBMfMc4DENaE"
+		data-mapping="pathname"
+		data-strict="0"
+		data-reactions-enabled="1"
+		data-emit-metadata="0"
+		data-input-position="top"
+		data-theme="https://timmycheng.cn/giscus-theme.json"
+		data-lang="zh-CN"
+		data-loading="lazy"
+		crossorigin="anonymous"
+		async
+	></script>
+</section>
+
+<style>
+	.comments {
+		margin-top: 3.5rem;
+		padding-top: 1.8rem;
+		border-top: 1px solid var(--line-strong);
+	}
+</style>

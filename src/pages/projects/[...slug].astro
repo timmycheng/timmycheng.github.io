@@ -28,7 +28,9 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 		<main class="container prose-wrap">
 			<article>
 				<header class="head">
-					<p class="mono-label"><a href="/projects">← 项目</a></p>
+					<p class="mono-label">
+						<a href="/projects">← <span data-i18n="nav.projects">项目</span></a>
+					</p>
 					<h1>{project.data.title}</h1>
 					<div class="meta mono">
 						<span class:list={['status', project.data.status]}>

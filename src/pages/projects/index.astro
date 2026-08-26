@@ -22,8 +22,10 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 		<main class="container">
 			<div class="section-head">
 				<span class="no">03</span>
-				<h1>项目</h1>
-				<span class="en mono-label">Projects — {projects.length}</span>
+				<h1 data-i18n="nav.projects">项目</h1>
+				<span class="en mono-label">
+					<span data-i18n="projects.count">Projects</span> — {projects.length}
+				</span>
 			</div>
 			<ul class="project-list">
 				{
@@ -58,7 +60,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 										</a>
 									)}
 									<span class="more">
-										详情 <span class="arrow">→</span>
+										<span data-i18n="projects.detail">详情</span> <span class="arrow">→</span>
 									</span>
 								</div>
 							</div>

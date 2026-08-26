@@ -17,20 +17,23 @@ import Header from '../components/Header.astro';
 		<main class="container">
 			<div class="section-head">
 				<span class="no">01</span>
-				<h1>关于</h1>
-				<span class="en mono-label">About</span>
+				<h1 data-i18n="nav.about">关于</h1>
+				<span class="en mono-label" data-i18n="nav.about.alt">About</span>
 			</div>
 
 			<div class="about-grid">
 				<section class="intro">
 					<h2>Timmy Cheng</h2>
 					<p class="mono-label">Security Operations Engineer</p>
-					<p class="bio">
+					<p class="bio" data-i18n="about.bio">
 						安全运营工程师，专注 SOC
 						运营、检测与响应。相信安全是持续运营出来的，而不是一次性攻防出来的。写代码，也写字，偶尔拍照——这个网站是我的自留地。
 					</p>
 					<ul class="contacts mono">
-						<li><span class="k">EMAIL</span> <span class="todo">待填</span></li>
+						<li>
+							<span class="k">EMAIL</span>
+							<span class="todo" data-i18n="about.todo">待填</span>
+						</li>
 						<li>
 							<span class="k">GITHUB</span>
 							<a href="https://github.com/timmycheng">github.com/timmycheng</a>
@@ -40,52 +43,52 @@ import Header from '../components/Header.astro';
 				</section>
 
 				<section class="body">
-					<h3 class="mono-label">经历 / Experience</h3>
+					<h3 class="mono-label" data-i18n="about.exp">经历 / Experience</h3>
 					<dl class="timeline">
 						<div class="entry">
 							<dt>
-								<strong>公司 A — 安全运营工程师</strong>
+								<strong data-i18n="about.exp.1.title">公司 A — 安全运营工程师</strong>
 								<span class="mono date">2024 — NOW</span>
 							</dt>
-							<dd>
+							<dd data-i18n="about.exp.1.desc">
 								<!-- TODO: 替换为真实经历 -->
 								占位描述：负责 SOC 日常运营、告警研判与检测规则维护。
 							</dd>
 						</div>
 						<div class="entry">
 							<dt>
-								<strong>公司 B — 安全工程师</strong>
+								<strong data-i18n="about.exp.2.title">公司 B — 安全工程师</strong>
 								<span class="mono date">2021 — 2024</span>
 							</dt>
-							<dd>
+							<dd data-i18n="about.exp.2.desc">
 								<!-- TODO: 替换为真实经历 -->
 								占位描述：负责日志平台建设与安全事件响应。
 							</dd>
 						</div>
 					</dl>
 
-					<h3 class="mono-label">技能 / Skills</h3>
+					<h3 class="mono-label" data-i18n="about.skills">技能 / Skills</h3>
 					<div class="skills">
-						<span class="pill">SOC 运营</span>
-						<span class="pill">SIEM / 检测规则</span>
-						<span class="pill">告警研判</span>
-						<span class="pill">应急响应</span>
-						<span class="pill">威胁情报</span>
-						<span class="pill">MITRE ATT&amp;CK</span>
-						<span class="pill">SOAR 自动化</span>
-						<span class="pill">Python</span>
-						<span class="pill">日志分析</span>
-						<span class="pill todo">+ 待补</span>
+						<span class="pill" data-i18n="about.skill.1">SOC 运营</span>
+						<span class="pill" data-i18n="about.skill.2">SIEM / 检测规则</span>
+						<span class="pill" data-i18n="about.skill.3">告警研判</span>
+						<span class="pill" data-i18n="about.skill.4">应急响应</span>
+						<span class="pill" data-i18n="about.skill.5">威胁情报</span>
+						<span class="pill" data-i18n="about.skill.6">MITRE ATT&amp;CK</span>
+						<span class="pill" data-i18n="about.skill.7">SOAR 自动化</span>
+						<span class="pill" data-i18n="about.skill.8">Python</span>
+						<span class="pill" data-i18n="about.skill.9">日志分析</span>
+						<span class="pill todo" data-i18n="about.skills.more">+ 待补</span>
 					</div>
 
-					<h3 class="mono-label">教育 / Education</h3>
+					<h3 class="mono-label" data-i18n="about.edu">教育 / Education</h3>
 					<dl class="timeline">
 						<div class="entry">
 							<dt>
-								<strong>某大学 — 某专业</strong>
+								<strong data-i18n="about.edu.1.title">某大学 — 某专业</strong>
 								<span class="mono date">2017 — 2021</span>
 							</dt>
-							<dd>占位描述。</dd>
+							<dd data-i18n="about.edu.1.desc">占位描述。</dd>
 						</div>
 					</dl>
 				</section>

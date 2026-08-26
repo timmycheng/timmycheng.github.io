@@ -11,10 +11,24 @@ const posts = (await getCollection('blog'))
 	.slice(0, 3);
 
 const tiles = [
-	{ no: '01', zh: '关于', en: 'About', desc: '我是谁，在做什么', href: '/about' },
-	{ no: '02', zh: '文章', en: 'Writing', desc: '技术笔记与随想', href: '/blog' },
-	{ no: '03', zh: '项目', en: 'Projects', desc: '做过和正在做的东西', href: '/projects' },
-	{ no: '04', zh: '画廊', en: 'Gallery', desc: '摄影与视觉碎片', href: '/gallery' },
+	{ no: '01', key: 'about', zh: '关于', alt: 'ABOUT', desc: '我是谁，在做什么', href: '/about' },
+	{ no: '02', key: 'writing', zh: '文章', alt: 'WRITING', desc: '技术笔记与随想', href: '/blog' },
+	{
+		no: '03',
+		key: 'projects',
+		zh: '项目',
+		alt: 'PROJECTS',
+		desc: '做过和正在做的东西',
+		href: '/projects',
+	},
+	{
+		no: '04',
+		key: 'gallery',
+		zh: '画廊',
+		alt: 'GALLERY',
+		desc: '摄影与视觉碎片',
+		href: '/gallery',
+	},
 ];
 ---
 
@@ -30,7 +44,7 @@ const tiles = [
 				<div class="hero-main">
 					<p class="mono-label">timmycheng.cn — EST.2026</p>
 					<h1 class="name">TIMMY<br />CHENG<span class="accent">.</span></h1>
-					<p class="lede">
+					<p class="lede" data-i18n="hero.lede">
 						安全运营工程师。做检测、写自动化、写文字——这个网站收集我做出的东西和写下的想法。
 					</p>
 				</div>
@@ -47,9 +61,15 @@ const tiles = [
 					tiles.map((t) => (
 						<a class="tile" href={t.href}>
 							<span class="no mono">{t.no}</span>
-							<span class="zh">{t.zh}</span>
-							<span class="en mono">{t.en}</span>
-							<span class="desc">{t.desc}</span>
+							<span class="zh" data-i18n={`nav.${t.key}`}>
+								{t.zh}
+							</span>
+							<span class="en mono" data-i18n={`nav.${t.key}.alt`}>
+								{t.alt}
+							</span>
+							<span class="desc" data-i18n={`t.${t.key}.desc`}>
+								{t.desc}
+							</span>
 							<span class="arrow mono">→</span>
 						</a>
 					))
@@ -58,8 +78,8 @@ const tiles = [
 
 			<section class="latest">
 				<div class="latest-head">
-					<h2>最近文章</h2>
-					<a href="/blog" class="mono more">全部 →</a>
+					<h2 data-i18n="latest.title">最近文章</h2>
+					<a href="/blog" class="mono more" data-i18n="latest.all">全部 →</a>
 				</div>
 				<ul>
 					{

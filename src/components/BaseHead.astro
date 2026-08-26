@@ -16,6 +16,168 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image } = Astro.props;
 ---
 
+<!-- 主题与语言无闪初始化 + i18n 文本替换 -->
+<script is:inline>
+	(function () {
+		var d = document.documentElement;
+		var theme = null;
+		var locale = null;
+		try {
+			theme = localStorage.getItem('tc-theme');
+			locale = localStorage.getItem('tc-locale');
+		} catch (e) {}
+		if (!theme)
+			theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+		if (locale !== 'en') locale = 'zh';
+		d.setAttribute('data-theme', theme);
+		d.setAttribute('data-locale', locale);
+		d.lang = locale === 'en' ? 'en' : 'zh-CN';
+
+		var I18N = {
+			zh: {
+				'nav.about': '关于',
+				'nav.writing': '文章',
+				'nav.projects': '项目',
+				'nav.gallery': '画廊',
+				'nav.about.alt': 'ABOUT',
+				'nav.writing.alt': 'WRITING',
+				'nav.projects.alt': 'PROJECTS',
+				'nav.gallery.alt': 'GALLERY',
+				'hero.lede':
+					'安全运营工程师。做检测、写自动化、写文字——这个网站收集我做出的东西和写下的想法。',
+				't.about.desc': '我是谁，在做什么',
+				't.writing.desc': '技术笔记与随想',
+				't.projects.desc': '做过和正在做的东西',
+				't.gallery.desc': '摄影与视觉碎片',
+				'latest.title': '最近文章',
+				'latest.all': '全部 →',
+				'about.bio':
+					'安全运营工程师，专注 SOC 运营、检测与响应。相信安全是持续运营出来的，而不是一次性攻防出来的。写代码，也写字，偶尔拍照——这个网站是我的自留地。',
+				'about.todo': '待填',
+				'about.exp': '经历 / Experience',
+				'about.skills': '技能 / Skills',
+				'about.edu': '教育 / Education',
+				'about.exp.1.title': '公司 A — 安全运营工程师',
+				'about.exp.1.desc': '占位描述：负责 SOC 日常运营、告警研判与检测规则维护。',
+				'about.exp.2.title': '公司 B — 安全工程师',
+				'about.exp.2.desc': '占位描述：负责日志平台建设与安全事件响应。',
+				'about.edu.1.title': '某大学 — 某专业',
+				'about.edu.1.desc': '占位描述。',
+				'about.skill.1': 'SOC 运营',
+				'about.skill.2': 'SIEM / 检测规则',
+				'about.skill.3': '告警研判',
+				'about.skill.4': '应急响应',
+				'about.skill.5': '威胁情报',
+				'about.skill.6': 'MITRE ATT&CK',
+				'about.skill.7': 'SOAR 自动化',
+				'about.skill.8': 'Python',
+				'about.skill.9': '日志分析',
+				'about.skills.more': '+ 待补',
+				'writing.count': '文章',
+				'writing.unit': '篇',
+				'projects.count': '项目',
+				'projects.detail': '详情',
+				'gallery.count': '画廊',
+				'gallery.unit': '张',
+				'comments.title': '评论 / Comments',
+			},
+			en: {
+				'nav.about': 'About',
+				'nav.writing': 'Writing',
+				'nav.projects': 'Projects',
+				'nav.gallery': 'Gallery',
+				'nav.about.alt': '关于',
+				'nav.writing.alt': '文章',
+				'nav.projects.alt': '项目',
+				'nav.gallery.alt': '画廊',
+				'hero.lede':
+					'Security operations engineer. I build detections and automations, write words — this site collects what I make and what I think.',
+				't.about.desc': 'Who I am and what I do',
+				't.writing.desc': 'Tech notes and essays',
+				't.projects.desc': 'Things I have built',
+				't.gallery.desc': 'Photos and visual fragments',
+				'latest.title': 'Recent',
+				'latest.all': 'All →',
+				'about.bio':
+					'Security operations engineer focused on SOC operations, detection and response. I believe security is operated continuously, not won in a single engagement. I write code and words, and take the occasional photo — this site is my little corner.',
+				'about.todo': 'TBD',
+				'about.exp': 'Experience / 经历',
+				'about.skills': 'Skills / 技能',
+				'about.edu': 'Education / 教育',
+				'about.exp.1.title': 'Company A — Security Operations Engineer',
+				'about.exp.1.desc':
+					'Placeholder: daily SOC operations, alert triage, and detection rule maintenance.',
+				'about.exp.2.title': 'Company B — Security Engineer',
+				'about.exp.2.desc': 'Placeholder: log platform engineering and incident response.',
+				'about.edu.1.title': 'Some University — Some Major',
+				'about.edu.1.desc': 'Placeholder description.',
+				'about.skill.1': 'SOC operations',
+				'about.skill.2': 'SIEM / detection rules',
+				'about.skill.3': 'Alert triage',
+				'about.skill.4': 'Incident response',
+				'about.skill.5': 'Threat intelligence',
+				'about.skill.6': 'MITRE ATT&CK',
+				'about.skill.7': 'SOAR automation',
+				'about.skill.8': 'Python',
+				'about.skill.9': 'Log analysis',
+				'about.skills.more': '+ more',
+				'writing.count': 'Writing',
+				'writing.unit': 'posts',
+				'projects.count': 'Projects',
+				'projects.detail': 'Details',
+				'gallery.count': 'Gallery',
+				'gallery.unit': 'frames',
+				'comments.title': 'Comments',
+			},
+		};
+
+		function applyLocale() {
+			var dict = I18N[d.getAttribute('data-locale')] || {};
+			document.querySelectorAll('[data-i18n]').forEach(function (el) {
+				var v = dict[el.getAttribute('data-i18n')];
+				if (v != null) el.textContent = v;
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', function () {
+			applyLocale();
+			function updateLabels() {
+				document.querySelectorAll('[data-theme-label]').forEach(function (el) {
+					el.textContent = d.getAttribute('data-theme') === 'dark' ? 'LIGHT' : 'DARK';
+				});
+				document.querySelectorAll('[data-locale-label]').forEach(function (el) {
+					el.textContent = d.getAttribute('data-locale') === 'zh' ? 'EN' : '中';
+				});
+			}
+			updateLabels();
+			document.querySelectorAll('[data-action="theme"]').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					var next = d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+					d.setAttribute('data-theme', next);
+					try {
+						localStorage.setItem('tc-theme', next);
+					} catch (e) {}
+					updateLabels();
+					document.dispatchEvent(new CustomEvent('tc-theme-change', { detail: next }));
+				});
+			});
+			document.querySelectorAll('[data-action="locale"]').forEach(function (btn) {
+				btn.addEventListener('click', function () {
+					var next = d.getAttribute('data-locale') === 'zh' ? 'en' : 'zh';
+					d.setAttribute('data-locale', next);
+					d.lang = next === 'en' ? 'en' : 'zh-CN';
+					try {
+						localStorage.setItem('tc-locale', next);
+					} catch (e) {}
+					applyLocale();
+					updateLabels();
+					document.dispatchEvent(new CustomEvent('tc-locale-change', { detail: next }));
+				});
+			});
+		});
+	})();
+</script>
+
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />

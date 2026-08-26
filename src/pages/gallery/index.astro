@@ -34,8 +34,11 @@ const enriched = await Promise.all(
 		<main class="container">
 			<div class="section-head">
 				<span class="no">04</span>
-				<h1>画廊</h1>
-				<span class="en mono-label">Gallery — {items.length} frames</span>
+				<h1 data-i18n="nav.gallery">画廊</h1>
+				<span class="en mono-label">
+					<span data-i18n="gallery.count">Gallery</span> — {items.length}
+					<span data-i18n="gallery.unit">frames</span>
+				</span>
 			</div>
 			<ul class="grid">
 				{

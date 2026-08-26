@@ -2,13 +2,14 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
 <html lang="zh-CN">
 	<head>
 		<BaseHead
-			title="About · Timmy Cheng"
+			title={`About · ${SITE_TITLE}`}
 			description="About Timmy Cheng — security operations engineer, focused on detection and response."
 		/>
 	</head>

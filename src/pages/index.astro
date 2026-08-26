@@ -51,26 +51,30 @@ const tiles = [
 				<div class="hero-main">
 					<p class="mono-label">timmycheng.cn — EST.2026</p>
 					<h1 class="name">TIMMY<br />CHENG<span class="accent">.</span></h1>
-					<p class="lede" data-i18n="hero.lede">
-						Security operations engineer. I build detections and automations, write words — this
-						site collects what I make and what I think.
-					</p>
-				</div>
-				<div class="console mono">
-					<div class="console-bar">
-						<span>SYS.CONFIG</span>
-						<span class="console-dots">:::</span>
-					</div>
-					<dl>
-						<div class="crow"><dt>ROLE</dt><span class="leader"></span><dd>Security Ops</dd></div>
-						<div class="crow"><dt>FOCUS</dt><span class="leader"></span><dd>Detection</dd></div>
-						<div class="crow"><dt>BASE</dt><span class="leader"></span><dd>CN · UTC+8</dd></div>
-						<div class="crow">
-							<dt>STATUS</dt><span class="leader"></span><dd class="ok">
-								<i class="dot"></i>ONLINE
-							</dd>
+					<div class="hero-bottom">
+						<p class="lede" data-i18n="hero.lede">
+							Security operations engineer. I build detections and automations, write words — this
+							site collects what I make and what I think.
+						</p>
+						<div class="console mono">
+							<div class="console-bar">
+								<span>SYS.CONFIG</span>
+								<span class="console-dots">:::</span>
+							</div>
+							<dl>
+								<div class="crow">
+									<dt>ROLE</dt><span class="leader"></span><dd>Security Ops</dd>
+								</div>
+								<div class="crow"><dt>FOCUS</dt><span class="leader"></span><dd>Detection</dd></div>
+								<div class="crow"><dt>BASE</dt><span class="leader"></span><dd>CN · UTC+8</dd></div>
+								<div class="crow">
+									<dt>STATUS</dt><span class="leader"></span><dd class="ok">
+										<i class="dot"></i>ONLINE
+									</dd>
+								</div>
+							</dl>
 						</div>
-					</dl>
+					</div>
 				</div>
 			</section>
 
@@ -127,16 +131,18 @@ const tiles = [
 			/* ── hero ── */
 			.hero {
 				position: relative;
-				display: grid;
-				grid-template-columns: 1fr auto;
-				gap: 3rem;
-				align-items: end;
 				padding: 4.5rem 0 3.5rem;
 				overflow: hidden;
 			}
 			.hero-main {
 				position: relative;
 				z-index: 1;
+			}
+			.hero-bottom {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 3rem;
 			}
 			.watermark {
 				position: absolute;
@@ -154,10 +160,11 @@ const tiles = [
 				font-size: clamp(3rem, 8vw, 5.4rem);
 				line-height: 0.95;
 				letter-spacing: -0.045em;
-				margin: 1.1rem 0 1.3rem;
+				margin: 1.1rem 0 1.8rem;
 			}
 			.lede {
 				max-width: 30em;
+				margin: 0;
 				font-size: 1.06em;
 				color: var(--ink-soft);
 			}
@@ -364,10 +371,12 @@ const tiles = [
 			}
 			@media (max-width: 720px) {
 				.hero {
-					grid-template-columns: 1fr;
-					gap: 2rem;
 					padding: 3rem 0 2.5rem;
-					align-items: start;
+				}
+				.hero-bottom {
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 1.5rem;
 				}
 				.watermark {
 					font-size: 14rem;

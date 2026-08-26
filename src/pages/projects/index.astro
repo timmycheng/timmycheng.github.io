@@ -33,9 +33,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 							<div class="row">
 								<h2>{p.data.title}</h2>
 								<div class="meta mono">
-									<span class:list={['status', p.data.status]}>
-										{statusLabel[p.data.status]}
-									</span>
+									<span class:list={['status', p.data.status]}>{statusLabel[p.data.status]}</span>
 									<span class="date">
 										<FormattedDate date={p.data.pubDate} />
 									</span>

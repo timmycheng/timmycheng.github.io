@@ -1,14 +1,46 @@
-## Development
+# AGENTS.md
 
-When starting the dev server, use background mode:
+## 常用命令
+
+- `npm run dev` — 启动开发服务器（默认 http://localhost:4321）
+- `npm run check` — 运行 Astro 类型检查（`astro check`）
+- `npm run build` — 构建到 `dist/`
+- `npm run preview` — 本地预览构建产物
+- `npm run format` — Prettier 格式化所有文件
+- `npm run format:check` — 检查格式（CI 用）
+
+### 后台开发服务器
+
+当需要长时间运行 dev 服务器时，使用后台模式：
 
 ```
 astro dev --background
 ```
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+管理后台服务器：
 
-## Documentation
+- `astro dev stop` — 停止
+- `astro dev status` — 查看状态
+- `astro dev logs` — 查看日志
+
+## 项目结构
+
+- `src/pages/` — 基于文件的路由（Astro 页面）
+- `src/content/` — 内容集合（blog、gallery、projects），配置在 `src/content.config.ts`
+- `src/layouts/` — 页面布局（BaseHead、BlogPost 等）
+- `src/components/` — 可复用 UI 组件
+- `src/styles/global.css` — 全局样式
+- `src/consts.ts` — 站点常量（标题、描述等）
+- `public/` — 静态资源（`CNAME` 指向 timmycheng.cn，勿删除）
+
+## 工作流约定
+
+- 修改代码后运行 `npm run check` 验证类型
+- 提交前运行 `npm run format` 保持代码风格一致（Prettier：Tab 缩进、单引号、100 列宽）
+- 站点部署到 GitHub Pages：push 到 `master` 分支自动触发构建部署
+- 内容集合（blog/projects/gallery）用 Markdown + frontmatter，新增内容遵循已有 frontmatter 字段
+
+## 文档
 
 Full documentation: https://docs.astro.build
 

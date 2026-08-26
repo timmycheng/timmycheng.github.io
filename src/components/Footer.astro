@@ -11,6 +11,10 @@ const year = today.getFullYear();
 			<span class="mono">&copy; {year} {SITE_TITLE}</span>
 			<span class="sep">/</span>
 			<span class="mono">timmycheng.cn</span>
+			<span class="sep">/</span>
+			<a class="mono beian" href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">
+				京ICP备XXXXXXXX号
+			</a>
 		</div>
 		<div class="social-links">
 			<a href="https://github.com/timmycheng" target="_blank" aria-label="GitHub">
@@ -45,6 +49,13 @@ const year = today.getFullYear();
 	}
 	.sep {
 		color: var(--ink-faint);
+	}
+	.beian {
+		color: var(--ink-soft);
+		text-decoration: none;
+	}
+	.beian:hover {
+		color: var(--accent);
 	}
 	.social-links {
 		display: flex;

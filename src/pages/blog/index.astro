@@ -43,6 +43,11 @@ const posts = (await getCollection('blog')).sort(
 							</div>
 							<p class="desc">{post.data.description}</p>
 							<div class="foot">
+								<div class="tags">
+									{post.data.tags.map((t) => (
+										<span class="pill">{t}</span>
+									))}
+								</div>
 								<div class="links">
 									<span class="more">
 										<span data-i18n="post.read">Read</span> <span class="arrow">→</span>

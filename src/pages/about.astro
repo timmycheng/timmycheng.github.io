@@ -7,28 +7,31 @@ import Header from '../components/Header.astro';
 <!doctype html>
 <html lang="zh-CN">
 	<head>
-		<BaseHead title="简历 · Timmy Cheng" description="Timmy Cheng 的简历——经历、技能、教育背景。" />
+		<BaseHead title="关于 · Timmy Cheng" description="关于 Timmy Cheng——我是谁、在做什么。" />
 	</head>
 	<body>
 		<Header />
 		<main class="container">
 			<div class="section-head">
 				<span class="no">01</span>
-				<h1>简历</h1>
-				<span class="en mono-label">Resume</span>
+				<h1>关于</h1>
+				<span class="en mono-label">About</span>
 			</div>
 
-			<div class="resume-grid">
+			<div class="about-grid">
 				<section class="intro">
 					<h2>Timmy Cheng</h2>
 					<p class="mono-label">Software Engineer</p>
 					<p class="bio">
 						<!-- TODO: 替换为真实自我介绍 -->
-						一句占位的自我介绍：写代码，也写字，偶尔拍照。
+						占位介绍：写代码，也写字，偶尔拍照。这个网站是我的自留地。
 					</p>
 					<ul class="contacts mono">
 						<li><span class="k">EMAIL</span> <span class="todo">待填</span></li>
-						<li><span class="k">GITHUB</span> <a href="https://github.com/timmycheng">github.com/timmycheng</a></li>
+						<li>
+							<span class="k">GITHUB</span>
+							<a href="https://github.com/timmycheng">github.com/timmycheng</a>
+						</li>
 						<li><span class="k">SITE</span> <a href="/">timmycheng.cn</a></li>
 					</ul>
 				</section>
@@ -81,7 +84,7 @@ import Header from '../components/Header.astro';
 		</main>
 		<Footer />
 		<style>
-			.resume-grid {
+			.about-grid {
 				display: grid;
 				grid-template-columns: 280px 1fr;
 				gap: 3rem;
@@ -106,7 +109,7 @@ import Header from '../components/Header.astro';
 				font-size: 13px;
 			}
 			.contacts .k {
-								display: inline-block;
+				display: inline-block;
 				width: 4.2rem;
 				color: var(--ink-faint);
 				letter-spacing: 0.1em;
@@ -151,7 +154,7 @@ import Header from '../components/Header.astro';
 				margin-top: 0.8rem;
 			}
 			@media (max-width: 720px) {
-				.resume-grid {
+				.about-grid {
 					grid-template-columns: 1fr;
 					gap: 2rem;
 				}

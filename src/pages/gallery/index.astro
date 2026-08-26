@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -8,6 +8,19 @@ import { SITE_TITLE } from '../../consts';
 
 const items = (await getCollection('gallery')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const enriched = await Promise.all(
+	items.map(async (item) => ({
+		...item,
+		large: (
+			await getImage({
+				src: item.data.image,
+				width: 1280,
+				format: 'webp',
+			})
+		).src,
+	})),
 );
 ---
 
@@ -26,21 +39,98 @@ const items = (await getCollection('gallery')).sort(
 			</div>
 			<ul class="grid">
 				{
-					items.map((item) => (
+					enriched.map((item) => (
 						<li>
-							<figure>
-								<Image width={640} src={item.data.image} alt={item.data.title} widths={[320, 640, 960]} sizes="(max-width: 720px) 100vw, 33vw" />
-								<figcaption>
+							<button
+								class="frame"
+								data-full={item.large}
+								data-title={item.data.title}
+								aria-label={`放大查看 ${item.data.title}`}
+							>
+								<Image
+									width={640}
+									src={item.data.image}
+									alt={item.data.title}
+									widths={[320, 640, 960]}
+									sizes="(max-width: 720px) 50vw, 33vw"
+								/>
+								<span class="caption">
 									<span class="title">{item.data.title}</span>
-									<span class="desc">{item.data.description}</span>
-								</figcaption>
-							</figure>
+									<span class="zoom mono">[+]</span>
+								</span>
+							</button>
 						</li>
 					))
 				}
 			</ul>
 		</main>
 		<Footer />
+
+		<div class="lightbox" id="lightbox" aria-hidden="true">
+			<figure>
+				<img id="lb-img" alt="" />
+				<figcaption class="mono">
+					<span id="lb-title"></span>
+					<span id="lb-count"></span>
+				</figcaption>
+			</figure>
+			<button class="lb-nav prev" id="lb-prev" aria-label="上一张">←</button>
+			<button class="lb-nav next" id="lb-next" aria-label="下一张">→</button>
+			<button class="lb-close" id="lb-close" aria-label="关闭">×</button>
+		</div>
+
+		<script>
+			const frames = Array.from(document.querySelectorAll('.frame'));
+			const lightbox = document.getElementById('lightbox')!;
+			const lbImg = document.getElementById('lb-img') as HTMLImageElement;
+			const lbTitle = document.getElementById('lb-title')!;
+			const lbCount = document.getElementById('lb-count')!;
+			let current = 0;
+
+			function render() {
+				const frame = frames[current] as HTMLElement;
+				lbImg.src = (frame as HTMLElement).dataset.full || '';
+				lbImg.alt = frame.dataset.title || '';
+				lbTitle.textContent = frame.dataset.title || '';
+				lbCount.textContent = `${current + 1} / ${frames.length}`;
+			}
+
+			function open(i: number) {
+				current = i;
+				render();
+				lightbox.classList.add('open');
+				lightbox.setAttribute('aria-hidden', 'false');
+				document.body.style.overflow = 'hidden';
+			}
+
+			function close() {
+				lightbox.classList.remove('open');
+				lightbox.setAttribute('aria-hidden', 'true');
+				document.body.style.overflow = '';
+			}
+
+			function step(delta: number) {
+				current = (current + delta + frames.length) % frames.length;
+				render();
+			}
+
+			frames.forEach((frame, i) => {
+				frame.addEventListener('click', () => open(i));
+			});
+			document.getElementById('lb-close')!.addEventListener('click', close);
+			document.getElementById('lb-prev')!.addEventListener('click', () => step(-1));
+			document.getElementById('lb-next')!.addEventListener('click', () => step(1));
+			lightbox.addEventListener('click', (e) => {
+				if (e.target === lightbox) close();
+			});
+			document.addEventListener('keydown', (e) => {
+				if (!lightbox.classList.contains('open')) return;
+				if (e.key === 'Escape') close();
+				if (e.key === 'ArrowLeft') step(-1);
+				if (e.key === 'ArrowRight') step(1);
+			});
+		</script>
+
 		<style>
 			.grid {
 				list-style: none;
@@ -50,8 +140,15 @@ const items = (await getCollection('gallery')).sort(
 				grid-template-columns: repeat(3, 1fr);
 				gap: 1.2rem;
 			}
-			figure {
-				margin: 0;
+			.frame {
+				display: block;
+				width: 100%;
+				padding: 0;
+				border: none;
+				background: none;
+				cursor: zoom-in;
+				font: inherit;
+				text-align: left;
 			}
 			.grid img {
 				width: 100%;
@@ -60,30 +157,113 @@ const items = (await getCollection('gallery')).sort(
 				border: 1px solid var(--line);
 				transition: transform 0.2s ease;
 			}
-			.grid li:hover img {
+			.frame:hover img {
 				transform: scale(1.015);
 			}
-			figcaption {
+			.caption {
 				display: flex;
 				justify-content: space-between;
 				align-items: baseline;
 				gap: 0.5rem;
 				padding: 0.5rem 0.2rem 0;
 			}
-			figcaption .title {
+			.caption .title {
 				font-weight: 700;
 				font-size: 0.9rem;
 			}
-			figcaption .desc {
-				font-family: var(--font-mono);
-				font-size: 11px;
+			.caption .zoom {
+				font-size: 12px;
 				color: var(--ink-faint);
-				letter-spacing: 0.05em;
+			}
+			.frame:hover .zoom {
+				color: var(--accent);
+			}
+
+			/* ── lightbox ── */
+			.lightbox {
+				position: fixed;
+				inset: 0;
+				z-index: 100;
+				display: none;
+				place-items: center;
+				background: rgba(29, 26, 22, 0.94);
+			}
+			.lightbox.open {
+				display: grid;
+			}
+			.lightbox figure {
+				margin: 0;
+				max-width: min(92vw, 1280px);
+				text-align: center;
+			}
+			.lightbox img {
+				max-width: 100%;
+				max-height: 82vh;
+				border-radius: 6px;
+			}
+			.lightbox figcaption {
+				display: flex;
+				justify-content: center;
+				gap: 1.5rem;
+				margin-top: 0.9rem;
+				font-size: 13px;
+				color: var(--paper-deep);
+				letter-spacing: 0.08em;
+			}
+			.lb-nav,
+			.lb-close {
+				position: fixed;
+				display: grid;
+				place-items: center;
+				width: 44px;
+				height: 44px;
+				border: 1px solid rgba(240, 239, 235, 0.3);
+				border-radius: 50%;
+				background: none;
+				color: var(--paper);
+				font-family: var(--font-mono);
+				font-size: 18px;
+				cursor: pointer;
+				transition:
+					border-color 0.15s ease,
+					color 0.15s ease;
+			}
+			.lb-nav:hover,
+			.lb-close:hover {
+				border-color: var(--accent);
+				color: var(--accent);
+			}
+			.lb-nav.prev {
+				left: 1.2rem;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.lb-nav.next {
+				right: 1.2rem;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+			.lb-close {
+				top: 1.2rem;
+				right: 1.2rem;
+				font-size: 22px;
 			}
 			@media (max-width: 720px) {
 				.grid {
 					grid-template-columns: repeat(2, 1fr);
 					gap: 0.8rem;
+				}
+				.lb-nav {
+					top: auto;
+					bottom: 1.2rem;
+					transform: none;
+				}
+				.lb-nav.prev {
+					left: calc(50% - 60px);
+				}
+				.lb-nav.next {
+					right: calc(50% - 60px);
+					left: auto;
 				}
 			}
 		</style>

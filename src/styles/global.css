@@ -225,10 +225,13 @@ main.container {
 }
 .card {
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 	border: 1px solid var(--line-strong);
 	border-radius: 8px;
 	background: var(--paper-raise);
-	padding: 1.4rem 1.6rem;
+	padding: 1.3rem 1.4rem 1.2rem;
 	transition:
 		border-color 0.15s ease,
 		background 0.15s ease;
@@ -236,13 +239,72 @@ main.container {
 .card:hover {
 	border-color: var(--ink);
 }
-.card.pinned {
-	border-left: 4px solid var(--accent);
+/* 封面图：背景模糊 + 蒙层，有图无图卡片格式一致 */
+.card-bg {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	filter: blur(30px) saturate(1.05);
+	transform: scale(1.25);
+	border-radius: inherit;
+	opacity: 0.26;
+}
+.card::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: var(--paper-raise);
+	opacity: 0.85;
+	pointer-events: none;
+}
+.card-content {
+	position: relative;
+	z-index: 2;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
 }
 .card-link {
 	position: absolute;
 	inset: 0;
+	z-index: 3;
 	border-radius: 8px;
+}
+.card-top {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 0.7rem;
+}
+.card-top .meta {
+	display: flex;
+	align-items: center;
+	gap: 0.45rem;
+}
+.card-top .date {
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.1em;
+	color: var(--ink-faint);
+	white-space: nowrap;
+}
+.badge {
+	font-family: var(--font-mono);
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	line-height: 1;
+	padding: 4px 7px;
+	border-radius: 3px;
+	border: 1px solid var(--line-strong);
+	color: var(--ink-soft);
+}
+.badge.project {
+	border-color: var(--accent);
+	color: var(--accent);
 }
 .card .row {
 	display: flex;
@@ -251,12 +313,13 @@ main.container {
 	gap: 1rem;
 	flex-wrap: wrap;
 }
-.card .row h2 {
-	font-size: 1.25rem;
-	margin: 0;
+.card h2 {
+	font-size: 1.15rem;
+	margin: 0 0 0.5rem;
 	font-weight: 800;
+	line-height: 1.3;
 }
-.card:hover .row h2 {
+.card:hover h2 {
 	color: var(--accent);
 }
 .card .meta {
@@ -284,9 +347,14 @@ main.container {
 	background: var(--ink);
 }
 .card .desc {
-	margin: 0.7rem 0 1rem;
+	margin: 0 0 1rem;
 	color: var(--ink-soft);
-	font-size: 0.95em;
+	font-size: 0.93em;
+	flex: 1;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 .card .foot {
 	display: flex;
@@ -294,6 +362,8 @@ main.container {
 	justify-content: space-between;
 	gap: 1rem;
 	flex-wrap: wrap;
+	border-top: 1px solid var(--line);
+	padding-top: 0.85rem;
 }
 .card .tags {
 	display: flex;
@@ -329,16 +399,6 @@ main.container {
 .card:hover .links .arrow {
 	transform: translateX(3px);
 }
-.card-img {
-	display: block;
-	width: 100%;
-	aspect-ratio: 3 / 1;
-	object-fit: cover;
-	border-radius: 6px;
-	border: 1px solid var(--line);
-	margin-bottom: 1.1rem;
-}
-
 /* ── 方角标签 chip ── */
 .pill {
 	display: inline-block;

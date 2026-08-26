@@ -21,19 +21,11 @@ const tiles = [
 	},
 	{
 		no: '02',
-		key: 'writing',
-		label: 'Posts',
-		alt: '文章',
-		desc: 'Tech notes and essays',
-		href: '/blog',
-	},
-	{
-		no: '03',
-		key: 'projects',
-		label: 'Projects',
-		alt: '项目',
-		desc: 'Things I have built',
-		href: '/projects',
+		key: 'works',
+		label: 'Works',
+		alt: '作品',
+		desc: 'Posts and projects',
+		href: '/works',
 	},
 ];
 ---
@@ -101,7 +93,7 @@ const tiles = [
 				<div class="latest-head">
 					<h2 data-i18n="latest.title">Recent</h2>
 					<div class="latest-links">
-						<a href="/blog" class="mono more" data-i18n="latest.all">All →</a>
+						<a href="/works" class="mono more" data-i18n="latest.all">All →</a>
 					</div>
 				</div>
 				<ul>
@@ -231,7 +223,7 @@ const tiles = [
 			/* ── tiles：一行三块，悬停反色 ── */
 			.tiles {
 				display: grid;
-				grid-template-columns: repeat(3, 1fr);
+				grid-template-columns: repeat(2, 1fr);
 				gap: 1px;
 				background: var(--line-strong);
 				border: 1px solid var(--line-strong);

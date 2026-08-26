@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+type Item = {
+	kind: 'post' | 'project';
+	id: string;
+	href: string;
+	title: string;
+	description: string;
+	date: Date;
+	tags: string[];
+	heroImage?: CollectionEntry<'blog'>['data']['heroImage'];
+	status?: 'wip' | 'active' | 'done';
+};
+
+const [posts, projects] = await Promise.all([getCollection('blog'), getCollection('projects')]);
+const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
+
+const items: Item[] = [
+	...posts.map((p) => ({
+		kind: 'post' as const,
+		id: p.id,
+		href: `/blog/${p.id}/`,
+		title: p.data.title,
+		description: p.data.description,
+		date: p.data.pubDate,
+		tags: p.data.tags,
+		heroImage: p.data.heroImage,
+	})),
+	...projects.map((p) => ({
+		kind: 'project' as const,
+		id: p.id,
+		href: `/projects/${p.id}/`,
+		title: p.data.title,
+		description: p.data.description,
+		date: p.data.pubDate,
+		tags: p.data.tags,
+		status: p.data.status,
+	})),
+].sort((a, b) => b.date.valueOf() - a.date.valueOf());
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`Works · ${SITE_TITLE}`} description="Posts and projects." />
+	</head>
+	<body>
+		<Header />
+		<main class="container">
+			<ul class="card-grid">
+				{
+					items.map((item) => (
+						<li class="card">
+							{item.heroImage && (
+								<Image
+									class="card-bg"
+									width={600}
+									src={item.heroImage}
+									alt={item.title}
+									widths={[320, 600]}
+									sizes="(max-width: 720px) 100vw, 33vw"
+								/>
+							)}
+							<a class="card-link" href={item.href} aria-label={item.title} />
+							<div class="card-content">
+								<div class="card-top">
+									<div class="meta">
+										<span class:list={['badge', item.kind]} data-i18n={`badge.${item.kind}`}>
+											{item.kind === 'post' ? 'ARTICLE' : 'PROJECT'}
+										</span>
+										{item.status && (
+											<span class:list={['status', item.status]}>{statusLabel[item.status]}</span>
+										)}
+									</div>
+									<span class="date">
+										<FormattedDate date={item.date} />
+									</span>
+								</div>
+								<h2>{item.title}</h2>
+								<p class="desc">{item.description}</p>
+								<div class="foot">
+									<div class="tags">
+										{item.tags.map((t) => (
+											<span class="pill">{t}</span>
+										))}
+									</div>
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+		<style>
+			main.container {
+				padding: 2.5rem 0 4rem;
+			}
+			.card-grid {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+				gap: 1.2rem;
+			}
+		</style>
+	</body>
+</html>

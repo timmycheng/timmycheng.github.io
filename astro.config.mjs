@@ -8,4 +8,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://timmycheng.cn',
 	integrations: [mdx(), sitemap()],
+	redirects: {
+		'/blog': '/works',
+		'/projects': '/works',
+	},
 });

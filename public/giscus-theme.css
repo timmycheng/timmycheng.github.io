@@ -1,0 +1,98 @@
+/*! giscus custom theme — based on giscus light theme (MIT, GitHub Inc.)
+ *  Palette: PANTONE 11-4201 Cloud Dancer canvas + warm ink + safety orange
+ */
+
+main {
+	--color-prettylights-syntax-comment: #6e7781;
+	--color-prettylights-syntax-constant: #0550ae;
+	--color-prettylights-syntax-entity: #8250df;
+	--color-prettylights-syntax-storage-modifier-import: #24292f;
+	--color-prettylights-syntax-entity-tag: #116329;
+	--color-prettylights-syntax-keyword: #cf222e;
+	--color-prettylights-syntax-string: #0a3069;
+	--color-prettylights-syntax-variable: #953800;
+	--color-prettylights-syntax-brackethighlighter-unmatched: #82071e;
+	--color-prettylights-syntax-invalid-illegal-text: #f6f8fa;
+	--color-prettylights-syntax-invalid-illegal-bg: #82071e;
+	--color-prettylights-syntax-carriage-return-text: #f6f8fa;
+	--color-prettylights-syntax-carriage-return-bg: #cf222e;
+	--color-prettylights-syntax-string-regexp: #116329;
+	--color-prettylights-syntax-markup-list: #3b2300;
+	--color-prettylights-syntax-markup-heading: #0550ae;
+	--color-prettylights-syntax-markup-italic: #24292f;
+	--color-prettylights-syntax-markup-bold: #24292f;
+	--color-prettylights-syntax-markup-deleted-text: #82071e;
+	--color-prettylights-syntax-markup-deleted-bg: #ffebe9;
+	--color-prettylights-syntax-markup-inserted-text: #116329;
+	--color-prettylights-syntax-markup-inserted-bg: #dafbe1;
+	--color-prettylights-syntax-markup-changed-text: #953800;
+	--color-prettylights-syntax-markup-changed-bg: #ffd8b5;
+	--color-prettylights-syntax-markup-ignored-text: #eaeef2;
+	--color-prettylights-syntax-markup-ignored-bg: #0550ae;
+	--color-prettylights-syntax-meta-diff-range: #8250df;
+	--color-prettylights-syntax-brackethighlighter-angle: #57606a;
+	--color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
+	--color-prettylights-syntax-constant-other-reference-link: #0a3069;
+	--color-btn-text: #1d1a16;
+	--color-btn-bg: #f7f6f3;
+	--color-btn-border: rgb(29 26 22 / 20%);
+	--color-btn-shadow: 0 1px 0 rgb(29 26 22 / 4%);
+	--color-btn-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 25%);
+	--color-btn-hover-bg: #e4e2db;
+	--color-btn-hover-border: rgb(29 26 22 / 20%);
+	--color-btn-active-bg: hsl(45deg 12% 86% / 100%);
+	--color-btn-active-border: rgb(29 26 22 / 20%);
+	--color-btn-selected-bg: hsl(45deg 12% 88% / 100%);
+	--color-btn-primary-text: #f0efeb;
+	--color-btn-primary-bg: #c23a0f;
+	--color-btn-primary-border: rgb(29 26 22 / 15%);
+	--color-btn-primary-shadow: 0 1px 0 rgb(29 26 22 / 10%);
+	--color-btn-primary-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 3%);
+	--color-btn-primary-hover-bg: #992c0b;
+	--color-btn-primary-hover-border: rgb(29 26 22 / 15%);
+	--color-btn-primary-selected-bg: hsl(16deg 86% 33% / 100%);
+	--color-btn-primary-selected-shadow: inset 0 1px 0 rgb(60 17 4 / 20%);
+	--color-btn-primary-disabled-text: rgb(240 239 235 / 80%);
+	--color-btn-primary-disabled-bg: #d9a58f;
+	--color-btn-primary-disabled-border: rgb(29 26 22 / 15%);
+	--color-action-list-item-default-hover-bg: rgb(29 26 22 / 6%);
+	--color-segmented-control-bg: #e4e2db;
+	--color-segmented-control-button-bg: #f7f6f3;
+	--color-segmented-control-button-selected-border: #97897a;
+	--color-fg-default: #1d1a16;
+	--color-fg-muted: #5a5245;
+	--color-fg-subtle: #97897a;
+	--color-canvas-default: #f0efeb;
+	--color-canvas-overlay: #f7f6f3;
+	--color-canvas-inset: #e4e2db;
+	--color-canvas-subtle: #f7f6f3;
+	--color-border-default: #d8d5cc;
+	--color-border-muted: hsl(45deg 10% 82% / 100%);
+	--color-neutral-muted: rgb(29 26 22 / 8%);
+	--color-accent-fg: #c23a0f;
+	--color-accent-emphasis: #c23a0f;
+	--color-accent-muted: rgb(194 58 15 / 40%);
+	--color-accent-subtle: #f3ddd3;
+	--color-success-fg: #1a7f37;
+	--color-attention-fg: #9a6700;
+	--color-attention-muted: rgb(212 167 44 / 40%);
+	--color-attention-subtle: #fff8c5;
+	--color-danger-fg: #d1242f;
+	--color-danger-muted: rgb(255 129 130 / 40%);
+	--color-danger-subtle: #ffebe9;
+	--color-primer-shadow-inset: inset 0 1px 0 rgb(29 26 22 / 8%);
+	--color-scale-gray-1: #e4e2db;
+	--color-scale-blue-1: #f3ddd3;
+
+	/*! Extensions from @primer/css/alerts/flash.scss */
+	--color-social-reaction-bg-hover: var(--color-scale-gray-1);
+	--color-social-reaction-bg-reacted-hover: var(--color-scale-blue-1);
+}
+
+main .pagination-loader-container {
+	background-image: url('https://github.com/images/modules/pulls/progressive-disclosure-line.svg');
+}
+
+main .gsc-loading-image {
+	background-image: url('https://github.githubassets.com/images/mona-loading-default.gif');
+}

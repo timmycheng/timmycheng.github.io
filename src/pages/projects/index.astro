@@ -20,14 +20,14 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 	<body>
 		<Header />
 		<main class="container">
-			<ul class="project-list">
+			<ul class="card-list">
 				{
 					projects.map((p) => (
 						<li class:list={['card', { pinned: p.data.pinned }]}>
 							<a class="card-link" href={`/projects/${p.id}/`} aria-label={p.data.title} />
 							<div class="row">
 								<h2>{p.data.title}</h2>
-								<div class="meta mono">
+								<div class="meta">
 									<span class:list={['status', p.data.status]}>{statusLabel[p.data.status]}</span>
 									<span class="date">
 										<FormattedDate date={p.data.pubDate} />
@@ -41,7 +41,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 										<span class="pill">{t}</span>
 									))}
 								</div>
-								<div class="links mono">
+								<div class="links">
 									{p.data.repo && (
 										<a href={p.data.repo} target="_blank">
 											[repo]
@@ -66,118 +66,6 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 		<style>
 			main.container {
 				padding: 2.5rem 0 4rem;
-			}
-			.project-list {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-				display: grid;
-				gap: 1.2rem;
-			}
-			.card {
-				position: relative;
-				border: 1px solid var(--line-strong);
-				border-radius: 8px;
-				background: var(--paper-raise);
-				padding: 1.4rem 1.6rem;
-				transition:
-					border-color 0.15s ease,
-					background 0.15s ease;
-			}
-			.card:hover {
-				border-color: var(--ink);
-			}
-			.card.pinned {
-				border-left: 4px solid var(--accent);
-			}
-			/* 整卡可点：锚点自身铺满卡片 */
-			.card-link {
-				position: absolute;
-				inset: 0;
-				border-radius: 8px;
-			}
-			.row {
-				display: flex;
-				align-items: baseline;
-				justify-content: space-between;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}
-			.row h2 {
-				font-size: 1.25rem;
-				margin: 0;
-			}
-			.card:hover .row h2 {
-				color: var(--accent);
-			}
-			.meta {
-				display: flex;
-				gap: 1rem;
-				align-items: baseline;
-				font-size: 11px;
-				letter-spacing: 0.12em;
-			}
-			.status {
-				font-weight: 700;
-				padding: 3px 7px;
-				border-radius: 3px;
-				color: var(--paper);
-				background: var(--ink-faint);
-			}
-			.status.active {
-				background: var(--accent);
-			}
-			.status.wip {
-				background: var(--ink);
-			}
-			.meta .date {
-				color: var(--ink-faint);
-			}
-			.desc {
-				margin: 0.7rem 0 1rem;
-				color: var(--ink-soft);
-				font-size: 0.95em;
-			}
-			.foot {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}
-			.tags {
-				display: flex;
-				gap: 0.4rem;
-				flex-wrap: wrap;
-			}
-			.links {
-				display: flex;
-				gap: 0.8rem;
-				align-items: baseline;
-				font-size: 13px;
-			}
-			/* 外链要盖在铺满的伪元素之上，保持可点 */
-			.links a {
-				position: relative;
-				z-index: 1;
-				color: var(--ink-soft);
-				text-decoration: none;
-			}
-			.links a:hover {
-				color: var(--accent);
-			}
-			.links .more {
-				color: var(--ink-faint);
-			}
-			.card:hover .links .more {
-				color: var(--accent);
-			}
-			.links .arrow {
-				display: inline-block;
-				transition: transform 0.15s ease;
-			}
-			.card:hover .links .arrow {
-				transform: translateX(3px);
 			}
 		</style>
 	</body>

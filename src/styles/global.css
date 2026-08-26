@@ -214,7 +214,132 @@ main.container {
 	color: var(--ink-faint);
 }
 
-/* 方角标签 chip */
+/* ── 列表卡片（posts / projects 共用） ── */
+
+.card-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 1.2rem;
+}
+.card {
+	position: relative;
+	border: 1px solid var(--line-strong);
+	border-radius: 8px;
+	background: var(--paper-raise);
+	padding: 1.4rem 1.6rem;
+	transition:
+		border-color 0.15s ease,
+		background 0.15s ease;
+}
+.card:hover {
+	border-color: var(--ink);
+}
+.card.pinned {
+	border-left: 4px solid var(--accent);
+}
+.card-link {
+	position: absolute;
+	inset: 0;
+	border-radius: 8px;
+}
+.card .row {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.card .row h2 {
+	font-size: 1.25rem;
+	margin: 0;
+	font-weight: 800;
+}
+.card:hover .row h2 {
+	color: var(--accent);
+}
+.card .meta {
+	display: flex;
+	gap: 1rem;
+	align-items: baseline;
+	font-family: var(--font-mono);
+	font-size: 11px;
+	letter-spacing: 0.12em;
+}
+.card .meta .date {
+	color: var(--ink-faint);
+}
+.card .status {
+	font-weight: 700;
+	padding: 3px 7px;
+	border-radius: 3px;
+	color: var(--paper);
+	background: var(--ink-faint);
+}
+.card .status.active {
+	background: var(--accent);
+}
+.card .status.wip {
+	background: var(--ink);
+}
+.card .desc {
+	margin: 0.7rem 0 1rem;
+	color: var(--ink-soft);
+	font-size: 0.95em;
+}
+.card .foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+.card .tags {
+	display: flex;
+	gap: 0.4rem;
+	flex-wrap: wrap;
+}
+.card .links {
+	display: flex;
+	gap: 0.8rem;
+	align-items: baseline;
+	font-family: var(--font-mono);
+	font-size: 13px;
+}
+.card .links a {
+	position: relative;
+	z-index: 1;
+	color: var(--ink-soft);
+	text-decoration: none;
+}
+.card .links a:hover {
+	color: var(--accent);
+}
+.card .links .more {
+	color: var(--ink-faint);
+}
+.card:hover .links .more {
+	color: var(--accent);
+}
+.card .links .arrow {
+	display: inline-block;
+	transition: transform 0.15s ease;
+}
+.card:hover .links .arrow {
+	transform: translateX(3px);
+}
+.card-img {
+	display: block;
+	width: 100%;
+	aspect-ratio: 2 / 1;
+	object-fit: cover;
+	border-radius: 6px;
+	border: 1px solid var(--line);
+	margin-bottom: 1.1rem;
+}
+
+/* ── 方角标签 chip ── */
 .pill {
 	display: inline-block;
 	font-family: var(--font-mono);

@@ -1,16 +1,16 @@
 ---
-title: Modern WKU Thesis
-description: 温州肯恩大学 CSMT 研究生毕业论文模板，Typst 与 LaTeX 双版本，已发布至 Typst 官方包注册表。
+title: Modern WKU Thesis - A Typst & Latex Template
+description: 温州肯恩大学 CSMT 学院研究生毕业论文模板，Typst 与 LaTeX 双版本，已发布至 Typst Universe。
 pubDate: 2026-08-27
 tags: ['typst', 'latex', 'typography', 'template']
 repo: https://github.com/timmycheng/modern-wku-thesis
 status: done
-pinned: false
+pinned: true
 ---
 
 读研时最不想在排版上浪费时间，但毕业论文恰恰是格式要求最多的那一类文档：封面、摘要页、致谢页、缩写表各有各的规矩，标题编号是 `Chapter N`，参考文献必须 IEEE 样式……Word 模板靠手动维护这些既容易出错，也不够优雅。
 
-**Modern WKU Thesis** 就是为此做的研究生学位论文模板，面向温州肯恩大学（WKU）科学与数学技术学院（CSMT），有 **Typst** 和 **LaTeX** 两个版本。
+**Modern WKU Thesis** 就是为此做的研究生学位论文模板，面向温州肯恩大学（WKU，Wenzhou-Kean University）理工学院（CSMT, College of Science, Mathmatic and Technology），包含 **Typst** 和 **LaTeX** 两个版本。
 
 ## 功能特性
 
@@ -34,12 +34,12 @@ typst init @preview/modern-wku-thesis
 #import "@preview/modern-wku-thesis:0.1.3": graduate-thesis
 
 #show: graduate-thesis.with(
-	title: [Automatic Visualization of Traceability Information],
+	title: [This is your thesis title],
 	author: "Timmycheng",
-	supervisor: [Dr. Nasser Mustafa],
-	keywords: [Traceability; Automatic; Visualization],
+	supervisor: [Dr. Jhon Doe],
+	keywords: [some, key, words],
 	bibliography: bibliography("refs.bib"),
-	acronyms: ("TMS": "Traceability Management System"),
+	acronyms: ("AKA": "As Known As"),
 )
 
 = Introduction

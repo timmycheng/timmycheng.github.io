@@ -7,11 +7,16 @@
 <script>
 	const bar = document.querySelector<HTMLElement>('.read-progress');
 	if (bar) {
+		const header = document.querySelector('.site-header');
 		const update = () => {
 			const doc = document.documentElement;
 			const max = doc.scrollHeight - window.innerHeight;
 			const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
 			bar.style.transform = `scaleX(${p})`;
+			// 页头隐藏时进度条同步上滑贴顶，避免悬在半空
+			if (header) {
+				bar.classList.toggle('is-detached', header.classList.contains('is-hidden'));
+			}
 		};
 		update();
 		window.addEventListener('scroll', update, { passive: true });
@@ -31,5 +36,9 @@
 		transform: scaleX(0);
 		transform-origin: 0 center;
 		pointer-events: none;
+		transition: top 0.36s var(--ease-out);
+	}
+	.read-progress.is-detached {
+		top: 0;
 	}
 </style>

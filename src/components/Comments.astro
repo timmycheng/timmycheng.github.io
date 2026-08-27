@@ -16,10 +16,11 @@
 	(function () {
 		var mount = document.currentScript.parentElement.querySelector('.giscus-mount');
 		var d = document.documentElement;
-		// 运行时取当前 origin：生产与本地预览均可加载自定义主题 CSS
-		var BASE = location.origin;
-		var THEME_LIGHT = BASE + '/giscus-theme.css';
-		var THEME_DARK = BASE + '/giscus-theme-dark.css';
+		// giscus 部件运行在 https 的 iframe 里：页面为 http（本地 dev/preview）时引用本地
+		// 样式会被混合内容拦截，改用线上已部署的主题 CSS；https 环境用当前 origin
+		var SITE = location.protocol === 'https:' ? location.origin : 'https://timmycheng.cn';
+		var THEME_LIGHT = SITE + '/giscus-theme.css';
+		var THEME_DARK = SITE + '/giscus-theme-dark.css';
 
 		function themeUrl() {
 			return d.getAttribute('data-theme') === 'dark' ? THEME_DARK : THEME_LIGHT;

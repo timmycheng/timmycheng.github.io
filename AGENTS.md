@@ -2,6 +2,7 @@
 
 ## 常用命令
 
+- `npm run new -- "标题" [slug]` — 新建博客文章到 `src/content/blog/`（自动填 frontmatter 和日期）
 - `npm run dev` — 启动开发服务器（默认 http://localhost:4321）
 - `npm run check` — 运行 Astro 类型检查（`astro check`）
 - `npm run build` — 构建到 `dist/`

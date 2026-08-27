@@ -17,6 +17,7 @@ Timmy Cheng 的个人站：[timmycheng.cn](https://timmycheng.cn)。基于 [Astr
 ## 常用命令
 
 ```sh
+npm run new -- "文章标题" [自定义slug]  # 新建博客文章（自动填 frontmatter 和日期）
 npm run dev      # 开发服务器（默认 http://localhost:4321）
 npm run check    # astro check 类型检查
 npm run build    # 构建到 dist/

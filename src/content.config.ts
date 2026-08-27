@@ -17,16 +17,18 @@ const blog = defineCollection({
 
 const projects = defineCollection({
 	loader: glob({ base: './src/content/projects', pattern: '**/*.{md,mdx}' }),
-	schema: z.object({
-		title: z.string(),
-		description: z.string(),
-		pubDate: z.coerce.date(),
-		tags: z.array(z.string()).default([]),
-		repo: z.url().optional(),
-		link: z.url().optional(),
-		status: z.enum(['wip', 'active', 'done']).default('done'),
-		pinned: z.boolean().default(false),
-	}),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			description: z.string(),
+			pubDate: z.coerce.date(),
+			heroImage: z.optional(image()),
+			tags: z.array(z.string()).default([]),
+			repo: z.url().optional(),
+			link: z.url().optional(),
+			status: z.enum(['wip', 'active', 'done']).default('done'),
+			pinned: z.boolean().default(false),
+		}),
 });
 
 export const collections = { blog, projects };

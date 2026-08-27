@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
 import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
@@ -62,11 +63,25 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 						)
 					}
 				</header>
+				{
+					project.data.heroImage && (
+						<figure class="hero-image">
+							<Image
+								src={project.data.heroImage}
+								alt=""
+								widths={[480, 720, 1440]}
+								sizes="(max-width: 768px) 100vw, 720px"
+								loading="eager"
+							/>
+						</figure>
+					)
+				}
 				<div class="prose">
 					<Content />
 				</div>
 			</article>
 		</main>
+
 		<Footer />
 		<style>
 			main.prose-wrap {
@@ -123,6 +138,16 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 			}
 			.prose {
 				max-width: none;
+			}
+			.hero-image {
+				margin-bottom: 2.5rem;
+			}
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+				border-radius: var(--radius-md);
+				border: 1px solid var(--line-strong);
 			}
 		</style>
 	</body>

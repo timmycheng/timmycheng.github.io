@@ -45,6 +45,7 @@ const items: Item[] = [
 		date: p.data.pubDate,
 		tags: p.data.tags,
 		body: p.body ?? '',
+		heroImage: p.data.heroImage,
 		status: p.data.status,
 	})),
 ].sort((a, b) => b.date.valueOf() - a.date.valueOf());

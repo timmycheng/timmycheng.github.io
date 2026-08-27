@@ -5,6 +5,7 @@
 ---
 
 <section class="comments">
+	<link rel="preconnect" href="https://giscus.app" />
 	<div class="comments-head">
 		<h2 class="mono-label" data-i18n="comments.title">Comments</h2>
 	</div>
@@ -15,8 +16,10 @@
 	(function () {
 		var mount = document.currentScript.parentElement.querySelector('.giscus-mount');
 		var d = document.documentElement;
-		var THEME_LIGHT = 'https://timmycheng.cn/giscus-theme.css';
-		var THEME_DARK = 'https://timmycheng.cn/giscus-theme-dark.css';
+		// 运行时取当前 origin：生产与本地预览均可加载自定义主题 CSS
+		var BASE = location.origin;
+		var THEME_LIGHT = BASE + '/giscus-theme.css';
+		var THEME_DARK = BASE + '/giscus-theme-dark.css';
 
 		function themeUrl() {
 			return d.getAttribute('data-theme') === 'dark' ? THEME_DARK : THEME_LIGHT;

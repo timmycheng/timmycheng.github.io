@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://timmycheng.cn/sitemap-index.xml

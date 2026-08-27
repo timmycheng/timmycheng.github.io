@@ -5,6 +5,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import Toc from '../../components/Toc.astro';
 
 export async function getStaticPaths() {
 	const projects = await getCollection('projects');
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
 }
 
 const project = Astro.props;
-const { Content } = await render(project);
+const { Content, headings } = await render(project);
 const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 ---
 
@@ -27,69 +28,79 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 	<body>
 		<Header />
 		<main id="main-content" class="container prose-wrap">
-			<article>
-				<header class="head">
-					<p class="eyebrow">
-						<a class="link-sweep" href="/works">← <span data-i18n="nav.works">Works</span></a>
-					</p>
-					<h1>{project.data.title}</h1>
-					<div class="meta-row">
-						<span class:list={['status', project.data.status]}>
-							{statusLabel[project.data.status]}
-						</span>
-						<span><FormattedDate date={project.data.pubDate} /></span>
-						{
-							project.data.repo && (
-								<a href={project.data.repo} target="_blank" rel="noopener">
-									[repo]
-								</a>
-							)
-						}
-						{
-							project.data.link && (
-								<a href={project.data.link} target="_blank" rel="noopener">
-									[link]
-								</a>
-							)
-						}
-					</div>
-					{
-						project.data.tags.length > 0 && (
-							<div class="tags">
-								{project.data.tags.map((t) => (
-									<span class="pill">{t}</span>
-								))}
+			<div class="post-grid">
+				<div class="post-main">
+					<article>
+						<header class="head">
+							<p class="eyebrow">
+								<a class="link-sweep" href="/works">← <span data-i18n="nav.works">Works</span></a>
+							</p>
+							<h1>{project.data.title}</h1>
+							<div class="meta-row">
+								<span class:list={['status', project.data.status]}>
+									{statusLabel[project.data.status]}
+								</span>
+								<span><FormattedDate date={project.data.pubDate} /></span>
+								{
+									project.data.repo && (
+										<a href={project.data.repo} target="_blank" rel="noopener">
+											[repo]
+										</a>
+									)
+								}
+								{
+									project.data.link && (
+										<a href={project.data.link} target="_blank" rel="noopener">
+											[link]
+										</a>
+									)
+								}
 							</div>
-						)
-					}
-				</header>
-				{
-					project.data.heroImage && (
-						<figure class="hero-image">
-							<Image
-								src={project.data.heroImage}
-								alt=""
-								widths={[480, 720, 1440]}
-								sizes="(max-width: 768px) 100vw, 720px"
-								loading="eager"
-							/>
-						</figure>
-					)
-				}
-				<div class="prose">
-					<Content />
+							{
+								project.data.tags.length > 0 && (
+									<div class="tags">
+										{project.data.tags.map((t) => (
+											<span class="pill">{t}</span>
+										))}
+									</div>
+								)
+							}
+						</header>
+						{
+							project.data.heroImage && (
+								<figure class="hero-image">
+									<Image
+										src={project.data.heroImage}
+										alt=""
+										widths={[480, 720, 1440]}
+										sizes="(max-width: 768px) 100vw, 720px"
+										loading="eager"
+									/>
+								</figure>
+							)
+						}
+						<div class="prose">
+							<Content />
+						</div>
+					</article>
 				</div>
-			</article>
+				<Toc headings={headings} />
+			</div>
 		</main>
-
 		<Footer />
 		<style>
 			main.prose-wrap {
 				padding: 0 0 4rem;
 			}
-			main.prose-wrap article {
+			.post-grid {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) 230px;
+				gap: 2.5rem;
+				align-items: start;
+			}
+			.post-main {
+				min-width: 0;
 				max-width: var(--layout-content);
-				margin-inline: auto;
 			}
 			.head {
 				padding: 2.5rem 0 1.8rem;
@@ -105,7 +116,7 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 			.head h1 {
 				font-size: clamp(1.8rem, 4.5vw, 2.6rem);
 				letter-spacing: -0.03em;
-				margin: 0.8rem 0 1rem;
+				margin: 0.8rem 0 0.9rem;
 			}
 			.meta-row {
 				font-size: 12px;
@@ -148,6 +159,11 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 				height: auto;
 				border-radius: var(--radius-md);
 				border: 1px solid var(--line-strong);
+			}
+			@media (max-width: 1000px) {
+				.post-grid {
+					grid-template-columns: 1fr;
+				}
 			}
 		</style>
 	</body>

@@ -1,0 +1,106 @@
+---
+type Heading = { depth: number; slug: string; text: string };
+
+type Props = { headings: Heading[] };
+
+const toc = Astro.props.headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+	toc.length > 0 && (
+		<aside class="toc">
+			<nav aria-label="Table of contents">
+				<p class="toc-title" data-i18n="toc.title">
+					Contents
+				</p>
+				<ul>
+					{toc.map((h) => (
+						<li class:list={[`depth-${h.depth}`]}>
+							<a href={`#${h.slug}`} data-heading={h.slug}>
+								{h.text}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
+		</aside>
+	)
+}
+
+<script>
+	const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[data-heading]')];
+	const targets = links
+		.map((a) => document.getElementById(a.dataset.heading || ''))
+		.filter((el): el is HTMLElement => el !== null);
+	if (targets.length && 'IntersectionObserver' in window) {
+		const spy = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						links.forEach((l) =>
+							l.classList.toggle('is-active', l.dataset.heading === entry.target.id),
+						);
+					}
+				});
+			},
+			{ rootMargin: '-20% 0px -70% 0px', threshold: 0 },
+		);
+		targets.forEach((h) => spy.observe(h));
+	}
+</script>
+
+<style>
+	/* ── 侧边栏 TOC（emDash toc--sidebar） ── */
+	.toc {
+		position: sticky;
+		top: 6rem;
+		align-self: start;
+	}
+	.toc-title {
+		margin: 0 0 0.85rem;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--ink-faint);
+	}
+	.toc ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.35rem;
+		border-left: 1px solid var(--line-strong);
+		padding-left: 1rem;
+	}
+	.toc a {
+		display: block;
+		padding: 0.2rem 0 0.2rem 0.55rem;
+		margin-left: calc(-1rem - 1px);
+		border-left: 2px solid transparent;
+		color: var(--ink-faint);
+		font-size: 13px;
+		line-height: 1.4;
+		text-decoration: none;
+		transition:
+			color var(--duration-fast) ease,
+			border-color var(--duration-fast) ease;
+	}
+	.toc a:hover {
+		color: var(--ink-soft);
+	}
+	.toc a.is-active {
+		color: var(--ink);
+		font-weight: 700;
+		border-left-color: var(--accent);
+	}
+	.toc .depth-3 {
+		padding-left: 0.5rem;
+	}
+	@media (max-width: 1000px) {
+		.toc {
+			display: none;
+		}
+	}
+</style>

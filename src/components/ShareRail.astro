@@ -1,0 +1,67 @@
+---
+// 左栏分享块（借鉴 Publica 的 SHARE 栏）：X 分享 + 复制链接
+type Props = { title: string };
+const { title } = Astro.props;
+const pageUrl = Astro.url.href;
+const xUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(title)}`;
+---
+
+<div class="share-rail">
+	<p class="label" data-i18n="post.share">Share</p>
+	<div class="btns">
+		<a class="btn btn-outline" href={xUrl} target="_blank" rel="noopener noreferrer" aria-label="X">
+			X
+		</a>
+		<button type="button" class="btn btn-outline share-copy" data-copy={pageUrl}>
+			<span data-i18n="post.copy">Copy link</span>
+		</button>
+	</div>
+</div>
+
+<script>
+	const btn = document.querySelector<HTMLButtonElement>('.share-rail .share-copy');
+	if (btn) {
+		const labels = { en: 'Copied', 'zh-CN': '已复制' };
+		const span = btn.querySelector<HTMLElement>('[data-i18n]');
+		btn.addEventListener('click', async () => {
+			const url = btn.dataset.copy;
+			if (!url) return;
+			try {
+				await navigator.clipboard.writeText(url);
+			} catch {
+				return;
+			}
+			const locale = document.documentElement.getAttribute('data-locale') === 'zh' ? 'zh-CN' : 'en';
+			if (span) span.textContent = labels[locale];
+			btn.classList.add('copied');
+			setTimeout(() => {
+				btn.classList.remove('copied');
+			}, 2000);
+		});
+	}
+</script>
+
+<style>
+	.share-rail .label {
+		margin: 0 0 0.85rem;
+		font-family: var(--font-mono);
+		font-size: 11px;
+		font-weight: 700;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--ink-faint);
+	}
+	.share-rail .btns {
+		display: grid;
+		gap: 0.5rem;
+		justify-items: start;
+	}
+	.share-rail .btn {
+		padding: 0.45rem 0.9rem;
+		font-size: 12px;
+	}
+	.share-rail .share-copy.copied {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+</style>

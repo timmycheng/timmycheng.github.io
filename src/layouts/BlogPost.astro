@@ -6,6 +6,9 @@ import Comments from '../components/Comments.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
+import ReadProgress from '../components/ReadProgress.astro';
+import ShareRail from '../components/ShareRail.astro';
+import StoryHead from '../components/StoryHead.astro';
 import Toc from '../components/Toc.astro';
 import { SITE_TITLE } from '../consts';
 import { readingMinutes } from '../utils/reading';
@@ -33,9 +36,6 @@ const related = (await getCollection('blog'))
 
 const minutes = readingMinutes(body);
 const pageUrl = Astro.url.href;
-const shareUrl = encodeURIComponent(pageUrl);
-const shareText = encodeURIComponent(title);
-const xUrl = `https://twitter.com/intent/tweet?url=${shareUrl}&text=${shareText}`;
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -64,73 +64,59 @@ const structuredData = {
 
 	<body>
 		<Header />
+		<ReadProgress />
 		<main id="main-content" class="container prose-wrap">
+			<StoryHead kicker={tags[0]} title={title} lede={description}>
+				<span>
+					<FormattedDate date={pubDate} />
+				</span>
+				<span class="read">
+					<span class="num">{minutes}</span>
+					<span data-i18n="read.min">min read</span>
+				</span>
+				{
+					updatedDate && (
+						<span class="updated">
+							updated <FormattedDate date={updatedDate} />
+						</span>
+					)
+				}
+			</StoryHead>
+			{
+				heroImage && (
+					<figure class="hero-image">
+						<Image
+							width={1020}
+							height={510}
+							src={heroImage}
+							alt=""
+							loading="eager"
+							fetchpriority="high"
+						/>
+					</figure>
+				)
+			}
 			<div class="post-grid">
+				<div class="rail">
+					<Toc headings={headings} />
+					<ShareRail title={title} />
+				</div>
 				<div class="post-main">
 					<article>
-						<header class="head">
-							<p class="eyebrow">
-								<a class="link-sweep" href="/works">← <span data-i18n="nav.works">Works</span></a>
-							</p>
-							<h1>{title}</h1>
-							<div class="meta-row">
-								<span><FormattedDate date={pubDate} /></span>
-								<span class="read">
-									<span class="num">{minutes}</span>
-									<span data-i18n="read.min">min read</span>
-								</span>
-								{
-									updatedDate && (
-										<span class="updated">
-											updated <FormattedDate date={updatedDate} />
-										</span>
-									)
-								}
-							</div>
-							{
-								tags.length > 0 && (
-									<div class="tags">
-										{tags.map((t) => (
-											<a class="pill" href="/works">
-												{t}
-											</a>
-										))}
-									</div>
-								)
-							}
-						</header>
-						{
-							heroImage && (
-								<div class="hero-image">
-									<Image
-										width={1020}
-										height={510}
-										src={heroImage}
-										alt=""
-										loading="eager"
-										fetchpriority="high"
-									/>
-								</div>
-							)
-						}
 						<div class="prose">
 							<slot />
 						</div>
-						<div class="share">
-							<span class="label" data-i18n="post.share">Share</span>
-							<a
-								class="btn btn-outline share-x"
-								href={xUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label="X"
-							>
-								X
-							</a>
-							<button type="button" class="btn btn-outline share-copy" data-copy={pageUrl}>
-								<span data-i18n="post.copy">Copy link</span>
-							</button>
-						</div>
+						{
+							tags.length > 0 && (
+								<div class="story-tags">
+									{tags.map((t) => (
+										<a class="pill" href="/works">
+											#{t}
+										</a>
+									))}
+								</div>
+							)
+						}
 						{
 							related.length > 0 && (
 								<section class="related">
@@ -167,106 +153,82 @@ const structuredData = {
 						<Comments />
 					</article>
 				</div>
-				<Toc headings={headings} />
 			</div>
 		</main>
 		<Footer />
-		<script>
-			const btn = document.querySelector<HTMLButtonElement>('.share-copy');
-			if (btn) {
-				const labels = { en: 'Copied', 'zh-CN': '已复制' };
-				const span = btn.querySelector<HTMLElement>('[data-i18n]');
-				btn.addEventListener('click', async () => {
-					const url = btn.dataset.copy;
-					if (!url) return;
-					try {
-						await navigator.clipboard.writeText(url);
-					} catch (e) {
-						return;
-					}
-					const locale =
-						document.documentElement.getAttribute('data-locale') === 'zh' ? 'zh-CN' : 'en';
-					if (span) span.textContent = labels[locale];
-					btn.classList.add('copied');
-					setTimeout(() => {
-						btn.classList.remove('copied');
-					}, 2000);
-				});
-			}
-		</script>
 		<style>
+			/* 正文列 + 左侧栏成组居中（借鉴 Publica ≥1024 布局） */
 			main.prose-wrap {
-				padding: 0 0 4rem;
+				width: auto;
+				max-width: none;
+				padding: 0 1.5rem 4rem;
 			}
 			.post-grid {
 				display: grid;
-				grid-template-columns: minmax(0, 1fr) 230px;
-				gap: 2.5rem;
+				grid-template-columns: minmax(0, 1fr);
 				align-items: start;
+			}
+			.rail {
+				display: none;
 			}
 			.post-main {
 				min-width: 0;
-				max-width: var(--layout-content);
-			}
-			.head {
-				padding: 2.5rem 0 1.8rem;
-				border-bottom: 2px solid var(--ink);
-				margin-bottom: 2.5rem;
-			}
-			.head .eyebrow a {
-				color: var(--ink-soft);
-			}
-			.head .eyebrow a:hover {
-				color: var(--accent);
-			}
-			.head h1 {
-				font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-				letter-spacing: -0.03em;
-				margin: 0.8rem 0 0.9rem;
-			}
-			.meta-row .updated {
-				color: var(--ink-faint);
-			}
-			.tags {
-				display: flex;
-				gap: 0.5rem;
-				flex-wrap: wrap;
-				margin-top: 1rem;
-			}
-			.hero-image {
-				margin-bottom: 2.5rem;
-			}
-			.hero-image img {
-				width: 100%;
-				border-radius: var(--radius-md);
-				border: 1px solid var(--line-strong);
 			}
 			.prose {
 				max-width: none;
 			}
-			.share {
-				display: flex;
-				align-items: center;
-				gap: 0.6rem;
-				margin-top: 3rem;
-				padding-top: 1.6rem;
-				border-top: 1px solid var(--line);
+			.prose :global(h2),
+			.prose :global(h3) {
+				scroll-margin-top: 6rem;
 			}
-			.share .label {
-				margin-right: 0.4rem;
-				font-family: var(--font-mono);
-				font-size: 11px;
-				letter-spacing: 0.2em;
-				text-transform: uppercase;
+			/* ── 通栏题头图（≥768px 裁成 21:9 电影比例） ── */
+			.hero-image {
+				width: min(1000px, 100%);
+				margin: 0 auto 3rem;
+			}
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+				border-radius: var(--radius-md);
+				border: 1px solid var(--line-strong);
+			}
+			@media (min-width: 768px) {
+				.hero-image img {
+					aspect-ratio: 21 / 9;
+					object-fit: cover;
+				}
+			}
+			@media (min-width: 1024px) {
+				.post-grid {
+					grid-template-columns: 15rem minmax(0, var(--layout-content));
+					gap: 2.5rem;
+					justify-content: center;
+				}
+				.rail {
+					display: grid;
+					gap: 2.25rem;
+					width: 15rem;
+					position: sticky;
+					top: 6rem;
+					align-self: start;
+				}
+				.post-main {
+					border-left: 1px solid var(--line);
+					padding-left: 1.75rem;
+				}
+			}
+			.meta-row .updated {
 				color: var(--ink-faint);
 			}
-			.share .btn {
-				padding: 0.55rem 1.1rem;
-				font-size: 12px;
-			}
-			.share .share-copy.copied {
-				border-color: var(--accent);
-				color: var(--accent);
+			/* ── 文末标签 ── */
+			.story-tags {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin: 2.75rem 0 0;
+				padding-top: 1.6rem;
+				border-top: 1px solid var(--line);
 			}
 			.related {
 				margin-top: 3.5rem;
@@ -275,7 +237,7 @@ const structuredData = {
 				gap: 2.25rem;
 			}
 			.back {
-				margin: 3rem 0 0;
+				margin: 2.5rem 0 0;
 				font-size: 13px;
 			}
 			.back a {
@@ -283,11 +245,6 @@ const structuredData = {
 			}
 			.back a:hover {
 				color: var(--accent);
-			}
-			@media (max-width: 1000px) {
-				.post-grid {
-					grid-template-columns: 1fr;
-				}
 			}
 		</style>
 	</body>

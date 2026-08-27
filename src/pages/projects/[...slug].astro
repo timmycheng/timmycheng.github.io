@@ -5,6 +5,9 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
+import ReadProgress from '../../components/ReadProgress.astro';
+import ShareRail from '../../components/ShareRail.astro';
+import StoryHead from '../../components/StoryHead.astro';
 import Toc from '../../components/Toc.astro';
 
 export async function getStaticPaths() {
@@ -27,105 +30,154 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 	</head>
 	<body>
 		<Header />
+		<ReadProgress />
 		<main id="main-content" class="container prose-wrap">
+			<StoryHead
+				kicker={project.data.tags[0]}
+				title={project.data.title}
+				lede={project.data.description}
+			>
+				<span class:list={['status', project.data.status]}>
+					{statusLabel[project.data.status]}
+				</span>
+				<span><FormattedDate date={project.data.pubDate} /></span>
+				{
+					project.data.repo && (
+						<a href={project.data.repo} target="_blank" rel="noopener">
+							[repo]
+						</a>
+					)
+				}
+				{
+					project.data.link && (
+						<a href={project.data.link} target="_blank" rel="noopener">
+							[link]
+						</a>
+					)
+				}
+			</StoryHead>
+			{
+				project.data.heroImage && (
+					<figure class="hero-image">
+						<Image
+							src={project.data.heroImage}
+							alt=""
+							widths={[480, 768, 1200, 1600]}
+							sizes="(max-width: 1048px) calc(100vw - 3rem), 1000px"
+							loading="eager"
+							fetchpriority="high"
+						/>
+					</figure>
+				)
+			}
 			<div class="post-grid">
+				<div class="rail">
+					<Toc headings={headings} />
+					<ShareRail title={project.data.title} />
+				</div>
 				<div class="post-main">
 					<article>
-						<header class="head">
-							<p class="eyebrow">
-								<a class="link-sweep" href="/works">← <span data-i18n="nav.works">Works</span></a>
-							</p>
-							<h1>{project.data.title}</h1>
-							<div class="meta-row">
-								<span class:list={['status', project.data.status]}>
-									{statusLabel[project.data.status]}
-								</span>
-								<span><FormattedDate date={project.data.pubDate} /></span>
-								{
-									project.data.repo && (
-										<a href={project.data.repo} target="_blank" rel="noopener">
-											[repo]
-										</a>
-									)
-								}
-								{
-									project.data.link && (
-										<a href={project.data.link} target="_blank" rel="noopener">
-											[link]
-										</a>
-									)
-								}
-							</div>
-							{
-								project.data.tags.length > 0 && (
-									<div class="tags">
-										{project.data.tags.map((t) => (
-											<span class="pill">{t}</span>
-										))}
-									</div>
-								)
-							}
-						</header>
-						{
-							project.data.heroImage && (
-								<figure class="hero-image">
-									<Image
-										src={project.data.heroImage}
-										alt=""
-										widths={[480, 720, 1440]}
-										sizes="(max-width: 768px) 100vw, 720px"
-										loading="eager"
-									/>
-								</figure>
-							)
-						}
 						<div class="prose">
 							<Content />
 						</div>
+						{
+							project.data.tags.length > 0 && (
+								<div class="story-tags">
+									{project.data.tags.map((t) => (
+										<span class="pill">#{t}</span>
+									))}
+								</div>
+							)
+						}
+						<p class="back">
+							<a class="link-sweep" href="/works"
+								>← <span data-i18n="post.back">Back to Works</span></a
+							>
+						</p>
 					</article>
 				</div>
-				<Toc headings={headings} />
 			</div>
 		</main>
 		<Footer />
 		<style>
+			/* 正文列 + 左侧栏成组居中（借鉴 Publica ≥1024 布局） */
 			main.prose-wrap {
-				padding: 0 0 4rem;
+				width: auto;
+				max-width: none;
+				padding: 0 1.5rem 4rem;
 			}
 			.post-grid {
 				display: grid;
-				grid-template-columns: minmax(0, 1fr) 230px;
-				gap: 2.5rem;
+				grid-template-columns: minmax(0, 1fr);
 				align-items: start;
+			}
+			.rail {
+				display: none;
 			}
 			.post-main {
 				min-width: 0;
-				max-width: var(--layout-content);
 			}
-			.head {
-				padding: 2.5rem 0 1.8rem;
-				border-bottom: 2px solid var(--ink);
-				margin-bottom: 2.5rem;
+			.prose {
+				max-width: none;
 			}
-			.head .eyebrow a {
+			.prose :global(h2),
+			.prose :global(h3) {
+				scroll-margin-top: 6rem;
+			}
+			/* ── 通栏题头图（≥768px 裁成 21:9 电影比例） ── */
+			.hero-image {
+				width: min(1000px, 100%);
+				margin: 0 auto 3rem;
+			}
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+				border-radius: var(--radius-md);
+				border: 1px solid var(--line-strong);
+			}
+			@media (min-width: 768px) {
+				.hero-image img {
+					aspect-ratio: 21 / 9;
+					object-fit: cover;
+				}
+			}
+			@media (min-width: 1024px) {
+				.post-grid {
+					grid-template-columns: 15rem minmax(0, var(--layout-content));
+					gap: 2.5rem;
+					justify-content: center;
+				}
+				.rail {
+					display: grid;
+					gap: 2.25rem;
+					width: 15rem;
+					position: sticky;
+					top: 6rem;
+					align-self: start;
+				}
+				.post-main {
+					border-left: 1px solid var(--line);
+					padding-left: 1.75rem;
+				}
+			}
+			/* ── 文末标签与返回 ── */
+			.story-tags {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin: 2.75rem 0 0;
+				padding-top: 1.6rem;
+				border-top: 1px solid var(--line);
+			}
+			.back {
+				margin: 2.5rem 0 0;
+				font-size: 13px;
+			}
+			.back a {
 				color: var(--ink-soft);
 			}
-			.head .eyebrow a:hover {
-				color: var(--accent);
-			}
-			.head h1 {
-				font-size: clamp(1.8rem, 4.5vw, 2.6rem);
-				letter-spacing: -0.03em;
-				margin: 0.8rem 0 0.9rem;
-			}
-			.meta-row {
-				font-size: 12px;
-			}
-			.meta-row a {
-				color: var(--ink-soft);
-				text-decoration: none;
-			}
-			.meta-row a:hover {
+			.back a:hover {
 				color: var(--accent);
 			}
 			.status {
@@ -141,29 +193,12 @@ const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 			.status.wip {
 				background: var(--ink);
 			}
-			.tags {
-				display: flex;
-				gap: 0.5rem;
-				flex-wrap: wrap;
-				margin-top: 1rem;
+			.meta-row a {
+				color: var(--ink-soft);
+				text-decoration: none;
 			}
-			.prose {
-				max-width: none;
-			}
-			.hero-image {
-				margin-bottom: 2.5rem;
-			}
-			.hero-image img {
-				display: block;
-				width: 100%;
-				height: auto;
-				border-radius: var(--radius-md);
-				border: 1px solid var(--line-strong);
-			}
-			@media (max-width: 1000px) {
-				.post-grid {
-					grid-template-columns: 1fr;
-				}
+			.meta-row a:hover {
+				color: var(--accent);
 			}
 		</style>
 	</body>

@@ -2,6 +2,16 @@
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
+
+// 自托管字体：英文 Space Grotesk（可变字重）、代码 JetBrains Mono（可变字重），
+// 中文 MiSans（unicode-range 分片按需加载）
+// MiSans 的字重声明是小米自家的标尺（Light=250、Medium=380、Bold=630），
+// 页面请求 400 时按 CSS 匹配规则命中 Medium，请求 600-900 命中 Bold，引用块 300 命中 Light
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import 'misans/lib/Normal/MiSans-Light.min.css';
+import 'misans/lib/Normal/MiSans-Medium.min.css';
+import 'misans/lib/Normal/MiSans-Bold.min.css';
 import type { ImageMetadata } from 'astro';
 import { SITE_TITLE } from '../consts';
 

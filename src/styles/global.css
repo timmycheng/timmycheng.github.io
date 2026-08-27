@@ -6,6 +6,7 @@
   墨     暖黑
   信号橙 工业 safety orange · 唯一 accent
   气质   瑞士网格 × 技术文档：无衬线紧排、mono 编号、点阵底纹
+  字体   Space Grotesk Variable（西文）× MiSans（中文）× JetBrains Mono（mono），均在 BaseHead 自托管
   ─────────────────────────────────────────
  */
 
@@ -24,11 +25,14 @@
 	--header-bg: rgba(240, 239, 235, 0.92);
 
 	--font-sans:
-		-apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+		'Space Grotesk Variable', 'MiSans', -apple-system, 'Segoe UI', 'PingFang SC',
+		'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 	--font-mono:
-		ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Consolas, 'Courier New', monospace;
+		'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Consolas,
+		'Courier New', monospace;
 	--font-serif:
-		'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', ui-serif, serif;
+		'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', ui-serif,
+		'MiSans', serif;
 
 	/* 尺寸与动效：供各组件共用 */
 	--layout-content: 45rem;
@@ -771,6 +775,10 @@ button.pill.active {
 	border-left: 2px solid var(--line-strong);
 	font-family: var(--font-serif);
 	font-style: italic;
+	/* MiSans 无斜体面：禁止合成斜体，中文引文保持直立；西文衬线真斜体不受影响 */
+	font-synthesis-style: none;
+	/* 300 按匹配规则命中 MiSans Light(250)，中文引文呈细体 */
+	font-weight: 300;
 	color: var(--ink);
 	margin: 2rem 0;
 	padding: 0.25rem 0 0.25rem 1.4rem;

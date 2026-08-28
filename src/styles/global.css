@@ -832,15 +832,13 @@ button.pill.active {
 
 /* ── works 双语内容：默认英文，html[data-locale='zh'] 时切换 ──
    正文用 <div data-lang="en|zh"> 包裹两段 Markdown，标题/摘要用
-   <span data-lang> 成对渲染；未分段的内容不带属性，两种语言都显示 */
-[data-lang='zh'] {
+   <span data-lang> 成对渲染。仅当两种语言的段落同时存在时才互相
+   隐藏，因此只写一种语言（哪怕包在 div 里）在两种模式下都可见 */
+html:not([data-locale='zh']) :has(> [data-lang='en']) > [data-lang='zh'] {
 	display: none;
 }
-html[data-locale='zh'] [data-lang='en'] {
+html[data-locale='zh'] :has(> [data-lang='zh']) > [data-lang='en'] {
 	display: none;
-}
-html[data-locale='zh'] [data-lang='zh'] {
-	display: revert;
 }
 
 /* 页内语言切换按钮（about / works 页共用） */

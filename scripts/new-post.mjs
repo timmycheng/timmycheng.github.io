@@ -35,7 +35,9 @@ slug = filePath.split('\\').pop().replace(/\.md$/, '');
 const frontmatter = [
 	'---',
 	`title: ${title}`,
+	'# titleZh: 中文标题（可选；提供后详情页/列表出现「中 / EN」切换按钮）',
 	'description: TODO：一句话摘要',
+	'# descriptionZh: 中文摘要（可选，与 titleZh 搭配使用）',
 	`pubDate: ${pubDate}`,
 	'# heroImage: ../../assets/xxx.jpg',
 	'tags: []',

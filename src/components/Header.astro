@@ -100,12 +100,19 @@ import HeaderLink from './HeaderLink.astro';
 		transform: translateY(-100%);
 	}
 	nav {
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
 		max-width: 1000px;
 		margin: 0 auto;
+	}
+	/* 中间链接相对容器真正居中，不受两端 logo/控件宽度差影响 */
+	.internal-links {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 	.logo {
 		display: flex;
@@ -207,6 +214,9 @@ import HeaderLink from './HeaderLink.astro';
 			display: none;
 		}
 		.internal-links {
+			/* 窄屏空间不足，退回 flex 分布避免与两端重叠 */
+			position: static;
+			transform: none;
 			gap: 0;
 		}
 	}

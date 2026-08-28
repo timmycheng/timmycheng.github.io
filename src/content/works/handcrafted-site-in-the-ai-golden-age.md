@@ -1,10 +1,56 @@
 ---
-title: 在 AI 黄金时代的「古法」建站
-description: 从 Hexo、WordPress 一路折腾到 jQuery，每次都在搭完框架后放弃。直到 AI 把建站这件事压缩到懒人也能完成的程度，个人站这种古法才终于活了下来。
+title: Handcrafted Site-Building in the Golden Age of AI
+titleZh: 在 AI 黄金时代的「古法」建站
+description: From Hexo and WordPress all the way to hand-written jQuery — I abandoned every attempt right after finishing the framework. Only in the AI age has this old craft finally become survivable for a lazy person.
+descriptionZh: 从 Hexo、WordPress 一路折腾到 jQuery，每次都在搭完框架后放弃。直到 AI 把建站这件事压缩到懒人也能完成的程度，个人站这种古法才终于活了下来。
 pubDate: 2026-08-28
 # heroImage: ../../assets/xxx.jpg
 tags: ['建站', 'Astro', '随笔']
 ---
+
+<div data-lang="en">
+
+A "personal website" is an old-fashioned thing. It's like a handwritten letter, a family photo album, or a wooden sign in your own yard that says "this is me." In an era when all content lives inside platform feeds, owning your own domain, your own pages, your own typography looks positively outdated.
+
+And yet I pulled it off — using the least old-fashioned tool this age has to offer.
+
+## A History of Giving Up
+
+Confession first: this is not my first attempt at a website. To be precise, I've built many sites, and abandoned just as many.
+
+It started with Hexo. I spent an entire evening picking themes, switching from NexT to NEXT and back again, and the moment `hexo deploy` went through, the sense of achievement was overwhelming — after which the repo sat there with two `hello world` posts, and there was never anything more.
+
+Then came WordPress. Buy a domain, find a host, install plugins, fiddle with widgets, and assemble a decent-looking homepage. Write actual posts? I'd open the editor, watch the cursor blink for half an hour, and close the tab.
+
+Later still, I genuinely went and wrote jQuery and Bootstrap. Hand-built navbars, hand-tuned grids, checking browser compatibility against Can I Use. That round taught me a lot — the site itself stayed empty.
+
+The reason for these failures isn't flattering, but it's simple: **I'm a lazy person, haha.** Building the framework is a game with instant feedback — install a plugin, get a deployment working, and the dopamine arrives immediately; writing content, on the other hand, is a long grind with no reward. So every attempt died at exactly the same spot — the day the framework was finished was the day the project died. My head was full of shit, but the thought of hauling it all into an empty editor made my hands stop.
+
+## What the Golden Age Changed
+
+Once the AI era arrived, building a website became infinitely simpler.
+
+Not "websites got fancier" simpler — **the friction of every single step along the pipeline got sanded away**. Don't understand Astro's content collections? Ask, and the answer arrives with example code. Half-written component throwing an unfamiliar error? Paste it over and get an explanation plus a fix in three seconds. A TOC sidebar for articles, a reading progress bar, a giscus comment section — features that each used to be worth a whole evening of tinkering are now finished inside a conversation.
+
+And so I found, to my surprise, that this time I actually made it past the station where I always used to stop: framework done. Not just past it, either — further on: TOC, share rail, light/dark themes, even bilingual switching, and this very article, all completed casually along this newly-paved road.
+
+## A New Lease of Life for an Old Craft
+
+Here's the interesting part: AI didn't turn the personal website into something new. It simply made the old craft **sustainable** for the first time.
+
+A personal site used to be a project demanding constant willpower — and you can imagine the willpower reserves of a lazy person. Now the maintenance cost is crushed to nearly zero: want to change a style? One sentence away. Want a new feature? One sentence away. Even that pile of shit in my head gets coaxed out, tidied up, and shaped into articles through conversations with AI.
+
+Writing this, I realize the truest description of this site is: **an old-fashioned shell, a golden-age heart.** On the surface it's no different from a personal homepage twenty years ago — a domain, some articles, an about page; but what keeps it alive is a condition no previous era ever had.
+
+All those sites that died on Hexo, WordPress, and jQuery over the years — if they'd held on until today, they'd probably all still be alive.
+
+---
+
+_So if you too once finished a framework and abandoned the repo for years, give it another try. This time, laziness is no longer a death sentence._
+
+</div>
+
+<div data-lang="zh">
 
 「个人网站」是一件古法的事情。它像手写书信、像家庭相册、像在自家院子里立一块木牌写「这是我」。在这个一切内容都住在平台信息流里的年代，拥有一个自己的域名、自己的页面、自己排的版式，怎么看都有点落伍。
 
@@ -28,7 +74,7 @@ AI 时代到来之后，建站这件事被无限地简化了。
 
 不是「网站变得更高级了」那种简化，而是**整条流水线上每一道工序的摩擦力都被抹掉了**。不懂 Astro 的内容集合？问一句，答案带着示例代码就来了。组件写了一半报了个没见过的错？贴过去，三秒钟得到解释和修法。想给文章加个目录侧栏、加个阅读进度条、加个 giscus 评论区——这些在过去每一个都值得单独折腾一晚上的功能，现在是在对话里完成的。
 
-于是我惊讶地发现：这次我居然走到了框架搭完之后的下一站。而且不止走到，还走远了——TOC、分享栏、明暗主题切换、中英双语，甚至这篇文章本身，都是在这条被铺平的路上顺手完成的。
+于是我惊讶地发现：这次我居然走到了框架搭完之后的下一站。而且不止走到，还走远了——TOC、分享栏、明暗主题切换、甚至中英双语，以及这篇文章本身，都是在这条被铺平的路上顺手完成的。
 
 ## 古法的新活法
 
@@ -43,3 +89,5 @@ AI 时代到来之后，建站这件事被无限地简化了。
 ---
 
 _所以如果你也曾搭完框架就把仓库一弃多年，不妨再试一次。这一次，懒不再是死刑判决。_
+
+</div>

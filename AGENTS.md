@@ -39,6 +39,7 @@ astro dev --background
 - 提交前运行 `npm run format` 保持代码风格一致（Prettier：Tab 缩进、单引号、100 列宽）
 - 站点部署到 GitHub Pages：push 到 `master` 分支自动触发构建部署
 - 内容集合（works/gallery）用 Markdown + frontmatter，新增内容遵循已有 frontmatter 字段（`kind: post | project` 区分文章与项目，项目可加 `status`/`repo`/`link`）
+- works 双语约定：默认显示英文；正文用 `<div data-lang="en">` / `<div data-lang="zh">` 两段（div 与 Markdown 之间留空行才能正常渲染），frontmatter 加 `titleZh`/`descriptionZh`；未分段的内容两种语言都显示
 
 ## 文档
 

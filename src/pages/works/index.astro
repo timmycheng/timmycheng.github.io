@@ -13,7 +13,9 @@ type Item = {
 	id: string;
 	href: string;
 	title: string;
+	titleZh?: string;
 	description: string;
+	descriptionZh?: string;
 	date: Date;
 	tags: string[];
 	body: string;
@@ -30,7 +32,9 @@ const items: Item[] = entries
 		id: p.id,
 		href: `/works/${p.id}/`,
 		title: p.data.title,
+		titleZh: p.data.titleZh,
 		description: p.data.description,
+		descriptionZh: p.data.descriptionZh,
 		date: p.data.pubDate,
 		tags: p.data.tags,
 		body: p.body ?? '',
@@ -48,11 +52,28 @@ const [lead, ...rest] = items;
 <html lang="zh-CN">
 	<head>
 		<BaseHead title={`Works · ${SITE_TITLE}`} description="Posts and projects." />
+		<script is:inline>
+			// works 页局部语言：仅 works 列表/详情页生效，避免渲染闪烁，默认英文
+			(function () {
+				var d = document.documentElement;
+				if (localStorage.getItem('tc-locale-works') === 'zh') {
+					d.setAttribute('data-locale', 'zh');
+					d.lang = 'zh-CN';
+				}
+			})();
+		</script>
 	</head>
 	<body>
 		<Header />
 		<main id="main-content" class="container works">
 			<header class="page-head">
+				{
+					items.some((i) => i.titleZh) && (
+						<button type="button" class="locale-btn" data-action="works-locale">
+							中 / EN
+						</button>
+					)
+				}
 				<h1 data-i18n="works.title">Works / 作品</h1>
 				<p class="lede" data-i18n="works.sub">Posts and projects.</p>
 				<p class="count mono">
@@ -109,8 +130,18 @@ const [lead, ...rest] = items;
 										<span data-i18n="read.min">min read</span>
 									</span>
 								</p>
-								<h2>{lead.title}</h2>
-								<p class="desc">{lead.description}</p>
+								<h2>
+									{lead.titleZh ? <span data-lang="en">{lead.title}</span> : lead.title}
+									{lead.titleZh && <span data-lang="zh">{lead.titleZh}</span>}
+								</h2>
+								<p class="desc">
+									{lead.descriptionZh ? (
+										<span data-lang="en">{lead.description}</span>
+									) : (
+										lead.description
+									)}
+									{lead.descriptionZh && <span data-lang="zh">{lead.descriptionZh}</span>}
+								</p>
 								<div class="foot">
 									<div class="tags">
 										{lead.tags.map((t) => (
@@ -157,8 +188,18 @@ const [lead, ...rest] = items;
 										<span data-i18n="read.min">min read</span>
 									</span>
 								</p>
-								<h2>{item.title}</h2>
-								<p class="desc">{item.description}</p>
+								<h2>
+									{item.titleZh ? <span data-lang="en">{item.title}</span> : item.title}
+									{item.titleZh && <span data-lang="zh">{item.titleZh}</span>}
+								</h2>
+								<p class="desc">
+									{item.descriptionZh ? (
+										<span data-lang="en">{item.description}</span>
+									) : (
+										item.description
+									)}
+									{item.descriptionZh && <span data-lang="zh">{item.descriptionZh}</span>}
+								</p>
 								<div class="foot">
 									<div class="tags">
 										{item.tags.map((t) => (
@@ -177,6 +218,18 @@ const [lead, ...rest] = items;
 			<p class="empty" data-i18n="works.empty" hidden>No items match this tag.</p>
 		</main>
 		<Footer />
+		<script>
+			// works 页语言切换：局部持久化（tc-locale-works），与详情页共用
+			document.querySelectorAll<HTMLButtonElement>('[data-action="works-locale"]').forEach((btn) =>
+				btn.addEventListener('click', () => {
+					const next = document.documentElement.getAttribute('data-locale') === 'zh' ? 'en' : 'zh';
+					try {
+						localStorage.setItem('tc-locale-works', next);
+					} catch (e) {}
+					document.dispatchEvent(new CustomEvent('tc-locale-set', { detail: next }));
+				}),
+			);
+		</script>
 		<script>
 			const pills = [...document.querySelectorAll<HTMLButtonElement>('.filters .pill')];
 			const cards = [...document.querySelectorAll<HTMLElement>('.card')];
@@ -201,7 +254,13 @@ const [lead, ...rest] = items;
 				padding: 2.5rem 0 4rem;
 			}
 			.page-head {
+				position: relative;
 				margin-bottom: 2rem;
+			}
+			.page-head .locale-btn {
+				position: absolute;
+				top: 0;
+				right: 0;
 			}
 			.page-head h1 {
 				font-size: clamp(1.9rem, 5vw, 2.9rem);

@@ -24,7 +24,19 @@ export async function getStaticPaths() {
 type Heading = { depth: number; slug: string; text: string };
 
 const {
-	data: { title, description, pubDate, updatedDate, heroImage, tags = [], repo, link, status },
+	data: {
+		title,
+		titleZh,
+		description,
+		descriptionZh,
+		pubDate,
+		updatedDate,
+		heroImage,
+		tags = [],
+		repo,
+		link,
+		status,
+	},
 	id: slug,
 	body,
 } = Astro.props;
@@ -62,13 +74,29 @@ const structuredData = {
 			modifiedTime={updatedDate}
 		/>
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+		<script is:inline>
+			// works 页局部语言：仅 works 列表/详情页生效，避免渲染闪烁，默认英文
+			(function () {
+				var d = document.documentElement;
+				if (localStorage.getItem('tc-locale-works') === 'zh') {
+					d.setAttribute('data-locale', 'zh');
+					d.lang = 'zh-CN';
+				}
+			})();
+		</script>
 	</head>
 
 	<body>
 		<Header />
 		<ReadProgress />
 		<main id="main-content" class="container prose-wrap">
-			<StoryHead kicker={tags[0]} title={title} lede={description}>
+			<StoryHead
+				kicker={tags[0]}
+				title={title}
+				titleZh={titleZh}
+				lede={description}
+				ledeZh={descriptionZh}
+			>
 				{status && <span class:list={['status', status]}>{statusLabel[status]}</span>}
 				<span>
 					<FormattedDate date={pubDate} />
@@ -96,6 +124,13 @@ const structuredData = {
 						<a href={link} target="_blank" rel="noopener">
 							[link]
 						</a>
+					)
+				}
+				{
+					titleZh && (
+						<button type="button" class="locale-btn" data-action="works-locale">
+							中 / EN
+						</button>
 					)
 				}
 			</StoryHead>
@@ -284,5 +319,18 @@ const structuredData = {
 				color: var(--accent);
 			}
 		</style>
+		<script>
+			// works 页语言切换：局部持久化（tc-locale-works），同步 UI 文案与 giscus 语言
+			document.querySelectorAll<HTMLButtonElement>('[data-action="works-locale"]').forEach((btn) =>
+				btn.addEventListener('click', () => {
+					const next = document.documentElement.getAttribute('data-locale') === 'zh' ? 'en' : 'zh';
+					try {
+						localStorage.setItem('tc-locale-works', next);
+					} catch (e) {}
+					document.dispatchEvent(new CustomEvent('tc-locale-set', { detail: next }));
+					document.dispatchEvent(new CustomEvent('tc-locale-change', { detail: next }));
+				}),
+			);
+		</script>
 	</body>
 </html>

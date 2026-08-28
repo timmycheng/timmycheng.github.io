@@ -10,6 +10,9 @@ const works = defineCollection({
 		z.object({
 			kind: z.enum(['post', 'project']).default('post'),
 			title: z.string(),
+			// 中文版标题/摘要（可选）：提供后页面可切换中英文，默认显示英文
+			titleZh: z.string().optional(),
+			descriptionZh: z.string().optional(),
 			description: z.string(),
 			pubDate: z.coerce.date(),
 			updatedDate: z.coerce.date().optional(),

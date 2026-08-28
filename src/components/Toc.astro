@@ -32,6 +32,19 @@ const toc = Astro.props.headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 	const targets = links
 		.map((a) => document.getElementById(a.dataset.heading || ''))
 		.filter((el): el is HTMLElement => el !== null);
+
+	// 双语正文：隐藏「当前语言不可见」的标题对应的目录项
+	function syncTocLang() {
+		links.forEach((a) => {
+			const t = document.getElementById(a.dataset.heading || '');
+			if (!t) return;
+			const li = a.closest('li');
+			if (li) li.hidden = t.offsetParent === null;
+		});
+	}
+	syncTocLang();
+	document.addEventListener('tc-locale-set', syncTocLang);
+
 	if (targets.length && 'IntersectionObserver' in window) {
 		const spy = new IntersectionObserver(
 			(entries) => {

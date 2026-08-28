@@ -1,13 +1,24 @@
 ---
 // 居中刊头（借鉴 Publica）：kicker + 大标题 + 摘要 + meta 行
-type Props = { kicker?: string; title: string; lede?: string };
-const { kicker, title, lede } = Astro.props;
+// titleZh/ledeZh 存在时成对渲染中英文，由 html[data-locale] 控制显示
+type Props = { kicker?: string; title: string; titleZh?: string; lede?: string; ledeZh?: string };
+const { kicker, title, titleZh, lede, ledeZh } = Astro.props;
 ---
 
 <header class="story-head">
 	{kicker && <p class="kicker">{kicker}</p>}
-	<h1>{title}</h1>
-	{lede && <p class="lede">{lede}</p>}
+	<h1>
+		{titleZh ? <span data-lang="en">{title}</span> : title}
+		{titleZh && <span data-lang="zh">{titleZh}</span>}
+	</h1>
+	{
+		lede && (
+			<p class="lede">
+				{ledeZh ? <span data-lang="en">{lede}</span> : lede}
+				{ledeZh && <span data-lang="zh">{ledeZh}</span>}
+			</p>
+		)
+	}
 	<div class="meta-row">
 		<slot />
 	</div>

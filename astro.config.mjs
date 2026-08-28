@@ -15,5 +15,8 @@ export default defineConfig({
 	redirects: {
 		'/blog': '/works',
 		'/projects': '/works',
+		// 旧文章/项目详情链接统一重定向到 /works/<slug>
+		'/blog/[...slug]': '/works/[...slug]',
+		'/projects/[...slug]': '/works/[...slug]',
 	},
 });

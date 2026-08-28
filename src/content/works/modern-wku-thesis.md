@@ -1,4 +1,5 @@
 ---
+kind: project
 title: Modern WKU Thesis - A Typst & Latex Template
 description: 温州肯恩大学 CSMT 学院研究生毕业论文模板，Typst 与 LaTeX 双版本，已发布至 Typst Universe。
 pubDate: 2026-08-27

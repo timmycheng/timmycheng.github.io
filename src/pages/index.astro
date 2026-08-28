@@ -7,7 +7,7 @@ import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { readingMinutes } from '../utils/reading';
 
-const posts = (await getCollection('blog'))
+const posts = (await getCollection('works'))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 	.slice(0, 3);
 
@@ -100,7 +100,7 @@ const tiles = [
 				{
 					lead && (
 						<article class="feed-card lead-card">
-							<a class="title-link" href={`/blog/${lead.id}/`}>
+							<a class="title-link" href={`/works/${lead.id}/`}>
 								<div class="meta-row">
 									<span>
 										<FormattedDate date={lead.data.pubDate} />
@@ -123,7 +123,7 @@ const tiles = [
 					{
 						rest.map((post) => (
 							<article class="feed-card">
-								<a class="title-link" href={`/blog/${post.id}/`}>
+								<a class="title-link" href={`/works/${post.id}/`}>
 									<div class="meta-row">
 										<span>
 											<FormattedDate date={post.data.pubDate} />

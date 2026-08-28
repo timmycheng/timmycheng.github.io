@@ -1,5 +1,5 @@
 // 用法：npm run new -- <标题> [自定义slug]
-// 例如：npm run new -- "我的第一篇文章" 会生成 src/content/blog/<slug>.md
+// 例如：npm run new -- "我的第一篇文章" 会生成 src/content/works/<slug>.md
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -24,7 +24,7 @@ function toSlug(input) {
 	return s || 'post';
 }
 
-const dir = join(process.cwd(), 'src', 'content', 'blog');
+const dir = join(process.cwd(), 'src', 'content', 'works');
 let slug = slugArg ? toSlug(slugArg) : toSlug(title);
 let filePath = join(dir, `${slug}.md`);
 for (let i = 2; existsSync(filePath); i++) {
@@ -46,4 +46,4 @@ const frontmatter = [
 writeFileSync(filePath, frontmatter, 'utf8');
 
 console.log(`已创建：${filePath}`);
-console.log(`本地预览：http://localhost:4321/blog/${slug}/`);
+console.log(`本地预览：http://localhost:4321/works/${slug}/`);

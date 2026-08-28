@@ -17,29 +17,18 @@ type Item = {
 	date: Date;
 	tags: string[];
 	body: string;
-	heroImage?: CollectionEntry<'blog'>['data']['heroImage'];
+	heroImage?: CollectionEntry<'works'>['data']['heroImage'];
 	status?: 'wip' | 'active' | 'done';
 };
 
-const [posts, projects] = await Promise.all([getCollection('blog'), getCollection('projects')]);
+const entries = await getCollection('works');
 const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
 
-const items: Item[] = [
-	...posts.map((p) => ({
-		kind: 'post' as const,
+const items: Item[] = entries
+	.map((p) => ({
+		kind: p.data.kind,
 		id: p.id,
-		href: `/blog/${p.id}/`,
-		title: p.data.title,
-		description: p.data.description,
-		date: p.data.pubDate,
-		tags: p.data.tags,
-		body: p.body ?? '',
-		heroImage: p.data.heroImage,
-	})),
-	...projects.map((p) => ({
-		kind: 'project' as const,
-		id: p.id,
-		href: `/projects/${p.id}/`,
+		href: `/works/${p.id}/`,
 		title: p.data.title,
 		description: p.data.description,
 		date: p.data.pubDate,
@@ -47,8 +36,8 @@ const items: Item[] = [
 		body: p.body ?? '',
 		heroImage: p.data.heroImage,
 		status: p.data.status,
-	})),
-].sort((a, b) => b.date.valueOf() - a.date.valueOf());
+	}))
+	.sort((a, b) => b.date.valueOf() - a.date.valueOf());
 
 const tagList = [...new Set(items.flatMap((i) => i.tags))].sort();
 const tagCount = new Map(tagList.map((t) => [t, items.filter((i) => i.tags.includes(t)).length]));

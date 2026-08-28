@@ -2,7 +2,7 @@
 
 ## 常用命令
 
-- `npm run new -- "标题" [slug]` — 新建博客文章到 `src/content/blog/`（自动填 frontmatter 和日期）
+- `npm run new -- "标题" [slug]` — 新建文章到 `src/content/works/`（自动填 frontmatter 和日期）
 - `npm run dev` — 启动开发服务器（默认 http://localhost:4321）
 - `npm run check` — 运行 Astro 类型检查（`astro check`）
 - `npm run build` — 构建到 `dist/`
@@ -27,8 +27,7 @@ astro dev --background
 ## 项目结构
 
 - `src/pages/` — 基于文件的路由（Astro 页面）
-- `src/content/` — 内容集合（blog、gallery、projects），配置在 `src/content.config.ts`
-- `src/layouts/` — 页面布局（BaseHead、BlogPost 等）
+- `src/content/` — 内容集合（works、gallery），配置在 `src/content.config.ts`
 - `src/components/` — 可复用 UI 组件
 - `src/styles/global.css` — 全局样式
 - `src/consts.ts` — 站点常量（标题、描述等）
@@ -39,7 +38,7 @@ astro dev --background
 - 修改代码后运行 `npm run check` 验证类型
 - 提交前运行 `npm run format` 保持代码风格一致（Prettier：Tab 缩进、单引号、100 列宽）
 - 站点部署到 GitHub Pages：push 到 `master` 分支自动触发构建部署
-- 内容集合（blog/projects/gallery）用 Markdown + frontmatter，新增内容遵循已有 frontmatter 字段
+- 内容集合（works/gallery）用 Markdown + frontmatter，新增内容遵循已有 frontmatter 字段（`kind: post | project` 区分文章与项目，项目可加 `status`/`repo`/`link`）
 
 ## 文档
 

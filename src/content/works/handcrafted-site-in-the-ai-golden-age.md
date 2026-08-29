@@ -4,7 +4,7 @@ titleZh: 在 AI 黄金时代的「古法」建站
 description: From Hexo and WordPress all the way to hand-written jQuery — I abandoned every attempt right after finishing the framework. Only in the AI age has this old craft finally become survivable for a lazy person.
 descriptionZh: 从 Hexo、WordPress 一路折腾到 jQuery，每次都在搭完框架后放弃。直到 AI 把建站这件事压缩到懒人也能完成的程度，个人站这种古法才终于活了下来。
 pubDate: 2026-08-28
-# heroImage: ../../assets/xxx.jpg
+heroImage: ../../assets/handcrafted-site-ai-golden-age.png
 tags: ['建站', 'Astro', '随笔']
 ---
 

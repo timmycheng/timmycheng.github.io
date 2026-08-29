@@ -123,16 +123,11 @@ jobs:
           resp = client.CreatePurgeTask(req)
           print("EdgeOne purge job:", resp.to_json_string())
 
-          # 预热：清缓存后立即把新版拉到边缘节点，首个访问也命中缓存
+          # 预热：清缓存后立即把新版拉到中间层，首个访问不必回源站
+          # （Mode 省略时为 default，即预热到中间层；edge 为白名单功能）
           preq = models.CreatePrefetchTaskRequest()
           preq.from_json_string(
-              json.dumps(
-                  {
-                      "ZoneId": os.environ["EDGEONE_ZONE_ID"],
-                      "Mode": "prefetch_url",
-                      "Targets": urls,
-                  }
-              )
+              json.dumps({"ZoneId": os.environ["EDGEONE_ZONE_ID"], "Targets": urls})
           )
           resp = client.CreatePrefetchTask(preq)
           print("EdgeOne prefetch job:", resp.to_json_string())

@@ -110,10 +110,16 @@ jobs:
               os.environ["TENCENT_SECRET_ID"], os.environ["TENCENT_SECRET_KEY"]
           )
           client = teo_client.TeoClient(cred, "")
-          req = models.PurgeUrlsCacheRequest()
+          req = models.CreatePurgeTaskRequest()
           req.from_json_string(
-              json.dumps({"ZoneId": os.environ["EDGEONE_ZONE_ID"], "Urls": urls})
+              json.dumps(
+                  {
+                      "ZoneId": os.environ["EDGEONE_ZONE_ID"],
+                      "Type": "purge_url",
+                      "Targets": urls,
+                  }
+              )
           )
-          resp = client.PurgeUrlsCache(req)
+          resp = client.CreatePurgeTask(req)
           print("EdgeOne purge job:", resp.to_json_string())
           EOF

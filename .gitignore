@@ -26,10 +26,3 @@ pnpm-debug.log*
 # personal resume (keep out of repo / deployment)
 resume.pdf
 public/resume.pdf
-
-# wechat devtools personal prefs / local test artifacts
-miniprogram/project.private.config.json
-.screenshots/
-
-# local security-scan plugin state
-.mimosa/

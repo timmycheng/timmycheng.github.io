@@ -1,10 +1,7 @@
 ---
-// 内容来自 src/data/about.ts（与小程序 /api/about.json 共用单一数据源）。
-// 双语用 [data-lang] 成对渲染，由 global.css 按 data-locale 切换（与 works 页同机制）。
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { about } from '../data/about';
 import { SITE_TITLE } from '../consts';
 ---
 
@@ -39,21 +36,17 @@ import { SITE_TITLE } from '../consts';
 					>
 						中 / EN
 					</button>
-					<h2>{about.name}</h2>
-					<p class="mono-label">{about.role}</p>
-					<p class="bio">
-						<span data-lang="en">{about.bio.en}</span>
-						<span data-lang="zh">{about.bio.zh}</span>
-					</p>
-					<p class="bio-note mono">
-						<span data-lang="en">{about.resumeNote.en}</span>
-						<span data-lang="zh">{about.resumeNote.zh}</span>
+					<h2>Timmy Cheng</h2>
+					<p class="mono-label">Cybersecurity Engineer · Security Ops</p>
+					<p class="bio" data-i18n="about.bio">Focused on cybersecurity operations.</p>
+					<p class="bio-note mono" data-i18n="about.resume.ask">
+						If you're interested, ask for my resume.
 					</p>
 					<ul class="socials" aria-label="Social links">
 						<li>
 							<a
 								class="social-btn"
-								href={about.socials.github}
+								href="https://github.com/timmycheng"
 								target="_blank"
 								rel="noopener"
 								aria-label="GitHub"
@@ -70,9 +63,9 @@ import { SITE_TITLE } from '../consts';
 							<button
 								type="button"
 								class="social-btn"
-								data-wechat-id={about.socials.wechat}
+								data-wechat-id="timmycheng"
 								aria-label="WeChat"
-								title={`WeChat: ${about.socials.wechat}`}
+								title="WeChat: timmycheng"
 							>
 								<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 									<path
@@ -85,7 +78,7 @@ import { SITE_TITLE } from '../consts';
 							</button>
 						</li>
 						<li>
-							<a class="social-btn" href={`mailto:${about.socials.email}`} aria-label="Email">
+							<a class="social-btn" href="mailto:timmycheng@foxmail.com" aria-label="Email">
 								<svg
 									viewBox="0 0 24 24"
 									fill="none"
@@ -106,84 +99,75 @@ import { SITE_TITLE } from '../consts';
 				</section>
 
 				<section class="body">
-					<h3 class="section-title">
-						<span data-lang="en">{about.experienceTitle.en}</span>
-						<span data-lang="zh">{about.experienceTitle.zh}</span>
-					</h3>
+					<h3 class="section-title" data-i18n="about.exp">Experience / 经历</h3>
 					<dl class="timeline">
-						{
-							about.experience.map((entry) => (
-								<div class="entry">
-									<dt>
-										<strong>
-											<span data-lang="en">{entry.role.en}</span>
-											<span data-lang="zh">{entry.role.zh}</span>
-										</strong>
-										<span class="mono date">{entry.date}</span>
-									</dt>
-									<dd>
-										<span data-lang="en">{entry.desc.en}</span>
-										<span data-lang="zh">{entry.desc.zh}</span>
-									</dd>
-								</div>
-							))
-						}
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.exp.1.role">Cybersecurity Management</strong>
+								<span class="mono date">2023 — NOW</span>
+							</dt>
+							<dd data-i18n="about.exp.1.desc">
+								Security operations and management of bank systems and applications.
+							</dd>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.exp.2.role"
+									>Security Product Manager / Consulting Engineer</strong
+								>
+								<span class="mono date">2020 — 2023</span>
+							</dt>
+							<dd data-i18n="about.exp.2.desc">
+								SOC platform product, security consulting, national operating standard.
+							</dd>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.exp.3.role">Cybersecurity Engineer</strong>
+								<span class="mono date">2015 — 2020</span>
+							</dt>
+							<dd data-i18n="about.exp.3.desc">
+								Security device operations, vulnerability management, platform building, training.
+							</dd>
+						</div>
 					</dl>
 
-					<h3 class="section-title">
-						<span data-lang="en">{about.certificationsTitle.en}</span>
-						<span data-lang="zh">{about.certificationsTitle.zh}</span>
-					</h3>
+					<h3 class="section-title" data-i18n="about.certs">Certifications / 认证</h3>
 					<div class="skills">
-						{
-							about.certifications.map((cert) => (
-								<span class="pill">
-									<span data-lang="en">{cert.en}</span>
-									<span data-lang="zh">{cert.zh}</span>
-								</span>
-							))
-						}
+						<span class="pill" data-i18n="about.cert.1">CISSP · 2018</span>
+						<span class="pill" data-i18n="about.cert.2">CISP · 2019</span>
+						<span class="pill" data-i18n="about.cert.3">CISP-CSE · 2021</span>
+						<span class="pill" data-i18n="about.cert.4">CCSC Cloud Security · 2022</span>
+						<span class="pill" data-i18n="about.cert.5">Database System Engineer · 2013</span>
 					</div>
 
-					<h3 class="section-title">
-						<span data-lang="en">{about.awardsTitle.en}</span>
-						<span data-lang="zh">{about.awardsTitle.zh}</span>
-					</h3>
+					<h3 class="section-title" data-i18n="about.awards">Awards / 荣誉</h3>
 					<div class="awards mono">
-						{
-							about.awards.map((award) => (
-								<p>
-									<span data-lang="en">{award.en}</span>
-									<span data-lang="zh">{award.zh}</span>
-								</p>
-							))
-						}
+						<p data-i18n="about.award.1">
+							Multiple gold / silver / bronze prizes in provincial & municipal cyber security skills
+							competitions (2015—2020)
+						</p>
+						<p data-i18n="about.award.2">
+							Municipal cybersecurity incident response expert team member (2019); cybersecurity &
+							data security expert (2024—now)
+						</p>
 					</div>
 
-					<h3 class="section-title">
-						<span data-lang="en">{about.educationTitle.en}</span>
-						<span data-lang="zh">{about.educationTitle.zh}</span>
-					</h3>
+					<h3 class="section-title" data-i18n="about.edu">Education / 教育</h3>
 					<dl class="timeline">
-						{
-							about.education.map((entry) => (
-								<div class="entry">
-									<dt>
-										<strong>
-											<span data-lang="en">{entry.degree.en}</span>
-											<span data-lang="zh">{entry.degree.zh}</span>
-										</strong>
-										{entry.extra && (
-											<span>
-												<span data-lang="en">{entry.extra.en}</span>
-												<span data-lang="zh">{entry.extra.zh}</span>
-											</span>
-										)}
-										<span class="mono date">{entry.date}</span>
-									</dt>
-								</div>
-							))
-						}
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.edu.1.degree">M.S. Computer Information Systems</strong>
+								<span data-i18n="about.edu.1.extra"> (in progress)</span>
+								<span class="mono date">2024 — NOW</span>
+							</dt>
+						</div>
+						<div class="entry">
+							<dt>
+								<strong data-i18n="about.edu.2.degree">B.S. Computer Science</strong>
+								<span class="mono date">2007 — 2011</span>
+							</dt>
+						</div>
 					</dl>
 				</section>
 			</div>

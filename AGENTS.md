@@ -32,16 +32,6 @@ astro dev --background
 - `src/styles/global.css` — 全局样式
 - `src/consts.ts` — 站点常量（标题、描述等）
 - `public/` — 静态资源（`CNAME` 指向 timmycheng.cn，勿删除）
-- `src/data/` — 共享数据源（如 `about.ts`：关于页内容，web 页面与小程序端点共用，改一处两边同步）
-- `miniprogram/` — 微信小程序客户端（原生 JS），数据来自站点的静态 JSON 端点
-
-## 客户端数据端点（小程序用）
-
-- `src/pages/api/works.json.js` — 构建时生成 `/api/works.json`（works 列表，pinned 优先、pubDate 倒序）
-- `src/pages/api/works/[...id].json.js` — 构建时生成 `/api/works/<id>.json`（元信息 + 按 `data-lang` 拆分好的双语 HTML 正文，Markdown 用 `marked` 渲染，链接/图片已改写为绝对地址）
-- `src/pages/api/about.json.js` — 构建时生成 `/api/about.json`（关于页档案，数据来自 `src/data/about.ts`）
-- 这些端点是纯静态产物，没有后端；新增 works 内容后 push 部署即自动更新，小程序无需发版
-- 小程序代码改动需在微信开发者工具里手动验证（本仓库 CI 只覆盖站点）
 
 ## 工作流约定
 

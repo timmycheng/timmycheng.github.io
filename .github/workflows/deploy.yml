@@ -13,6 +13,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: read
 
 jobs:
   check:
@@ -36,12 +37,16 @@ jobs:
     needs: check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Install, build, and upload
         uses: withastro/action@v3
         with:
           node-version: 22
+      - name: Upload dist for CDN purge
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
 
   deploy:
     needs: build
@@ -53,3 +58,60 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # 部署完成后刷新 EdgeOne 边缘缓存：站点前有腾讯 EdgeOne CDN（仅国内加速，
+  # 但 CNAME 全球调度，海外节点也会缓存 HTML），源站 max-age=600 会让更新在
+  # CDN 侧滞后，这里把本次构建出的每个页面 URL 提交刷新。
+  purge-cdn:
+    needs: deploy
+    runs-on: ubuntu-latest
+    env:
+      TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+      TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+      EDGEONE_ZONE_ID: ${{ secrets.EDGEONE_ZONE_ID }}
+    steps:
+      - name: Skip when secrets are missing
+        if: ${{ env.TENCENT_SECRET_ID == '' || env.TENCENT_SECRET_KEY == '' || env.EDGEONE_ZONE_ID == '' }}
+        run: echo "::notice::未配置 TENCENT_SECRET_ID / TENCENT_SECRET_KEY / EDGEONE_ZONE_ID，跳过 EdgeOne 缓存刷新"
+      - name: Download build output
+        if: ${{ env.TENCENT_SECRET_ID != '' && env.TENCENT_SECRET_KEY != '' && env.EDGEONE_ZONE_ID != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+      - name: Purge EdgeOne cache
+        if: ${{ env.TENCENT_SECRET_ID != '' && env.TENCENT_SECRET_KEY != '' && env.EDGEONE_ZONE_ID != '' }}
+        continue-on-error: true
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install --quiet tencentcloud-sdk-python-teo
+          .venv/bin/python <<'EOF'
+          import json
+          import os
+          from pathlib import Path
+
+          from tencentcloud.common import credential
+          from tencentcloud.teo.v20220901 import models, teo_client
+
+          base = "https://timmycheng.cn"  # 与 public/CNAME 一致
+          urls = []
+          for page in Path(".").rglob("index.html"):
+              parent = page.parent
+              urls.append(
+                  base + "/" if parent == Path(".") else f"{base}/{parent.as_posix()}/"
+              )
+          urls = sorted(set(urls))
+          print("Purging URLs:")
+          for url in urls:
+              print("  " + url)
+
+          cred = credential.Credential(
+              os.environ["TENCENT_SECRET_ID"], os.environ["TENCENT_SECRET_KEY"]
+          )
+          client = teo_client.TeoClient(cred, "")
+          req = models.PurgeUrlsCacheRequest()
+          req.from_json_string(
+              json.dumps({"ZoneId": os.environ["EDGEONE_ZONE_ID"], "Urls": urls})
+          )
+          resp = client.PurgeUrlsCache(req)
+          print("EdgeOne purge job:", resp.to_json_string())
+          EOF

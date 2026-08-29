@@ -26,3 +26,7 @@ pnpm-debug.log*
 # personal resume (keep out of repo / deployment)
 resume.pdf
 public/resume.pdf
+
+# local security-scan plugin state
+.mimosa/
+.screenshots/

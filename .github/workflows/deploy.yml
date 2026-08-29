@@ -80,7 +80,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: dist
-      - name: Purge EdgeOne cache
+      - name: Purge and prefetch EdgeOne cache
         if: ${{ env.TENCENT_SECRET_ID != '' && env.TENCENT_SECRET_KEY != '' && env.EDGEONE_ZONE_ID != '' }}
         continue-on-error: true
         run: |
@@ -122,4 +122,18 @@ jobs:
           )
           resp = client.CreatePurgeTask(req)
           print("EdgeOne purge job:", resp.to_json_string())
+
+          # 预热：清缓存后立即把新版拉到边缘节点，首个访问也命中缓存
+          preq = models.CreatePrefetchTaskRequest()
+          preq.from_json_string(
+              json.dumps(
+                  {
+                      "ZoneId": os.environ["EDGEONE_ZONE_ID"],
+                      "Mode": "prefetch_url",
+                      "Targets": urls,
+                  }
+              )
+          )
+          resp = client.CreatePrefetchTask(preq)
+          print("EdgeOne prefetch job:", resp.to_json_string())
           EOF

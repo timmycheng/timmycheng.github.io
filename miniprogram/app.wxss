@@ -1,0 +1,46 @@
+/* 全局基调：纸面 + 墨色，与站点视觉一致 */
+page {
+	background: #f7f5f0;
+	color: #191919;
+	font-size: 28rpx;
+	line-height: 1.7;
+}
+
+/* 通用状态（加载中 / 错误） */
+.state {
+	padding: 160rpx 48rpx;
+	text-align: center;
+	color: #8a8578;
+	font-size: 28rpx;
+}
+
+.state button {
+	margin-top: 32rpx;
+	background: #191919;
+	color: #f7f5f0;
+	font-size: 26rpx;
+	border-radius: 8rpx;
+	width: 240rpx;
+}
+
+/* 通用徽标 */
+.badge {
+	display: inline-block;
+	font-size: 20rpx;
+	font-weight: 600;
+	letter-spacing: 1rpx;
+	padding: 2rpx 12rpx;
+	border-radius: 6rpx;
+	color: #8a8578;
+	background: #ece8df;
+}
+
+.badge.kind-project {
+	color: #f7f5f0;
+	background: #a0522d;
+}
+
+.badge.pin {
+	color: #a0522d;
+	background: #f1e4d7;
+}

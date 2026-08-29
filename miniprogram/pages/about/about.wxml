@@ -1,0 +1,71 @@
+<view class="page">
+	<view wx:if="{{loading}}" class="state">加载中…</view>
+
+	<view wx:elif="{{error}}" class="state">
+		<view>内容加载失败，请检查网络</view>
+		<button size="mini" bindtap="retry">重试</button>
+	</view>
+
+	<block wx:else>
+		<view class="card">
+			<view class="top-row">
+				<view class="name">{{view.name}}</view>
+				<view class="lang-btn" bindtap="toggleLang">{{lang === 'zh' ? 'EN' : '中'}}</view>
+			</view>
+			<view class="role">{{view.role}}</view>
+			<view class="bio">{{view.bio}}</view>
+			<view class="bio-note">{{view.resumeNote}}</view>
+		</view>
+
+		<view class="card">
+			<view
+				class="row"
+				wx:for="{{view.socials}}"
+				wx:key="key"
+				bindtap="copy"
+				data-value="{{item.value}}"
+			>
+				<view class="label">{{item.label}}</view>
+				<view class="value">{{item.value}}</view>
+				<view class="copy">{{view.copyLabel}}</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<view class="section-title">{{view.experienceTitle}}</view>
+			<view class="entry" wx:for="{{view.experience}}" wx:key="date">
+				<view class="entry-top">
+					<text class="entry-role">{{item.role}}</text>
+					<text class="entry-date">{{item.date}}</text>
+				</view>
+				<view class="entry-desc">{{item.desc}}</view>
+			</view>
+		</view>
+
+		<view class="card">
+			<view class="section-title">{{view.certificationsTitle}}</view>
+			<view class="pills">
+				<text class="pill" wx:for="{{view.certifications}}" wx:key="*this">{{item}}</text>
+			</view>
+		</view>
+
+		<view class="card">
+			<view class="section-title">{{view.awardsTitle}}</view>
+			<view class="award" wx:for="{{view.awards}}" wx:key="*this">{{item}}</view>
+		</view>
+
+		<view class="card">
+			<view class="section-title">{{view.educationTitle}}</view>
+			<view class="entry" wx:for="{{view.education}}" wx:key="date">
+				<view class="entry-top">
+					<text class="entry-role">{{item.degree}}</text>
+					<text class="entry-date">{{item.date}}</text>
+				</view>
+			</view>
+		</view>
+
+		<view class="footnote">
+			{{lang === 'zh' ? '内容与 timmycheng.cn 同步更新 · 点击条目可复制' : 'Synced with timmycheng.cn · Tap a row to copy'}}
+		</view>
+	</block>
+</view>

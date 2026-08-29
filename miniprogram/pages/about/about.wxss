@@ -1,0 +1,167 @@
+.page {
+	padding: 32rpx;
+}
+
+.card {
+	background: #fffdf9;
+	border: 1rpx solid #e2ddd1;
+	border-radius: 20rpx;
+	padding: 36rpx;
+	margin-bottom: 28rpx;
+}
+
+/* 个人信息卡 */
+.top-row {
+	display: flex;
+	align-items: flex-start;
+	gap: 20rpx;
+}
+
+.name {
+	flex: 1;
+	font-size: 40rpx;
+	font-weight: 700;
+	color: #191919;
+}
+
+.lang-btn {
+	flex-shrink: 0;
+	font-size: 24rpx;
+	font-weight: 600;
+	padding: 6rpx 22rpx;
+	border-radius: 999rpx;
+	color: #f7f5f0;
+	background: #191919;
+}
+
+.role {
+	margin-top: 8rpx;
+	font-size: 24rpx;
+	letter-spacing: 2rpx;
+	color: #a0522d;
+}
+
+.bio {
+	margin-top: 20rpx;
+	font-size: 27rpx;
+	line-height: 1.8;
+	color: #4a463d;
+}
+
+.bio-note {
+	margin-top: 8rpx;
+	font-size: 22rpx;
+	letter-spacing: 1rpx;
+	color: #8a8578;
+}
+
+/* 社交链接行 */
+.row {
+	display: flex;
+	align-items: center;
+	padding: 20rpx 0;
+}
+
+.row + .row {
+	border-top: 1rpx dashed #e2ddd1;
+}
+
+.label {
+	font-size: 26rpx;
+	color: #8a8578;
+	width: 180rpx;
+	flex-shrink: 0;
+}
+
+.value {
+	flex: 1;
+	font-size: 27rpx;
+	color: #191919;
+	word-break: break-all;
+}
+
+.copy {
+	flex-shrink: 0;
+	font-size: 24rpx;
+	color: #a0522d;
+	padding: 6rpx 24rpx;
+	border: 1rpx solid #a0522d;
+	border-radius: 999rpx;
+}
+
+/* 区块标题 + 时间线 */
+.section-title {
+	font-size: 28rpx;
+	font-weight: 700;
+	color: #191919;
+	margin-bottom: 8rpx;
+}
+
+.entry {
+	padding: 24rpx 0;
+	border-bottom: 1rpx dashed #e2ddd1;
+}
+
+.entry:last-child {
+	border-bottom: none;
+	padding-bottom: 8rpx;
+}
+
+.entry-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 20rpx;
+}
+
+.entry-role {
+	font-size: 28rpx;
+	font-weight: 600;
+	color: #191919;
+}
+
+.entry-date {
+	flex-shrink: 0;
+	font-size: 22rpx;
+	letter-spacing: 1rpx;
+	color: #8a8578;
+}
+
+.entry-desc {
+	margin-top: 8rpx;
+	font-size: 25rpx;
+	line-height: 1.7;
+	color: #6b6659;
+}
+
+/* 认证徽标 */
+.pills {
+	margin-top: 16rpx;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14rpx;
+}
+
+.pill {
+	font-size: 23rpx;
+	color: #4a463d;
+	background: #ece8df;
+	padding: 8rpx 22rpx;
+	border-radius: 999rpx;
+}
+
+/* 荣誉 */
+.award {
+	font-size: 23rpx;
+	letter-spacing: 1rpx;
+	line-height: 1.7;
+	color: #8a8578;
+	padding: 8rpx 0;
+}
+
+.footnote {
+	text-align: center;
+	font-size: 22rpx;
+	color: #8a8578;
+	padding: 16rpx 0 32rpx;
+}

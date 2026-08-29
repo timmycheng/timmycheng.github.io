@@ -1,0 +1,49 @@
+<view class="page">
+	<view wx:if="{{loading}}" class="state">加载中…</view>
+
+	<view wx:elif="{{error}}" class="state">
+		<view>内容加载失败，请检查网络</view>
+		<button size="mini" bindtap="retry">重试</button>
+	</view>
+
+	<block wx:else>
+		<image wx:if="{{work.hero}}" class="hero" src="{{work.hero}}" mode="widthFix" />
+
+		<view class="meta">
+			<text wx:if="{{work.kindLabel}}" class="badge kind-project">{{work.kindLabel}}</text>
+			<text wx:if="{{work.status}}" class="badge">{{work.status}}</text>
+			<text class="date">{{work.dateText}}</text>
+			<text class="date">{{work.readingMinutes}} min</text>
+			<text wx:if="{{work.updatedText}}" class="date"
+				>{{lang === 'zh' ? '更新' : 'Updated'}} {{work.updatedText}}</text
+			>
+		</view>
+
+		<view class="title-row">
+			<view class="title">{{work.title}}</view>
+			<view wx:if="{{work.hasZh}}" class="lang-btn" bindtap="toggleLang">
+				{{lang === 'zh' ? 'EN' : '中文'}}
+			</view>
+		</view>
+
+		<view class="desc">{{work.desc}}</view>
+
+		<rich-text class="prose" nodes="{{html}}"></rich-text>
+
+		<view wx:if="{{work.tags.length}}" class="tags">
+			<text wx:for="{{work.tags}}" wx:key="*this" class="tag">#{{item}}</text>
+		</view>
+
+		<view class="actions">
+			<view wx:if="{{work.repo}}" class="action" bindtap="copyLink" data-url="{{work.repo}}">
+				{{lang === 'zh' ? '复制仓库链接' : 'Copy repo link'}}
+			</view>
+			<view wx:if="{{work.link}}" class="action" bindtap="copyLink" data-url="{{work.link}}">
+				{{lang === 'zh' ? '复制项目链接' : 'Copy project link'}}
+			</view>
+			<view class="action" bindtap="copyArticleLink">
+				{{lang === 'zh' ? '复制原文链接' : 'Copy article link'}}
+			</view>
+		</view>
+	</block>
+</view>

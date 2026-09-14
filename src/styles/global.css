@@ -27,9 +27,10 @@
 	--font-sans:
 		'Space Grotesk Variable', 'MiSans', -apple-system, 'Segoe UI', 'PingFang SC',
 		'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+	/* 栈尾中文兜底不可删：JetBrains Mono/Consolas 均无汉字，缺了会落到系统宋体（小字号发虚） */
 	--font-mono:
 		'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', 'JetBrains Mono', 'SF Mono', Consolas,
-		'Courier New', monospace;
+		'Courier New', 'MiSans', 'PingFang SC', 'Microsoft YaHei', monospace;
 	--font-serif:
 		'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', ui-serif,
 		'MiSans', serif;

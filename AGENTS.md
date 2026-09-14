@@ -2,7 +2,8 @@
 
 ## 常用命令
 
-- `npm run new -- "标题" [slug]` — 新建文章到 `src/content/works/`（自动填 frontmatter 和日期）
+- `npm run new -- "标题" [slug]` — 新建中文文章 `src/content/works/<slug>.zh.md`（自动填 frontmatter 和日期）
+- `npm run translate -- <slug> [--force]` — 从 `.zh.md` 生成英文版 `.en.md`（配置 `TRANSLATE_API_KEY` 后自动机翻，否则生成待译骨架）
 - `npm run dev` — 启动开发服务器（默认 http://localhost:4321）
 - `npm run check` — 运行 Astro 类型检查（`astro check`）
 - `npm run build` — 构建到 `dist/`
@@ -39,7 +40,7 @@ astro dev --background
 - 提交前运行 `npm run format` 保持代码风格一致（Prettier：Tab 缩进、单引号、100 列宽）
 - 站点部署到 GitHub Pages：push 到 `master` 分支自动触发构建部署
 - 内容集合（works/gallery）用 Markdown + frontmatter，新增内容遵循已有 frontmatter 字段（`kind: post | project` 区分文章与项目，项目可加 `status`/`repo`/`link`）
-- works 双语约定：默认显示英文；双语内容在同一 md 里用 `<div data-lang="en">` / `<div data-lang="zh">` 两段（div 与 Markdown 之间留空行才能正常渲染），frontmatter 加 `titleZh`/`descriptionZh`；只写一种语言时不用包 div 或只包一段，两种模式下都显示
+- works 双语约定：一文两档，`<slug>.zh.md` 与 `<slug>.en.md` 成对存放，各自是完整独立的 frontmatter + 正文，语言由文件名后缀决定（解析在 `src/utils/works.ts`）。中文是主创作语言：`npm run new` 只生成 `.zh.md`，英文版之后用 `npm run translate -- <slug>` 生成。英文页路由 `/works/<slug>/`，中文页 `/zh/works/<slug>/`，两版都有时页面头部出现语言切换链接。站点 UI 文案在 `src/i18n.ts`，按页面语言构建期渲染（无客户端文案切换）
 
 ## 文档
 

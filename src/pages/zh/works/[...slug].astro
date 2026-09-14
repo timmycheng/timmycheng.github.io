@@ -1,9 +1,9 @@
 ---
-import StoryPage from '../../components/pages/StoryPage.astro';
-import { getWorks, parseEntry } from '../../utils/works';
+import StoryPage from '../../../components/pages/StoryPage.astro';
+import { getWorks, parseEntry } from '../../../utils/works';
 
 export async function getStaticPaths() {
-	const posts = await getWorks('en');
+	const posts = await getWorks('zh');
 	return posts.map((entry) => ({
 		params: { slug: parseEntry(entry).slug },
 		props: { entry },

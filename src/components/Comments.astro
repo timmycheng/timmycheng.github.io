@@ -1,13 +1,17 @@
 ---
 // giscus 评论组件 — 数据存于 GitHub Discussions
 // 前置：仓库已开 Discussions；需安装 giscus app: https://github.com/apps/giscus
-// 主题/语言跟随站点明暗与中英切换（postMessage setConfig）
+// 主题跟随站点明暗切换；语言由页面路由（/zh/）在构建期决定
+import { ui, type Lang } from '../i18n';
+
+type Props = { lang: Lang };
+const t = ui[Astro.props.lang];
 ---
 
 <section class="comments">
 	<link rel="preconnect" href="https://giscus.app" />
 	<div class="comments-head">
-		<h2 class="mono-label" data-i18n="comments.title">Comments</h2>
+		<h2 class="mono-label">{t['comments.title']}</h2>
 	</div>
 	<div class="giscus-mount"></div>
 </section>
@@ -21,12 +25,10 @@
 		var SITE = location.protocol === 'https:' ? location.origin : 'https://timmycheng.cn';
 		var THEME_LIGHT = SITE + '/giscus-theme.css';
 		var THEME_DARK = SITE + '/giscus-theme-dark.css';
+		var LANG = document.documentElement.getAttribute('data-giscus-lang') || 'en';
 
 		function themeUrl() {
 			return d.getAttribute('data-theme') === 'dark' ? THEME_DARK : THEME_LIGHT;
-		}
-		function lang() {
-			return d.getAttribute('data-locale') === 'en' ? 'en' : 'zh-CN';
 		}
 
 		function inject() {
@@ -44,27 +46,22 @@
 			s.setAttribute('data-emit-metadata', '0');
 			s.setAttribute('data-input-position', 'top');
 			s.setAttribute('data-theme', themeUrl());
-			s.setAttribute('data-lang', lang());
+			s.setAttribute('data-lang', LANG);
 			s.setAttribute('data-loading', 'lazy');
 			s.crossOrigin = 'anonymous';
 			s.async = true;
 			mount.appendChild(s);
 		}
 
-		function sync() {
+		inject();
+		document.addEventListener('tc-theme-change', function () {
 			var iframe = mount.querySelector('iframe.giscus-frame');
 			if (iframe && iframe.contentWindow) {
 				iframe.contentWindow.postMessage(
-					{ giscus: { setConfig: { theme: themeUrl(), lang: lang() } } },
+					{ giscus: { setConfig: { theme: themeUrl() } } },
 					'https://giscus.app',
 				);
 			}
-		}
-
-		inject();
-		document.addEventListener('tc-theme-change', sync);
-		document.addEventListener('tc-locale-change', function () {
-			sync();
 		});
 	})();
 </script>

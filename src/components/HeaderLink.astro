@@ -3,10 +3,16 @@ import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'>;
 
+// 去掉尾斜杠再比较，兼容英文（/works/）与中文（/zh/works/）两套路由；
+// 详情页按所在栏目（/works、/zh/works…）高亮
+const normalize = (p: string) => p.replace(/\/+$/, '') || '/';
 const { href, class: className, ...props } = Astro.props;
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+const pathname = normalize(Astro.url.pathname.replace(import.meta.env.BASE_URL, ''));
+const segs = pathname.split('/').filter(Boolean);
+const section = normalize(
+	segs[0] === 'zh' ? `/${segs.slice(0, 2).join('/')}` : `/${segs[0] ?? ''}`,
+);
+const isActive = href != null && (normalize(String(href)) === pathname || section === pathname);
 ---
 
 <a href={href} class:list={[className, { active: isActive }]} {...props}>

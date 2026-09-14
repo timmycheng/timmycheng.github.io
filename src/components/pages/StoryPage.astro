@@ -1,0 +1,306 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import BaseHead from '../BaseHead.astro';
+import Comments from '../Comments.astro';
+import Footer from '../Footer.astro';
+import FormattedDate from '../FormattedDate.astro';
+import Header from '../Header.astro';
+import ReadProgress from '../ReadProgress.astro';
+import ShareRail from '../ShareRail.astro';
+import StoryHead from '../StoryHead.astro';
+import Toc from '../Toc.astro';
+import { ui } from '../../i18n';
+import { SITE_TITLE } from '../../consts';
+import { getTranslation, getWorks, parseEntry, workHref } from '../../utils/works';
+import { readingMinutes } from '../../utils/reading';
+
+type Props = { entry: CollectionEntry<'works'> };
+
+const { entry } = Astro.props;
+const { slug, lang } = parseEntry(entry);
+const t = ui[lang];
+const base = lang === 'zh' ? '/zh' : '';
+
+const { Content, headings } = await render(entry);
+const {
+	title,
+	description,
+	pubDate,
+	updatedDate,
+	heroImage,
+	tags = [],
+	repo,
+	link,
+	status,
+} = entry.data;
+const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
+const minutes = readingMinutes(entry.body ?? '');
+
+// 同语言的相关文章；翻译版本（可能不存在）
+const translation = await getTranslation(entry);
+const related = (await getWorks(lang)).filter((p) => parseEntry(p).slug !== slug).slice(0, 3);
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	image: heroImage ? new URL(heroImage.src, Astro.site).href : undefined,
+	datePublished: pubDate.toISOString(),
+	dateModified: (updatedDate ?? pubDate).toISOString(),
+	author: { '@type': 'Person', name: 'Timmy Cheng' },
+	mainEntityOfPage: Astro.url.href,
+	inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+};
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'} data-giscus-lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+	<head>
+		<BaseHead
+			title={`${title} · ${SITE_TITLE}`}
+			description={description}
+			image={heroImage}
+			publishedTime={pubDate}
+			modifiedTime={updatedDate}
+			lang={lang}
+			alternateUrl={translation
+				? workHref(parseEntry(translation).slug, parseEntry(translation).lang)
+				: undefined}
+		/>
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+	</head>
+
+	<body>
+		<Header
+			langSwitchHref={translation
+				? workHref(parseEntry(translation).slug, parseEntry(translation).lang)
+				: `${base}/works`}
+		/>
+		<ReadProgress />
+		<main id="main-content" class="container prose-wrap">
+			<StoryHead kicker={tags[0]} title={title} lede={description}>
+				{status && <span class:list={['status', status]}>{statusLabel[status]}</span>}
+				<span>
+					<FormattedDate date={pubDate} lang={lang} />
+				</span>
+				<span class="read">
+					<span class="num">{minutes}</span>
+					{t['read.min']}
+				</span>
+				{
+					updatedDate && (
+						<span class="updated">
+							updated <FormattedDate date={updatedDate} lang={lang} />
+						</span>
+					)
+				}
+				{
+					repo && (
+						<a href={repo} target="_blank" rel="noopener">
+							[repo]
+						</a>
+					)
+				}
+				{
+					link && (
+						<a href={link} target="_blank" rel="noopener">
+							[link]
+						</a>
+					)
+				}
+				{
+					translation && (
+						<a
+							class="pill"
+							href={workHref(parseEntry(translation).slug, parseEntry(translation).lang)}
+						>
+							{t['post.other']}
+						</a>
+					)
+				}
+			</StoryHead>
+			{
+				heroImage && (
+					<figure class="hero-image">
+						<Image
+							src={heroImage}
+							alt=""
+							widths={[480, 768, 1200, 1600]}
+							sizes="(max-width: 1048px) calc(100vw - 3rem), 1000px"
+							loading="eager"
+							fetchpriority="high"
+						/>
+					</figure>
+				)
+			}
+			<div class="post-grid">
+				<div class="rail">
+					<Toc headings={headings} lang={lang} />
+					<ShareRail title={title} lang={lang} />
+				</div>
+				<div class="post-main">
+					<article>
+						<div class="prose">
+							<Content />
+						</div>
+						{
+							tags.length > 0 && (
+								<div class="story-tags">
+									{tags.map((tag) => (
+										<a class="pill" href={`${base}/works`}>
+											#{tag}
+										</a>
+									))}
+								</div>
+							)
+						}
+						{
+							related.length > 0 && (
+								<section class="related">
+									<h2 class="section-title">{t['related.title']}</h2>
+									<div class="feed">
+										{related.map((p) => (
+											<article class="feed-card compact">
+												<a class="title-link" href={workHref(parseEntry(p).slug, lang)}>
+													<div class="meta-row">
+														<span>
+															<FormattedDate date={p.data.pubDate} lang={lang} />
+														</span>
+														<span class="read">
+															<span class="num">{readingMinutes(p.body ?? '')}</span>{' '}
+															{t['read.min']}
+														</span>
+													</div>
+													<h3 class="title">{p.data.title}</h3>
+													<p class="excerpt">{p.data.description}</p>
+												</a>
+											</article>
+										))}
+									</div>
+								</section>
+							)
+						}
+						<p class="back">
+							<a class="link-sweep" href={`${base}/works`}>← {t['post.back']}</a>
+						</p>
+						<Comments lang={lang} />
+					</article>
+				</div>
+			</div>
+		</main>
+		<Footer />
+		<style>
+			/* 正文列 + 左侧栏成组居中（借鉴 Publica ≥1024 布局） */
+			main.prose-wrap {
+				width: auto;
+				max-width: none;
+				padding: 0 1.5rem 4rem;
+			}
+			.post-grid {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr);
+				align-items: start;
+			}
+			.rail {
+				display: none;
+			}
+			.post-main {
+				min-width: 0;
+			}
+			.prose {
+				max-width: none;
+			}
+			.prose :global(h2),
+			.prose :global(h3) {
+				scroll-margin-top: 6rem;
+			}
+			/* ── 通栏题头图（≥768px 裁成 21:9 电影比例） ── */
+			.hero-image {
+				width: min(1000px, 100%);
+				margin: 0 auto 3rem;
+			}
+			.hero-image img {
+				display: block;
+				width: 100%;
+				height: auto;
+				border-radius: var(--radius-md);
+				border: 1px solid var(--line-strong);
+			}
+			@media (min-width: 768px) {
+				.hero-image img {
+					aspect-ratio: 21 / 9;
+					object-fit: cover;
+				}
+			}
+			@media (min-width: 1024px) {
+				.post-grid {
+					grid-template-columns: 15rem minmax(0, var(--layout-content));
+					gap: 2.5rem;
+					justify-content: center;
+				}
+				.rail {
+					display: grid;
+					gap: 2.25rem;
+					width: 15rem;
+					position: sticky;
+					top: 6rem;
+					align-self: start;
+				}
+				.post-main {
+					border-left: 1px solid var(--line);
+					padding-left: 1.75rem;
+				}
+			}
+			.meta-row .updated {
+				color: var(--ink-faint);
+			}
+			.meta-row a {
+				color: var(--ink-soft);
+				text-decoration: none;
+			}
+			.meta-row a:hover {
+				color: var(--accent);
+			}
+			.status {
+				font-weight: 700;
+				padding: 3px 7px;
+				border-radius: 3px;
+				color: var(--paper);
+				background: var(--ink-faint);
+			}
+			.status.active {
+				background: var(--accent);
+			}
+			.status.wip {
+				background: var(--ink);
+			}
+			/* ── 文末标签 ── */
+			.story-tags {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin: 2.75rem 0 0;
+				padding-top: 1.6rem;
+				border-top: 1px solid var(--line);
+			}
+			.related {
+				margin-top: 3.5rem;
+			}
+			.related .feed {
+				gap: 2.25rem;
+			}
+			.back {
+				margin: 2.5rem 0 0;
+				font-size: 13px;
+			}
+			.back a {
+				color: var(--ink-soft);
+			}
+			.back a:hover {
+				color: var(--accent);
+			}
+		</style>
+	</body>
+</html>

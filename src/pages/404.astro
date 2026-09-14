@@ -6,17 +6,17 @@ import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 	<head>
 		<BaseHead title={`404 · ${SITE_TITLE}`} description="Page not found." />
 	</head>
 	<body>
 		<Header />
 		<main id="main-content" class="container err">
-			<p class="mono-label" data-i18n="err.code">SYS.ERR / 404</p>
+			<p class="mono-label">SYS.ERR / 404</p>
 			<h1 class="code">404</h1>
-			<p class="lede" data-i18n="err.title">Page not found — 页面未找到</p>
-			<a href="/" class="btn btn-solid home-btn" data-i18n="err.home">← HOME</a>
+			<p class="lede">Page not found — 页面未找到</p>
+			<a href="/" class="btn btn-solid home-btn">← HOME</a>
 		</main>
 		<Footer />
 		<style>

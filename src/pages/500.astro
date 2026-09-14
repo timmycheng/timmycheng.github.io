@@ -6,17 +6,17 @@ import { SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 	<head>
 		<BaseHead title={`500 · ${SITE_TITLE}`} description="Internal server error." />
 	</head>
 	<body>
 		<Header />
 		<main id="main-content" class="container err">
-			<p class="mono-label" data-i18n="err.code500">SYS.ERR / 500</p>
+			<p class="mono-label">SYS.ERR / 500</p>
 			<h1 class="code">500</h1>
-			<p class="lede" data-i18n="err.title500">Something went wrong — 出了点问题</p>
-			<a href="/" class="btn btn-solid home-btn" data-i18n="err.home">← HOME</a>
+			<p class="lede">Something went wrong — 出了点问题</p>
+			<a href="/" class="btn btn-solid home-btn">← HOME</a>
 		</main>
 		<Footer />
 		<style>

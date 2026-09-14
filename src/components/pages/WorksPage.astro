@@ -1,0 +1,300 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../BaseHead.astro';
+import Footer from '../Footer.astro';
+import FormattedDate from '../FormattedDate.astro';
+import Header from '../Header.astro';
+import { ui, type Lang } from '../../i18n';
+import { SITE_TITLE } from '../../consts';
+import { getWorks, parseEntry, workHref } from '../../utils/works';
+import { readingMinutes } from '../../utils/reading';
+
+type Props = { lang: Lang };
+const { lang } = Astro.props;
+const t = ui[lang];
+
+const posts = await getWorks(lang);
+const statusLabel = { wip: 'WIP', active: 'ACTIVE', done: 'DONE' } as const;
+
+const items = posts.map((p) => ({
+	slug: parseEntry(p).slug,
+	title: p.data.title,
+	description: p.data.description,
+	date: p.data.pubDate,
+	tags: p.data.tags,
+	body: p.body ?? '',
+	heroImage: p.data.heroImage,
+	kind: p.data.kind,
+	status: p.data.status,
+}));
+
+const tagList = [...new Set(items.flatMap((i) => i.tags))].sort();
+const tagCount = new Map(
+	tagList.map((tag) => [tag, items.filter((i) => i.tags.includes(tag)).length]),
+);
+const [lead, ...rest] = items;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+	<head>
+		<BaseHead
+			title={`${t['works.title']} · ${SITE_TITLE}`}
+			description={t['works.sub']}
+			lang={lang}
+			alternateUrl={lang === 'zh' ? '/works/' : '/zh/works/'}
+		/>
+	</head>
+	<body>
+		<Header langSwitchHref={lang === 'zh' ? '/works/' : '/zh/works/'} />
+		<main id="main-content" class="container works">
+			<header class="page-head">
+				<h1>{t['works.title']}</h1>
+				<p class="lede">{t['works.sub']}</p>
+				<p class="count mono">
+					<span class="num">{items.length}</span>
+					{t['works.items']}
+				</p>
+			</header>
+
+			<div class="filters" role="group" aria-label="Filter by tag">
+				<button type="button" class="pill active" data-tag="">{t['works.all']}</button>
+				{
+					tagList.map((tag) => (
+						<button type="button" class="pill" data-tag={tag}>
+							{tag}
+							<span class="num"> · {tagCount.get(tag)}</span>
+						</button>
+					))
+				}
+			</div>
+
+			<ul class="card-grid">
+				{
+					lead && (
+						<li class="card card-lead" data-tags={lead.tags.join(',')}>
+							<a class="card-link" href={workHref(lead.slug, lang)} aria-label={lead.title} />
+							<figure class="card-media">
+								<span class="card-flag">
+									{lead.kind === 'post' ? t['badge.post'] : t['badge.project']}
+								</span>
+								{lead.heroImage ? (
+									<Image
+										width={1000}
+										src={lead.heroImage}
+										alt=""
+										widths={[480, 800, 1000]}
+										sizes="(max-width: 720px) 100vw, 66vw"
+									/>
+								) : (
+									<div class="card-cover" aria-hidden="true">
+										<span>T/</span>
+									</div>
+								)}
+							</figure>
+							<div class="card-body">
+								<p class="card-kicker">{t.featured}</p>
+								<p class="card-meta meta-row">
+									<span>
+										<FormattedDate date={lead.date} lang={lang} />
+									</span>
+									<span class="read">
+										<span class="num">{readingMinutes(lead.body)}</span> {t['read.min']}
+									</span>
+								</p>
+								<h2>{lead.title}</h2>
+								<p class="desc">{lead.description}</p>
+								<div class="foot">
+									<div class="tags">
+										{lead.tags.map((tag) => (
+											<span class="pill">{tag}</span>
+										))}
+									</div>
+									{lead.status && (
+										<span class:list={['status', lead.status]}>{statusLabel[lead.status]}</span>
+									)}
+								</div>
+							</div>
+						</li>
+					)
+				}
+				{
+					rest.map((item) => (
+						<li class="card" data-tags={item.tags.join(',')}>
+							<a class="card-link" href={workHref(item.slug, lang)} aria-label={item.title} />
+							<figure class="card-media">
+								<span class="card-flag">
+									{item.kind === 'post' ? t['badge.post'] : t['badge.project']}
+								</span>
+								{item.heroImage ? (
+									<Image
+										width={600}
+										src={item.heroImage}
+										alt=""
+										widths={[320, 600]}
+										sizes="(max-width: 720px) 100vw, 33vw"
+									/>
+								) : (
+									<div class="card-cover" aria-hidden="true">
+										<span>T/</span>
+									</div>
+								)}
+							</figure>
+							<div class="card-body">
+								<p class="card-meta meta-row">
+									<span>
+										<FormattedDate date={item.date} lang={lang} />
+									</span>
+									<span class="read">
+										<span class="num">{readingMinutes(item.body)}</span> {t['read.min']}
+									</span>
+								</p>
+								<h2>{item.title}</h2>
+								<p class="desc">{item.description}</p>
+								<div class="foot">
+									<div class="tags">
+										{item.tags.map((tag) => (
+											<span class="pill">{tag}</span>
+										))}
+									</div>
+									{item.status && (
+										<span class:list={['status', item.status]}>{statusLabel[item.status]}</span>
+									)}
+								</div>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+			<p class="empty" hidden>{t['works.empty']}</p>
+		</main>
+		<Footer />
+		<script>
+			const pills = [...document.querySelectorAll<HTMLButtonElement>('.filters .pill')];
+			const cards = [...document.querySelectorAll<HTMLElement>('.card')];
+			const empty = document.querySelector<HTMLElement>('.empty');
+			pills.forEach((pill) =>
+				pill.addEventListener('click', () => {
+					const tag = pill.dataset.tag || '';
+					pills.forEach((p) => p.classList.toggle('active', p === pill));
+					let shown = 0;
+					cards.forEach((card) => {
+						const tags = (card.dataset.tags || '').split(',').map((s) => s.trim());
+						const visible = !tag || tags.includes(tag);
+						card.hidden = !visible;
+						if (visible) shown++;
+					});
+					if (empty) empty.hidden = shown > 0;
+				}),
+			);
+		</script>
+		<style>
+			main.works {
+				padding: 2.5rem 0 4rem;
+			}
+			.page-head {
+				position: relative;
+				margin-bottom: 2rem;
+			}
+			.page-head h1 {
+				font-size: clamp(1.9rem, 5vw, 2.9rem);
+				letter-spacing: -0.03em;
+				margin: 0 0 0.6rem;
+			}
+			.page-head .lede {
+				margin: 0;
+				color: var(--ink-soft);
+				max-width: 34em;
+			}
+			.page-head .count {
+				margin: 1rem 0 0;
+				font-size: 12px;
+				letter-spacing: 0.12em;
+				color: var(--ink-faint);
+				font-variant-numeric: tabular-nums;
+			}
+			.page-head .count .num {
+				color: var(--accent);
+				font-weight: 700;
+			}
+			.filters {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35rem;
+				margin-bottom: 1.6rem;
+			}
+			.filters .pill {
+				padding: 0.3rem 0.65rem;
+				font-size: 11px;
+				background: var(--paper-raise);
+				color: var(--ink-soft);
+			}
+			.filters .pill .num {
+				font-size: 10px;
+				opacity: 0.7;
+				letter-spacing: 0;
+			}
+			.filters button.pill.active {
+				border-color: var(--accent);
+				color: var(--accent);
+				background: var(--paper-deep);
+			}
+			.card-grid {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+				gap: 1.2rem;
+			}
+			/* featured：emDash --list 两栏卡片 */
+			.card-lead {
+				grid-column: 1 / -1;
+				display: grid;
+				grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+				align-items: stretch;
+			}
+			.card-lead .card-media {
+				aspect-ratio: auto;
+				height: 100%;
+				min-height: 17rem;
+				border-bottom: none;
+				border-right: 1px solid var(--line);
+			}
+			.card-lead .card-body {
+				justify-content: center;
+				padding: 2rem;
+			}
+			.card-lead h2 {
+				font-size: clamp(1.5rem, 3.6vw, 2.1rem);
+				letter-spacing: -0.02em;
+				-webkit-line-clamp: 3;
+			}
+			.card-lead .desc {
+				font-size: 1em;
+				-webkit-line-clamp: 3;
+			}
+			.empty {
+				margin: 3rem 0 0;
+				font-family: var(--font-mono);
+				font-size: 13px;
+				letter-spacing: 0.1em;
+				color: var(--ink-faint);
+			}
+			@media (max-width: 720px) {
+				.card-lead {
+					grid-template-columns: 1fr;
+				}
+				.card-lead .card-media {
+					aspect-ratio: 1200 / 630;
+					min-height: 0;
+					border-right: none;
+					border-bottom: 1px solid var(--line);
+				}
+				.card-lead .card-body {
+					padding: 1.4rem 1.3rem 1.2rem;
+				}
+			}
+		</style>
+	</body>
+</html>

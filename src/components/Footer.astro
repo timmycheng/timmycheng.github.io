@@ -1,6 +1,8 @@
 ---
 import { SITE_TITLE } from '../consts';
+import { langFromUrl } from '../utils/works';
 
+const lang = langFromUrl(Astro.url);
 const today = new Date();
 const year = today.getFullYear();
 ---
@@ -33,7 +35,11 @@ const year = today.getFullYear();
 					</a>
 				</li>
 				<li>
-					<a class="social-btn" href="/rss.xml" aria-label="RSS feed">
+					<a
+						class="social-btn"
+						href={lang === 'zh' ? '/zh/rss.xml' : '/rss.xml'}
+						aria-label="RSS feed"
+					>
 						<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
 							<path d="M4 4c8.837 0 16 7.163 16 16h-4c0-6.627-5.373-12-12-12V4z"></path>
 							<circle cx="6" cy="18" r="2"></circle>
